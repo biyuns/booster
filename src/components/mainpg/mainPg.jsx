@@ -77,7 +77,7 @@ function MainPg() {
 
                             <section className="food-boon-ct">
                                 <img src={boonicon}></img>
-                                <p> 전 메뉴 1인당 10% 할인dpdpdpdpdpdpdpdpdpdpdpdpdpdpdp</p>
+                                <p> 전 메뉴 1인당 10% 할인dpdpddpdpdpdpdpdpdpdpdpdpdpdp</p>
                             </section>
                             </div>
                         </div>
