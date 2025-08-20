@@ -1,0 +1,25 @@
+/* your-react-project/src/styles/fonts.css */
+
+/* Gmarket Sans Light (얇은 굵기) */
+@font-face {
+  font-family: 'GmarketSans'; /* 폰트를 참조할 때 사용할 이름 (통일!) */
+  src: url('../assets/fonts/GmarketSansLight.otf') format('opentype');
+  font-weight: 300; /* 이 폰트 파일은 얇은 굵기(Light)에 해당합니다. */
+  font-style: normal;
+}
+
+/* Gmarket Sans Medium (보통 굵기) */
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('../assets/fonts/GmarketSansMedium.otf') format('opentype');
+  font-weight: 500; /* 이 폰트 파일은 보통 굵기(Medium)에 해당합니다. */
+  font-style: normal;
+}
+
+/* Gmarket Sans Bold (굵은 굵기) */
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('../assets/fonts/GmarketSansBold.otf') format('opentype');
+  font-weight: 700; /* 이 폰트 파일은 굵은 굵기(Bold)에 해당합니다. */
+  font-style: normal;
+}

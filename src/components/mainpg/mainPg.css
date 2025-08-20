@@ -1,0 +1,355 @@
+* {
+  box-sizing: border-box;
+}
+.main-title { 
+    font-family: 'GmarketSans';
+    font-size : 20px;
+    font-style : normal;
+    font-weight: 400;
+    line-height: 30px;
+    color : #FF4500;
+    margin-left : 19px;
+    padding-top : 63px;
+    margin-bottom: 20px;
+}
+
+.ai-ct {
+    width : 368px;
+    height : 160px;
+    display : flex;
+    flex-direction: column;
+    margin : 0 auto;
+    margin-left : 13px;
+}
+
+.ai-text-ct {
+    display : flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.ai-text-ct > p {
+    color : #000;
+    font-family: 'GmarketSans';
+    font-size : 20px;
+    font-style : normal;
+    font-weight : 400;
+    line-height: 30px;
+    padding: 8px 8px 8px 0px;
+}
+
+.ai-search-ct {
+    position: relative;
+    margin: 0 8px;
+}
+.ai-search-ct > input {
+    width : 355px;
+    height : 41px;
+    padding : 10px 15px;
+    border-radius: 5px;
+    border : 0;
+    background: #F0F0F0;
+
+}
+
+.ai-search-ct > input::placeholder {
+    font-family: 'GmarketSans';
+    font-size : 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.15px;
+    color : #BCBCBC;
+}
+
+.ai-search-ct > img {
+    position: absolute;
+    right : 15px;
+    top : 10px;
+}
+
+.main-banner {
+    background-image: url(../../img/main-banner.svg);
+    width: 356px;
+    height : 98px;
+    margin: 28px 21px 0;
+    margin-top : 39px;
+    /* border-radius: 3px; */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.banner-text1 {
+    font-family: 'GmarketSans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.15px;
+    color : #FFF;
+    padding-top : 15px;
+    padding-left : 15px;
+}
+
+.banner-text2 { 
+    font-family: 'GmarketSans';
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 180%;
+    color : #FFF;
+    padding-left : 15px;
+    padding-top : 5px; }
+
+.middle-ct, .middle2-ct {
+    max-width : 393px;
+    height : 454px;
+    background: #F5F5F5;
+    margin-top : 5px;
+}
+
+.today-food-ct {
+    display : flex;
+    flex-direction: column;
+    gap : 17px;
+}
+
+.food-text-ct {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin : 17px 21px 0 21px;
+}
+
+.food-text1 {
+    font-family : 'GmarketSans';
+    font-size : 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height : 20px;
+    letter-spacing: -0.15px;
+    color : #1D1B20;
+}
+
+.food-text2 {
+    font-family : 'GmarketSans';
+    font-size : 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height : 20px;
+    letter-spacing: 0.24px;
+    color : #707070;
+}
+
+.food-list-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 13px;
+    margin-left :21px;
+}
+.food-ct {
+    width: 122px;
+    height: 177px;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10);
+}
+
+.food-img-ct {
+    width : 122px;
+    height : 112px;
+    background-image: url(../../img/img-boon/kimchi.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 5px 5px 0px 0px;
+    filter : brightness(60%)
+}
+
+
+.food-list-text {
+    width : 122px;
+    height : 65px;
+    background-color: white;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.food-list-text > p {
+    font-family: 'GmarketSans';
+    font-size : 8px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 180%;
+    margin-left : 9px;
+    padding-top: 5px;
+    
+}
+.food-total-ct {
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.food-location-ct, .food-boon-ct {
+    display : flex;
+    flex-direction: row;
+    margin-left : 9px;
+    align-items: flex-start;
+
+}
+
+.food-location-ct > p , .food-boon-ct > p {
+    font-family: 'GmarketSans';
+    font-size : 6px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 163%;
+    color : #707070;
+    padding-top: 1px;
+    width : 100px;
+    word-break: break-word;
+}
+
+.food-location-ct > img, .food-boon-ct > img {
+    width: 7px; 
+    flex-shrink: 0; 
+}
+
+.issue-total-ct {
+    display : flex;
+    flex-direction: row;
+}
+
+.issue-list-ct {
+    width : 170px;
+    height : 128px;
+    border-radius: 5px;
+    background: #FFF;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10);
+    margin-left : 21px;
+}
+
+.list-top-ct {
+    display : flex;
+    flex-direction: row;
+    align-items: center;
+    gap : 8px;
+    margin-left : 12px;
+    margin-top : 14px;
+}
+.list-img-ct {
+    width : 22px;
+    height : 22px;
+    background-color: #BCBCBC;
+    border-radius: 11px;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 1px;
+}
+
+.list-top-text-ct {
+    display : flex;
+    flex-direction: column;
+    gap : 2px;
+}
+
+.list-text { 
+    font-family: 'GmarketSans';
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 400;
+    color : #1D1B20;
+}
+
+.list-date {
+    font-family: 'GmarketSans';
+    font-size: 4px;
+    font-style: normal;
+    font-weight: 400;
+    color : #707070;
+    
+}
+
+.geul-title {
+font-family: 'GmarketSans';
+color: #49454F;
+font-size: 9px;
+font-style: normal;
+font-weight: 500;
+line-height: 16px; 
+letter-spacing: 0.24px;
+margin-top : 12px;
+}
+
+.geul-content {
+    font-family: 'GmarketSans';
+    font-size: 6px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 163%;
+    color : #707070;
+    margin-top : 3px;
+    width : 130px;
+    word-break: break-word  s;
+}
+
+.geul-title, .geul-content {
+    margin-left : 12px;
+}
+
+.list-bottom-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 5px;
+    margin-top : 15px;
+}
+
+.comment-ct {
+    display :flex;
+    flex-direction: row;
+    align-items: center;
+    gap : 2.5px;
+    margin-left : 13px;
+}
+.comment-img-ct {
+display : flex;
+flex-direction: column;
+align-items: start;
+
+}
+
+.comment-ct > p, .heart-ct > p {
+    font-family: 'GmarketSans';
+    font-size: 6px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 163%;
+    color: #707070;
+    margin-top : 1px;
+}
+
+.heart-ct {
+    display : flex;
+    flex-direction: row;
+    align-items: center;
+    gap : 3px;
+}
+
+.heart-img-ct {
+    display : flex;
+    align-content: center;
+    margin-top : 1px;   
+}
+    .main-footer {
+        display : flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width : 100%;
+        height: 89px;
+        position: absolute;
+        bottom : 0;
+        left : 0;
+        z-index: 100;
+        background-color: white;
+    }

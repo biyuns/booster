@@ -1,0 +1,108 @@
+.login_text {
+    font-family: 'GmarketSans';
+    font-size : 32px;
+    font-style: normal;
+    font-weight : 400;
+    line-height: 43px;
+    padding-top : 145px;
+    padding-left : 20px;
+}
+
+.login-form {
+    display : flex;
+    flex-direction: column;
+    gap : 25px;
+    padding-top : 35px;
+    padding-left : 20px;
+    padding-right: 20px;;
+}
+
+.email-ct, .password-ct {
+    display : flex;
+    flex-direction: column;
+    gap : 9px;
+}
+
+.login-email, .login-password, .forget-password {
+    font-family: 'GmarketSans';
+    font-size : 12px;
+    font-style : normal;
+    font-weight : 400;
+    line-height : 16px;
+}
+
+.forget-password {
+    text-align : right;
+    color : #E63E00;
+    letter-spacing: 0.24px;
+    padding-right : 20px;
+    padding-top : 10px;
+    padding-bottom: 15px;
+}
+
+#email, #password {
+    border-radius: 6px;
+    border : 1px solid #E0E0E0;
+    height : 46px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
+
+#email::placeholder, #password::placeholder {
+    font-family: 'GmarketSans';
+    font-size : 12px;
+    font-style : normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.24px;
+    color : #BCBCBC;
+}
+
+.login-button {
+    display : flex;
+    width : 351px;
+    max-width : 351px;
+    height : 59px;
+    justify-content: center;
+    align-items: center;
+    margin : 0 auto;
+    border-radius: 50px;
+    border:0px;
+    background: #BCBCBC;
+
+    font-family : GmarketSans;
+    font-size:14px;
+    font-style : normal;
+    font-weight : 400;
+    line-height : 20px;
+    letter-spacing: -0.154px;
+    color : #F5F5F5;
+
+}
+
+.login-line {
+    width : 351px;
+    margin-top :55px;
+}
+
+.login-bottom { 
+    display : flex;
+    gap : 8px;
+    margin-left : 20px;
+    margin-top : 13px;
+}
+
+.signup-msg, .signup-link {
+    font-family: 'GmarketSans';
+    font-size:12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.24px;
+    color:#6F6B75;
+}
+
+.signup-link {
+    font-weight: 700;
+    color:#707070;
+}

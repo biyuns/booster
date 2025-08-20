@@ -1,0 +1,11 @@
+body {
+    background : gray
+}
+.total_ct {
+  min-height: 100vh;
+  background: #FFF; 
+  max-width: 393px;
+  margin: 0 auto;
+  position: relative;
+
+}

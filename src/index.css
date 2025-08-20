@@ -1,13 +1,21 @@
+/* your-react-project/src/index.css */
+
+/* 1. fonts.css 파일 임포트 */
+/* @import 규칙은 파일의 가장 상단에 위치하는 것이 좋습니다. */
+@import './styles/fonts.css'; /* 이 부분이 fonts.css를 불러옵니다. */
+
+/* 2. body 태그에 GmarketSans 폰트 적용 */
+/* 이렇게 하면 앱의 모든 텍스트에 기본적으로 GmarketSans가 적용됩니다. */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'GmarketSans', sans-serif;
+  /* 'sans-serif'는 GmarketSans 폰트 로드에 실패했을 때를 대비한 대체 폰트입니다. */
 }
 
+/* 기존에 있던 다른 CSS 스타일들은 그대로 유지 */
+/* 예시: */
+/*
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+*/

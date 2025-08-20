@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import LoginPg from './components/login/login';
+import SignUpPI from './components/signUp/signUp_PI';
+import MainPg from './components/mainpg/mainPg';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <MainPg />
   </React.StrictMode>
 );
 
