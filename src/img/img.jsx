@@ -53,6 +53,8 @@ import Mypagelogo from './mypage-logo.svg'
 import Mypagepwedit from './mypg-pw-edit.svg'
 import Profileback from './profile-back.svg'
 import Profileremove from './profiler-emove.svg'
+import BoonBoonlogo from './boon-boon.svg'
+import BoonlocationLogo from './boon-location-logo.svg'
 
 export {
     Board_red, Board, Boon_red, Boon, Boonicon, Chat_red,
@@ -63,7 +65,8 @@ export {
     Homesandrupang,Inuf,Jackbar,Jihoonyang,Juya,Kickbackgym,
     Kimchi,Mammonth,Meddupizza,Rolling,Seoul,Skyhuygyu,Studycafe,
     Taco,Tongtongjuggu,Vboadrdgame,Whiteaddfood,Zeuschicken
-    ,Mypagelogo, Mypagepwedit, Profileback, Profileremove
+    ,Mypagelogo, Mypagepwedit, Profileback, Profileremove,
+    BoonBoonlogo, BoonlocationLogo
 
 
 }

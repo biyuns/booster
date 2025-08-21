@@ -1,0 +1,173 @@
+.boon-booster {
+    color: var(--Primary, var(--Primary, #FF4500));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Heading 4 */
+font-family: "GmarketSans";
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 30px; /* 150% */
+margin-left: 19px;
+padding-top: 63px;
+margin-bottom: 13px;
+}
+
+.boon-total-ct {
+    width : 100%;
+    background: var(--Surface, #F5F5F5);
+    height : 100vh;
+    display : flex;
+    flex-direction: column;
+}
+
+.boon-boon-ct > p {
+    /* ... 기존 스타일 ... */
+    white-space: pre-line; /* \n을 기준으로 줄바꿈을 적용 */
+}
+.boon-total-ct > p {
+    color: var(--Typo-heading, #1D1B20);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Title 2 */
+font-family: "GmarketSans";
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 142.857% */
+letter-spacing: -0.15px;
+margin-left: 19px;
+padding-top : 21px;
+}
+
+.boon-category-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 3px;
+    margin-left: 19px;
+    margin-top: 14px;
+    margin-bottom : 14px;
+}
+
+.boon-food-category, .boon-etc-category {
+    border-radius: 10.184px;
+padding: 2px 15px;
+justify-content: center;
+color: var(--Background, var(--Background, #FFF));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* body4 */
+font-family: "GmarketSans";
+font-size: 7px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 228.571% */
+letter-spacing: 0.24px;
+align-items: center;
+border : 0px;
+width : 44px;
+height: 20px;
+}
+
+.boon-food-category { 
+    
+background: var(--Primary, #FF4500);
+}
+
+.boon-etc-category {
+    
+background: var(--Divider-Border, #BCBCBC);
+}
+.boon-cafe-category, .boon-fitness-category, .boon-molan-category {
+    display: flex;
+padding: 2px 15px;
+justify-content: center;
+align-items: center;
+gap: 8px;
+border-radius: 10.184px;
+background: var(--Divider-Border, #BCBCBC);
+color: var(--Background, var(--Background, #FFF));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* body4 */
+font-family: "GmarketSans";
+font-size: 7px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 228.571% */
+letter-spacing: 0.24px;
+border: 0px;
+}
+
+.boon-contant-total-ct {
+    display : flex;
+    flex-direction: column;
+    gap : 8px;
+        flex-grow: 1;
+
+    /* (핵심) 내용이 넘칠 경우, 이 컨테이너 안에서만 세로 스크롤이 생깁니다. */
+    overflow-y: auto;
+    
+    /* Flexbox 버그를 방지하기 위해 추가하면 좋습니다. */
+    min-height: 0;
+    padding-bottom : 138px; 
+}
+.boon-contant-ct {
+    width : 357px;
+    height : 79px;
+    border-radius: 2.185px;
+background: var(--Background, #FFF);
+
+/* 그림자 */
+box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10);
+margin : 0 auto;
+display : flex;
+flex-direction: row;
+gap : 9px;
+padding : 12px 0px 12px 7px;
+}
+
+.boon-contant-right-ct {
+    display: flex;
+    flex-direction: column;
+    gap : 6px;
+}
+
+.boon-contant-right-ct > p { 
+    color: var(--Typo-heading, #1D1B20);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* body6 */
+font-family: "GmarketSans";
+font-size: 9px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 177.778% */
+letter-spacing: 0.24px;
+}
+
+.boon-location-ct, .boon-boon-ct {
+    display : flex;
+    flex-direction: row;
+
+}
+
+.boon-location-ct > img, .boon-boon-ct > img {
+       width: 7px; 
+    flex-shrink: 0; 
+}
+
+.boon-location-ct > p , .boon-boon-ct > p {
+color: var(--typo-title, #49454F);
+
+/* body5 */
+font-family: "GmarketSans";
+font-size: 6px;
+font-style: normal;
+font-weight: 400;
+line-height: 163%; /* 9.78px */
+}
+
+.boon-boon-ct > p {
+    padding-top : 2px;
+}
