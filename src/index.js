@@ -10,11 +10,15 @@ import MyPg from './components/mypage/myPg';
 import MyPgedit from './components/mypage/myPg_edit';
 import MyPgpsw from './components/mypage/myPg_psw';
 import BoonFood from './components/boon/boon_food';
+import Booncafe from './components/boon/boon_cafe';
+import Boonfitness from './components/boon/boon_fitness';
+import Boonmolan from './components/boon/boon_molan';
+import Boonetc from './components/boon/boon_etc';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BoonFood />
+    <Boonetc />
   </React.StrictMode>
 );
 
