@@ -6,11 +6,15 @@ import reportWebVitals from './reportWebVitals';
 import LoginPg from './components/login/login';
 import SignUpPI from './components/signUp/signUp_PI';
 import MainPg from './components/mainpg/mainPg';
+import MyPg from './components/mypage/myPg';
+import MyPgedit from './components/mypage/myPg_edit';
+import MyPgpsw from './components/mypage/myPg_psw';
+import BoonFood from './components/boon/boon_food';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MainPg />
+    <BoonFood />
   </React.StrictMode>
 );
 

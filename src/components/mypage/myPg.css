@@ -1,0 +1,104 @@
+.mypg-ct {
+    width : 100%;
+    height : 657px;
+    background: #F5F5F5;
+    padding-top: 4px;
+}
+
+.user-ct {
+    width : 100%;
+    height: 178px;
+    background: #FFF;
+}
+
+.user-top-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 15px;
+    padding : 30px 0px 0px 21px;
+    align-items: center;   
+}
+
+.user-image-ct {
+    width : 73px;
+    height: 73px;
+    border-radius: 36px;
+    background: #BCBCBC;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info-ct {
+    display : flex;
+    flex-direction: column;
+    gap :3px;
+    margin-top : 5px;
+}
+
+.user-name { 
+    font-family: 'GmarketSans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.32px;
+    color : #1D1B20;
+}
+
+.user-info {
+    font-family: "GmarketSans";
+font-size: 8px;
+font-style: normal;
+font-weight: 400;
+line-height: 180%; 
+color : #707070;
+}
+
+.pf-edit-btn {
+    width : 350px;
+    height: 36px;
+    border-radius: 5px;
+    border: 1px solid var(--icon, #DCDCDC);
+    background: var(--Background, #FFF);
+    display : block;
+    margin : 20px auto 0;
+}
+
+.ps-logout-ct {
+    margin-top : 4px;
+    width : 100%;
+    height : 92px;
+    background : #FFF;
+}
+
+.password-ct {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+    padding : 17px 21px 0px 21px;
+}
+
+.password-ct > p {
+color: var(--typo-title, #49454F);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Subtitle */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 19px; /* 158.333% */
+}
+.mypg-logout {
+    padding : 21px 0px 0px 21px;
+    color: var(--Divider-Border, var(--Divider-Border, #BCBCBC));
+font-feature-settings: 'liga' off, 'clig' off;
+
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 19px; 
+}
