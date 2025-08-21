@@ -1,0 +1,91 @@
+.mypg-password-edit-ct {
+    display : flex;
+    flex-direction: column;
+    gap : 25px;
+    margin-top : 33px;
+}
+
+.new-password, .new-password-check {
+    display : flex;
+    flex-direction: column;
+    gap : 9px;
+}
+
+.new-password > label, .new-password-check > label {
+    color: var(--typo-title, #49454F);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Subtitle */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 133.333% */
+margin-left: 21px;
+}
+.new-password > input, .new-password-check > input {
+width : 351px;
+margin : 0 auto;
+
+border-radius: 6px;
+border: 1px solid var(--Divider-Border, #E0E0E0);
+font-feature-settings: 'liga' off, 'clig' off;
+padding: 15px 13px;
+
+}
+.new-password > input::placeholder, .new-password-check > input::placeholder {
+
+color: var(--Divider-Border, #BCBCBC);
+/* Small */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 133.333% */
+letter-spacing: 0.24px;
+
+}
+
+.ps-edit-button-ct {
+margin : 433px 0px 0px 0px;
+padding-bottom: 17px;
+}
+
+.ps-edit-complete {
+color: var(--Background, var(--Background, #FFF));
+font-feature-settings: 'liga' off, 'clig' off;
+    width: 351px;
+height: 59px;
+flex-shrink: 0;
+border-radius: 50px;
+background: var(--Divider-Border, #BCBCBC);
+/* Body 3 */
+font-family: "GmarketSans";
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 142.857% */
+letter-spacing: -0.154px;
+border: 0px;
+display: block;
+margin : 0 auto;
+
+}
+
+.ps-edit-complete.active {
+background: var(--Primary, #FF4500);
+}
+
+.error-message {
+    color: var(--Primary-D, var(--Primary-D, #E63E00));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* medium */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 133.333% */
+letter-spacing: 0.24px;
+margin-left: 21px;
+}

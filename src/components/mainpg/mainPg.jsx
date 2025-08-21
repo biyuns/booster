@@ -13,7 +13,7 @@ import whitelogo from '../../img/whitelogo.svg';
 import geul1 from '../../img/geul1.svg';
 import geul2 from '../../img/geul2.svg';
 import geul3 from '../../img/geul3.svg';
-import heart from '../../img/heart.svg'
+import heart from '../../img/heart.svg';
 function MainPg() {
     return (
         <div className="total_ct">
