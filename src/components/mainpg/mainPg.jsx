@@ -5,7 +5,6 @@ import boon from '../../img/boon.svg';
 import chat from '../../img/chat.svg';
 import my from '../../img/my.svg';
 import home_red from '../../img/home_red.svg';
-import kimchi from '../../img/img-boon/kimchi.svg';
 import boonicon from '../../img/boonicon.svg';
 import location from '../../img/location.svg';
 import whitelogo from '../../img/whitelogo.svg';
@@ -20,12 +19,12 @@ function MainPg() {
             <section className="ai-ct">
                 <div className="ai-text-ct">
                     <p> 학교 생활, 어렵게 <br /> 느껴진다면 지금 당장!</p>
-                    <img src="\images\main-logo.svg"></img>
+                    <img src="\images\main-logo.svg" alt="로고"></img>
                 </div>
 
                 <div className="ai-search-ct">
                     <input type='text' placeholder='Booster에게 무엇이든 물어보세요 :) '></input>
-                    <img src={ai_research}></img>
+                    <img src={ai_research} alt="검색버튼"></img>
                 </div>
             </section>
 
@@ -49,12 +48,12 @@ function MainPg() {
                             <p> 김치찜의 정석</p>
                             <div className="food-total-ct">
                             <section className="food-location-ct">
-                                <img src={location}></img>
+                                <img src={location} alt="위치"></img>
                                 <p> 경기 성남시 중원구 산성대로 566 </p>
                             </section>
 
                             <section className="food-boon-ct">
-                                <img src={boonicon}></img>
+                                <img src={boonicon} alt="혜택"></img>
                                 <p> 전 메뉴 1인당 10% 할인</p>
                             </section>
                             </div>
@@ -70,12 +69,12 @@ function MainPg() {
                             <p> 김치찜의 정석</p>
                             <div className="food-total-ct">
                             <section className="food-location-ct">
-                                <img src={location}></img>
+                                <img src={location} alt="위치"></img>
                                 <p> 경기 성남시 중원구 산성대로 566 </p>
                             </section>
 
                             <section className="food-boon-ct">
-                                <img src={boonicon}></img>
+                                <img src={boonicon} alt="혜택"></img>
                                 <p> 전 메뉴 1인당 10% 할인dpdpddpdpdpdpdpdpdpdpdpdpdpdp</p>
                             </section>
                             </div>

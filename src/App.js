@@ -7,7 +7,6 @@ import SignUpPg1 from '../src/components/signUp/signup1';
 import SignUpPg2 from './components/signUp/signup2';
 import SignUpPg from './components/signUp/signUp';
 import SignUpServ from './components/signUp/signUp_serv';
-import SignUpUse from './components/header/SignUpUse';
 import SignUpCommu from './components/signUp/signUp_commu';
 import SignUpPI from './components/signUp/signUp_PI';
 
