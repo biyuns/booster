@@ -147,7 +147,7 @@
 .food-img-ct {
     width : 122px;
     height : 112px;
-    background-image: url(../../img/img-boon/kimchi.svg);
+    background-image: url('../../../public/images/img-boon/kimchi.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
