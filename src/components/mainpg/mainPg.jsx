@@ -1,5 +1,4 @@
 import '../../components/mainpg/mainPg.css';
-import main_logo from '../../img/main-logo.svg';
 import ai_research from '../../img/main-ai-search.svg';
 import board from '../../img/board.svg';
 import boon from '../../img/boon.svg';
@@ -21,7 +20,7 @@ function MainPg() {
             <section className="ai-ct">
                 <div className="ai-text-ct">
                     <p> 학교 생활, 어렵게 <br /> 느껴진다면 지금 당장!</p>
-                    <img src={main_logo}></img>
+                    <img src="\images\main-logo.svg"></img>
                 </div>
 
                 <div className="ai-search-ct">
@@ -100,7 +99,7 @@ function MainPg() {
                 <div className="issue-list-ct">
                     <section className="list-top-ct">
                         <div className="list-img-ct">
-                        <img src={whitelogo}></img>
+                        <img src={whitelogo} alt="흰색로고"></img>
                         </div>
 
                         <div className="list-top-text-ct">
@@ -115,16 +114,16 @@ function MainPg() {
                     <div className="list-bottom-ct">
                         <section className="comment-ct">
                             <div className="comment-img-ct">
-                            <img src={geul3}></img>
-                            <img src={geul2}></img>
-                            <img src={geul1}></img>
+                            <img src={geul3} alt="글수컨테이너"></img>
+                            <img src={geul2} alt="글수컨테이너"></img>
+                            <img src={geul1} alt="글수컨테이너"></img>
                             </div>
                             <p> 32</p>
                         </section>
 
                         <section className="heart-ct">
                             <div className="heart-img-ct">
-                            <img src={heart}></img>
+                            <img src={heart} alt="공강수"></img>
                             </div> 
                             <p> 59</p>
                         </section>
@@ -134,7 +133,7 @@ function MainPg() {
                                 <div className="issue-list-ct">
                     <section className="list-top-ct">
                         <div className="list-img-ct">
-                        <img src={whitelogo}></img>
+                        <img src={whitelogo} alt="흰색로고"></img>
                         </div>
 
                         <div className="list-top-text-ct">
@@ -149,16 +148,16 @@ function MainPg() {
                     <div className="list-bottom-ct">
                         <section className="comment-ct">
                             <div className="comment-img-ct">
-                            <img src={geul3}></img>
-                            <img src={geul2}></img>
-                            <img src={geul1}></img>
+                            <img src={geul3} alt="댓글컨테이너1"></img>
+                            <img src={geul2} alt="댓글컨테이너1"></img>
+                            <img src={geul1} alt="댓글컨테이너1"></img>
                             </div>
                             <p> 32</p>
                         </section>
 
                         <section className="heart-ct">
                             <div className="heart-img-ct">
-                            <img src={heart}></img>
+                            <img src={heart} alt="공감수"></img>
                             </div> 
                             <p> 59</p>
                         </section>
@@ -168,11 +167,11 @@ function MainPg() {
             </section>
         </section>
             <footer className="main-footer">
-                    <img src={home_red}></img>
-                    <img src={board}></img>
-                    <img src={chat}></img>
-                    <img src={boon}></img>
-                    <img src={my}></img>
+                    <img src={home_red} alt="하단 내비게이션바"></img>
+                    <img src={board} alt="하단 내비게이션바"></img>
+                    <img src={chat} alt="하단 내비게이션바"></img>
+                    <img src={boon} alt="하단 내비게이션바"></img>
+                    <img src={my} alt="하단 내비게이션바"></img>
             </footer>
         </div>
     )
