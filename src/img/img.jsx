@@ -15,7 +15,6 @@ import Location from './location.svg';
 import Logo from './logo.svg';
 import Mainaisearch from './main-ai-search.svg'
 import Mainbanner from './main-banner.svg'
-import Mainlogo from './main-logo.svg'
 import My_red from './my_red.svg'
 import My from './my.svg'
 import Whitelogo from './whitelogo.svg'
@@ -69,7 +68,7 @@ import SgChoose4 from './sg-choose4.svg'
 export {
     Board_red, Board, Boon_red, Boon, Boonicon, Chat_red,
     Chat, Geul1, Geul2, Geul3, Heart, Home_red, Home,
-    Location, Logo, Mainaisearch, Mainbanner, Mainlogo,
+    Location, Logo, Mainaisearch, Mainbanner, 
     My_red, My, Whitelogo, Atopgym, B491, Beetoon, Bethlehem,
     Bigeye, Chaldduck,Cheul,Chinoodle,Ediya,Galbe,Happyfood,Homeground,
     Homesandrupang,Inuf,Jackbar,Jihoonyang,Juya,Kickbackgym,
