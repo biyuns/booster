@@ -1,0 +1,61 @@
+.signup3-img-ct {
+    width: 128px;
+height: 128px;
+flex-shrink: 0;
+border-radius: 128px;
+background: rgba(255, 106, 51, 0.20);
+margin : 0 auto;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top : 156px;
+}
+
+.signup3-complete {
+    color: var(--typo-title, #49454F);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Heading 4 */
+font-family: "GmarketSans";
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 38px; /* 158.333% */
+text-align: center;
+margin-top: 35px;
+}
+
+.signup3-chuk {
+    color: var(--typo-title, #49454F);
+text-align: center;
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Subtitle */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 19px; /* 158.333% */
+margin-top: 29px;
+}
+
+.signup3-button { 
+    width: 351px;
+height: 59px;
+flex-shrink: 0;
+border-radius: 50px;
+background: var(--Primary, #FF4500);
+border: 0px;
+color: var(--Surface, var(--Surface, #F5F5F5));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Body 3 */
+font-family: "GmarketSans";
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 142.857% */
+letter-spacing: -0.154px;
+margin : 193px auto 0px;
+display: block;
+}

@@ -14,7 +14,9 @@ function SignUpPg1() {
         checkPassword: "",
     });
 
-    const [passwordError, setPasswordError] = useState(false);    
+    const [passwordError, setPasswordError] = useState(false); 
+    
+    const [isNextButtonActive, setIsNextButtonActive] = useState(false);
 
     const changeForm = (e) => {
         let targetName = e.target.name;
@@ -29,27 +31,32 @@ function SignUpPg1() {
         console.log(form)
     };
 
-    useEffect(() => {
-        if(form.checkPassword && form.password !== form.checkPassword) {
+useEffect(() => {
+        if (form.checkPassword && form.password !== form.checkPassword) {
             setPasswordError(true);
         } else {
             setPasswordError(false);
         }
-    }, [form.password, form.checkPassword]);
+
+        const isEmailValid = form.email.endsWith('g.eulji.ac.kr');
+        const isPasswordValid = form.password.length > 0 && form.password === form.checkPassword;
+
+        if (isEmailValid && isPasswordValid) {
+            setIsNextButtonActive(true);
+        } else {
+            setIsNextButtonActive(false);
+        }
+        
+    }, [form]); 
+
 
     const handleNext = () => {
-        if(!form.email.endsWith('.ac.kr')) {
-            alert('을지대학교 이메일 계정을 사용해주세요.');
+        if (!isNextButtonActive) {
+            alert('이메일과 비밀번호를 올바르게 입력해주세요.');
             return;
         }
-        if(!form.password || form.password !== form.checkPassword) {
-            alert('비밀번호를 확인해주세요.');
-            return;
-        }
-
-        navigate('/signup/step1')
-    }
-
+        navigate('/signup/step2');
+    };
 
 
 
@@ -80,7 +87,7 @@ function SignUpPg1() {
             </section>
 
             <div className="signup-button-ct">
-            <button className="next-button" onClick={handleNext}>다음</button>
+            <button className="next-button" onClick={handleNext} style={{ backgroundColor: isNextButtonActive ? '#FF4500' : '' }}>다음</button>
             </div>
         </div>
     )
