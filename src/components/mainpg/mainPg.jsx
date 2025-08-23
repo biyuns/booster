@@ -19,7 +19,7 @@ function MainPg() {
             <section className="ai-ct">
                 <div className="ai-text-ct">
                     <p> 학교 생활, 어렵게 <br /> 느껴진다면 지금 당장!</p>
-                    <img src="\images\main-logo.svg" alt="로고"></img>
+                    <img src="/images/main-logo.svg" alt="로고"></img>
                 </div>
 
                 <div className="ai-search-ct">
