@@ -1,0 +1,112 @@
+.signup_text {
+    font-family: 'GmarketSans';
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 43px;
+    padding-top: 67px;
+    margin-left: 21px;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding-top: 24px;
+    margin-left: 21px;
+    margin-right: 21px;
+}
+
+.email-ct,
+.password-ct,
+.check-password-ct {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.signup-email,
+.signup-password,
+.check-password {
+    font-family: 'GmarketSans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.forget-password {
+    text-align: right;
+    color: #E63E00;
+    letter-spacing: 0.24px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+#email,
+#password,
+#check-password {
+    border-radius: 6px;
+    border: 1px solid #E0E0E0;
+    height: 46px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
+
+#email::placeholder,
+#password::placeholder,
+#check-password::placeholder {
+    font-family: 'GmarketSans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.24px;
+    color: #BCBCBC;
+}
+
+.next-button {
+    display: flex;
+    width: 351px;
+    max-width: 351px;
+    height: 59px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 50px;
+    border: 0px;
+    background: #BCBCBC;
+
+    font-family: 'GmarketSans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.154px;
+    color: #F5F5F5;
+
+}
+
+.signup-button-ct {
+    padding-top : 190px;
+    padding-bottom: 65px;
+}
+.warning-msg {
+    color: #E63E00;
+    color: var(--Primary-D, var(--Primary-D, #E63E00));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* medium */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 133.333% */
+letter-spacing: 0.24px;
+
+}
+
+.bold {
+    border: 2px solid #000 !important;
+}

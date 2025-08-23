@@ -3,22 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import LoginPg from './components/login/login';
-import SignUpPI from './components/signUp/signUp_PI';
-import MainPg from './components/mainpg/mainPg';
-import MyPg from './components/mypage/myPg';
-import MyPgedit from './components/mypage/myPg_edit';
-import MyPgpsw from './components/mypage/myPg_psw';
-import BoonFood from './components/boon/boon_food';
-import Booncafe from './components/boon/boon_cafe';
-import Boonfitness from './components/boon/boon_fitness';
-import Boonmolan from './components/boon/boon_molan';
-import Boonetc from './components/boon/boon_etc';
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Boonetc />
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
   </React.StrictMode>
 );
 
