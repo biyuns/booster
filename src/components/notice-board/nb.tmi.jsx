@@ -26,7 +26,7 @@ function Ntmi() {
 
                 <div className="category-tmi">
                     <p style={{color : '#1D1B20'}}> TMI </p>
-                    <img src={Nbcategory3}></img>
+                    <img src={Nbcategory3} alt="카테고리아래"></img>
                 </div>
 
             </section>
@@ -43,17 +43,17 @@ function Ntmi() {
 
                     <div className="nb-right-all-ct">
                         <div className="nb-img-ct">
-                            <img src={Galbe}></img>
+                            <img src={Galbe} alt="명륜진사갈비"></img>
                         </div>
 
                         <div className="nb-right-ct">    
                             <div className="nb-comment-ct">
-                                <img src={Geul3}></img>
-                                <img src={Geul2}></img>
-                                <img src={Geul1}></img>
+                                <img src={Geul3} alt="댓글긴거"></img>
+                                <img src={Geul2} alt="댓글중간거"></img>
+                                <img src={Geul1} alt="댓글작은거"></img>
                             </div>
                             <p> 32</p>
-                            <img src={Heart}></img>
+                            <img src={Heart} alt="공감"></img>
                             <p> 20</p>
                         </div>
                     </div>
@@ -64,11 +64,11 @@ function Ntmi() {
             <button className="nb-write-btn"> +글쓰기 </button>
         
             <footer className="main-footer">
-                    <img src={Home}></img>
-                    <img src={Board_red}></img>
-                    <img src={Chat}></img>
-                    <img src={Boon}></img>
-                    <img src={My}></img>
+                    <img src={Home} alt="홈버튼"></img>
+                    <img src={Board_red} alt="게시판버튼"></img>
+                    <img src={Chat} alt="채팅버튼"></img>
+                    <img src={Boon} alt="혜택버튼"></img>
+                    <img src={My} alt="마이페이지버튼"></img>
             </footer>
 
         
