@@ -1,5 +1,5 @@
 import '../../components/signUp/signup-agree.css'
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SignUpUse2 from "../header/SignUpUse2";
 function SignUpPI(){
     const navigate = useNavigate();

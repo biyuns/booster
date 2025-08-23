@@ -1,6 +1,6 @@
 import { Profileback } from "../../img/img"
 import '../../components/header/SignUpUse.css'
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function SignUpUse2() {
     const navigate = useNavigate();
     return (
