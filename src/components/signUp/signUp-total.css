@@ -1,0 +1,164 @@
+.booster-first {
+    color: var(--Typo-heading, #1D1B20);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Heading 4 */
+font-family: "GmarketSans";
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 38px; /* 158.333% */
+margin-left: 21px;
+}
+
+.signup-agree {
+    display : flex;
+    flex-direction: row;
+    gap : 8px;
+    margin-left: 21px;
+    margin-top : 47px;
+    padding-bottom: 24px;
+    align-items: center;
+}
+
+.agree-all-img-ct {
+width: 22px;
+height: 22px;
+flex-shrink: 0;
+background:  #BCBCBC;
+border-radius: 50%;
+display : flex;
+justify-content: center;
+align-items: center;
+}
+
+.signup-agree > p {
+    color: #000;
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Title 1 */
+font-family: "GmarketSans";
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+letter-spacing: -0.32px;
+margin-top : 2px;
+}
+.sg-line {
+    margin: 0 auto;
+    display:flex;
+    justify-content: center;
+}
+
+
+.agree-ct {
+    display : flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 18px 21px 0px 21px;
+
+}
+
+.agree-check-ct {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.essential-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 12px;
+    align-items: center;
+}
+
+.essential-ct > button, .agree-check-ct > button {
+    border: 0;
+    background: #FFF;
+}
+
+.essential-ct > p {
+    color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Subtitle */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 19px; /* 158.333% */
+}
+
+.plus-info { 
+    width: 302px;
+height: 81px;
+flex-shrink: 0;
+border-radius: 5px;
+border: 1px solid var(--Divider-Border, #BCBCBC);
+background: var(--Surface, #F5F5F5);
+margin-left: 30px;
+}
+
+.info2 {
+    color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+
+/* small */
+font-family: "GmarketSans";
+font-size: 8px;
+font-style: normal;
+font-weight: 400;
+line-height: 180%; /* 14.4px */
+padding : 9px 0px 4px 9px;
+}
+
+.info3 {
+    color: var(--Divider-Border, var(--Divider-Border, #BCBCBC));
+
+/* small */
+font-family: "GmarketSans";
+font-size: 8px;
+font-style: normal;
+font-weight: 400;
+line-height: 180%; /* 14.4px */
+padding : 0px 8px 0px 9px;
+}
+
+.signup-next {
+        width: 351px;
+height: 59px;
+flex-shrink: 0;
+border-radius: 50px;
+background: var(--Divider-Border, #BCBCBC);
+color: var(--Surface, var(--Surface, #F5F5F5));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Body 3 */
+font-family: "GmarketSans";
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 142.857% */
+letter-spacing: -0.154px;
+border: 0px;
+margin : 137px auto 0;
+display: block;
+/* padding-bottom: 10px; */
+
+}
+
+.signup-next-btn-ct {
+    padding-bottom: 64px;
+}
+.agree-all-img-ct > button {
+    width: 22px;
+height: 22px;
+    background-color: #FFF;
+    border: 0px;
+    background:  #BCBCBC;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+
+}

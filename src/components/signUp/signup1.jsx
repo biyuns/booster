@@ -47,7 +47,7 @@ function SignUpPg1() {
             return;
         }
 
-        navigate('/s')
+        navigate('/signup/step1')
     }
 
 

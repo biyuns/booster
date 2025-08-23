@@ -1,0 +1,52 @@
+.signup-ser-title, .signup-commu-title, .signup-pi-title {
+    color: var(--Typo-heading, #1D1B20);
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Heading 4 */
+font-family: "GmarketSans";
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 38px; /* 158.333% */
+margin-left: 21px;
+}
+
+.signup-ser-contant, .signup-commu-contant, .signup-pi-contant {
+    color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Subtitle */
+font-family: "Gmarket Sans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 19px; /* 158.333% */
+margin : 37px 21px 46px 21px;
+max-height: 500px;
+overflow-y: auto;
+}
+
+.signup-service-next {
+    width: 351px;
+height: 59px;
+flex-shrink: 0;
+border-radius: 50px;
+background: var(--Primary, #FF4500);
+display: block;
+margin: 0 auto;
+border: 0px;
+color: var(--Surface, var(--Surface, #F5F5F5));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Body 3 */
+font-family: "GmarketSans";
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 142.857% */
+letter-spacing: -0.154px;
+}
+
+.signup-service-btn-ct {
+    padding-bottom: 25px;
+}
