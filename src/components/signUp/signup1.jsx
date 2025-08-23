@@ -1,6 +1,6 @@
 import '../../styles/total.css'
 import '../../components/signUp/signup1.css'
-import Signup_header from '../../components/header/signup-header';
+import SignupHeader from '../../components/header/SignupHeader';
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ function SignUpPg1() {
 
     return (
         <div className="total_ct">
-            <Signup_header num={1} />
+            <SignupHeader num={1} />
             <p className="signup_text">회원가입</p>
             <section className="signup-form">
                 <div className="email-ct">
