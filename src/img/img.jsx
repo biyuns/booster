@@ -55,6 +55,11 @@ import Profileback from './profile-back.svg'
 import Profileremove from './profiler-emove.svg'
 import BoonBoonlogo from './boon-boon.svg'
 import BoonlocationLogo from './boon-location-logo.svg'
+import Nbcategory2 from './nb-category1.svg'
+import Nbcategory3 from './nb-category2.svg'
+import Nbpicture from './nb-picture.svg'
+import Nbanonymous from './nb-anonymous.svg'
+import Nbstate from './nb-board-state.svg'
 
 export {
     Board_red, Board, Boon_red, Boon, Boonicon, Chat_red,
@@ -66,7 +71,7 @@ export {
     Kimchi,Mammonth,Meddupizza,Rolling,Seoul,Skyhuygyu,Studycafe,
     Taco,Tongtongjuggu,Vboadrdgame,Whiteaddfood,Zeuschicken
     ,Mypagelogo, Mypagepwedit, Profileback, Profileremove,
-    BoonBoonlogo, BoonlocationLogo
-
+    BoonBoonlogo, BoonlocationLogo, Nbcategory2, Nbcategory3, Nbpicture
+    ,Nbanonymous, Nbstate
 
 }

@@ -1,0 +1,125 @@
+.signup2_text {
+    font-family: 'GmarketSans';
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 43px;
+    padding-top: 67px;
+    padding-left: 20px;
+}
+
+.signup-form2 {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding-top: 24px;
+    padding-left: 20px;
+    padding-right: 20px;
+    ;
+}
+
+.name2-ct,
+.gender-ct2,
+.student-num-ct2,
+.department-ct2 {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.signup-name2,
+.signup-gender2,
+.signup-student-num2,
+.signup-department2 {
+    font-family: 'GmarketSans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+
+#name2,
+#student-num2,
+#female2,
+#male2,
+#department2 {
+    background-color: #fff;
+    border-radius: 6px;
+    border: 1px solid #E0E0E0;
+    height: 46px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
+
+#female2,
+#male2 {
+    width: 48%;
+}
+
+.gender-ct2>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#name2::placeholder,
+#female2,
+#male2 {
+    font-family: 'GmarketSans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.24px;
+    color: #BCBCBC;
+}
+
+.next-button2 {
+    display: flex;
+    width: 351px;
+    max-width: 351px;
+    height: 59px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 50px;
+    border: 0px;
+    background: #BCBCBC;
+
+    font-family: 'GmarketSans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.154px;
+    color: #F5F5F5;
+
+}
+
+.warning-msg2 {
+    color: var(--Primary-D, var(--Primary-D, #E63E00));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* medium */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 133.333% */
+letter-spacing: 0.24px;
+}
+
+.bold2 {
+    border: 2px solid #000 !important;
+}
+
+.active-button2 {
+    color: #000 !important;
+    border: 2px solid #000 !important;
+
+}
+
+.signup2-button-ct {
+    margin-top : 103px;
+    padding-bottom: 64px;
+}
