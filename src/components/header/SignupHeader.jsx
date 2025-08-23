@@ -1,7 +1,7 @@
 import '../../styles/total.css'
 import '../../components/header/signup-header.css'
 import { Profileback } from '../../img/img';
-import Signup_header_dot from './signup-header-dot';
+import Signup_header_dot from './SignupHeaderDot';
 
 
 

@@ -1,6 +1,6 @@
 import '../../styles/total.css'
 import '../../components/signUp/signup2.css'
-import Signup_header from '../../components/header/signup-header';
+import SignupHeader from '../header/SignupHeader';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
@@ -36,7 +36,7 @@ function SignUpPg2() {
 
     return (
         <div className="total_ct">
-            <Signup_header num={2} />
+            <SignupHeader num={2} />
             <p className="signup2_text">회원가입</p>
             <section className="signup-form2">
                 <div className="name2-ct">
