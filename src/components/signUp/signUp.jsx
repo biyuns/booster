@@ -51,7 +51,7 @@ function SignUpPg() {
 
         const handleNext = () => {
         if (isNextButtonActive) {
-            navigate('/main'); // 활성화 상태일 때만 /main 경로로 이동
+            navigate('/signup/step1'); // 활성화 상태일 때만 /main 경로로 이동
         } else {
             alert('모든 필수 약관에 동의해주세요.');
         }
@@ -66,8 +66,8 @@ function SignUpPg() {
 
         <div className="signup-agree">
             <div className="agree-all-img-ct">
-            <button onClick={handleToggleAllAgree} style={{backgroundColor : allAgree ? 'FF4500' : 'border : none'  }}>
-            <img src={allAgree ? SgChoose4 : SgChoose} alt="체크표시"></img>
+            <button onClick={handleToggleAllAgree} style={{ backgroundColor: allAgree ? '#FF4500' : '' }}>
+            <img src={SgChoose} alt="체크표시"></img>
             </button>
             </div>
             <p> 약관 전체동의</p>    

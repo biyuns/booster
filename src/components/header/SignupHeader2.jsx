@@ -5,14 +5,14 @@ import SignupHeaderDot from './SignupHeaderDot';
 import { useNavigate } from 'react-router-dom';
 
 
+function SignupHeader2({ num }) {
 
-function Signup_header({ num }) {
     const navigate = useNavigate();
     return (
         <header>
 
             <div className='header-num-ct'>
-                <img src={Profileback} onClick={() => navigate('/signup')} alt="뒤로가기버튼"/>
+                <img src={Profileback} onClick={() => navigate('/signup/step1')}alt="뒤로가기버튼"/>
                 <div className='signup-num1' id={num === 1 ? "color-num" : undefined}>1</div>
                 <SignupHeaderDot />
                 <div className='signup-num2' id={num === 2 ? "color-num" : undefined}>2</div>
@@ -28,4 +28,4 @@ function Signup_header({ num }) {
     )
 }
 
-export default Signup_header;
+export default SignupHeader2;
