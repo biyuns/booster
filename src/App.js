@@ -1,4 +1,3 @@
-import logo from './img/logo.svg'
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -18,11 +17,11 @@ function App() {
       <Route path="/signup" element={<SignUpPg1 />} />
       <Route path="/signup/step2" element={<SignUpPg2 />} />
       {/* <Route path="/singpu/step3" element={<SignUpPg3 />} /> */}
+      {/* <Route path="/main" element={<MainPg />} />
       <Route path="/main" element={<MainPg />} />
       <Route path="/main" element={<MainPg />} />
       <Route path="/main" element={<MainPg />} />
-      <Route path="/main" element={<MainPg />} />
-      <Route path="/main" element={<MainPg />} />
+      <Route path="/main" element={<MainPg />} /> */}
 
 
 
