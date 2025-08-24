@@ -190,3 +190,9 @@ letter-spacing: 0.24px;
     gap : 7px;
 }
 
+.nb2-line {
+    width: 393px;
+height: 12px;
+flex-shrink: 0;
+background: var(--Surface, #F5F5F5);
+}
