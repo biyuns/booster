@@ -39,7 +39,7 @@ function Nbboard() {
             setIsLoading(true);
             setError(null);
             try {
-                const response = await apiClient.get(`/booster/posts/${postId}`);
+                const response = await apiClient.get(`/booster/${postId}`);
                 setPost(response.data);
             } catch (err) {
                 console.error("상세 게시글 로딩 실패:", err);
