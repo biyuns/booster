@@ -1,5 +1,3 @@
-// src/pages/notice-board/Nfree.js
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
@@ -36,7 +34,14 @@ function Nfree() {
         <div className="total_ct">
             <p className="main-title" onClick={() => navigate('/main')}> Booster </p>
             <section className="nb-category-ct">
-                {/* ... 카테고리 UI ... */}
+                <div className="category-all" onClick={() => navigate('/board')}><p> 전체 </p></div>
+                <div className="category-free">
+                    <p style={{color : '#1D1B20'}}> 자유 </p>
+                    <img src={Nbcategory2} alt="선택된 카테고리 밑줄"/>
+                </div>
+                <div className="category-promotion" onClick={() => navigate('/board/promotion')}><p> 홍보 </p></div>
+                <div className="category-info" onClick={() => navigate('/board/info')}><p> 정보 </p></div>
+                <div className="category-tmi" onClick={() => navigate('/board/tmi')}><p> TMI </p></div>
             </section>
             <hr className="nb-hr"/>
 
@@ -71,9 +76,16 @@ function Nfree() {
                     </div>
                 ))}
             </section>
-            {/* ... 하단 푸터 ... */}
+            
+            <button className="nb-write-btn" onClick={() => navigate('/board/write')}> +글쓰기 </button>
+            <footer className="main-footer">
+                <img src={Home} alt="홈" onClick={() => navigate('/main')} />
+                <img src={Board_red} alt="게시판" onClick={() => navigate('/board')} />
+                <img src={Chat} alt="채팅" onClick={() => navigate('/chat')} />
+                <img src={Boon} alt="혜택" onClick={() => navigate('/boon')} />
+                <img src={My} alt="마이페이지" onClick={() => navigate('/mypage')} />
+            </footer>
         </div>
     );
 }
-
 export default Nfree;

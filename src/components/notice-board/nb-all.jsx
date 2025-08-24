@@ -1,17 +1,12 @@
 // src/pages/notice-board/Nball.js
 
 import React, { useState, useEffect } from "react";
-// 1. useNavigate를 import 합니다.
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
-import { 
-    Nbcategory2, Geul1, Geul2, Geul3, Heart, 
-    Home, Board_red, Chat, Boon, My 
-} from "../../img/img";
+import { Nbcategory2, Geul1, Geul2, Geul3, Heart, Home, Board_red, Chat, Boon, My } from "../../img/img";
 import '../notice-board/nb-category.css';
 
 function Nball() {
-    // 2. navigate 함수를 사용할 수 있도록 초기화합니다.
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +21,6 @@ function Nball() {
                 setPosts(allPosts);
             } catch (error) {
                 console.error("전체 게시판 데이터 로딩 실패:", error);
-                // API 실패 시 목업 데이터를 사용하지 않으려면 빈 배열로 설정
                 setPosts([]);
             } finally {
                 setIsLoading(false);
@@ -35,9 +29,7 @@ function Nball() {
         fetchPosts();
     }, []);
 
-    // 3. handlePostClick 함수를 useEffect 밖으로 꺼냅니다.
     const handlePostClick = (postId) => {
-        // App.js에 정의해둔 상세 페이지 경로로 이동시킵니다.
         navigate(`/board/${postId}`);
     };
 
@@ -45,7 +37,14 @@ function Nball() {
         <div className="total_ct">
             <p className="main-title" onClick={() => navigate('/main')}> Booster </p>
             <section className="nb-category-ct">
-                {/* ... 카테고리 링크들 ... */}
+                <div className="category-all">
+                    <p style={{color : '#1D1B20'}}> 전체 </p>
+                    <img src={Nbcategory2} alt="선택된 카테고리 밑줄"/>
+                </div>
+                <div className="category-free" onClick={() => navigate('/board/free')}><p> 자유 </p></div>
+                <div className="category-promotion" onClick={() => navigate('/board/promotion')}><p> 홍보 </p></div>
+                <div className="category-info" onClick={() => navigate('/board/info')}><p> 정보 </p></div>
+                <div className="category-tmi" onClick={() => navigate('/board/tmi')}><p> TMI </p></div>
             </section>
             
             <hr className="nb-hr"/> 
@@ -53,9 +52,7 @@ function Nball() {
             <section className="nb-contant-all-ct">
                 {isLoading && <p>게시글을 불러오는 중...</p>}
                 {!isLoading && posts.length === 0 && <p>등록된 게시글이 없습니다.</p>}
-                
                 {!isLoading && posts.map(post => (
-                    // 4. 각 게시글을 감싸는 div에 onClick 이벤트를 추가합니다.
                     <div 
                         key={post.post_id} 
                         className="nb-contant-ct" 
@@ -86,7 +83,11 @@ function Nball() {
 
             <button className="nb-write-btn" onClick={() => navigate('/board/write')}> +글쓰기 </button>
             <footer className="main-footer">
-                {/* ... 푸터 아이콘들 ... */}
+                <img src={Home} alt="홈" onClick={() => navigate('/main')} />
+                <img src={Board_red} alt="게시판" onClick={() => navigate('/board')} />
+                <img src={Chat} alt="채팅" onClick={() => navigate('/chat')} />
+                <img src={Boon} alt="혜택" onClick={() => navigate('/boon')} />
+                <img src={My} alt="마이페이지" onClick={() => navigate('/mypage')} />
             </footer>
         </div>
     );
