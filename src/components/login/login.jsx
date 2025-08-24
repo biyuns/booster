@@ -46,8 +46,7 @@ function LoginPg() {
             });
 
             // 응답 데이터에서 accessToken을 추출
-            const { accessToken } = response.data;
-
+const accessToken = response.headers.access;
             if (accessToken) {
                 // accessToken을 localStorage에 저장
                 localStorage.setItem('accessToken', accessToken);
