@@ -3,7 +3,7 @@ import '../../components/signUp/signup2.css'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import apiClient from '../../api/apiClient';
 import SignupHeader2 from '../header/SignupHeader2';
 
