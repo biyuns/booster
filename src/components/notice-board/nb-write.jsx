@@ -1,4 +1,4 @@
-// import { Profileback, Nbpicture, Nbanonymous } from "../../img/img";
+// import { Profileback, Nbpicture, Nbanonymous, Nbremovebtn } from "../../img/img";
 // import '../../components/notice-board/nb-write.css'
 // function Nbwrite() {
 //     return (
@@ -12,10 +12,19 @@
 //             <hr className="profile-hr"/>  
 
 //         <section className="np-add-total-ct">
-//             <div className="nb-picture-add-ct">
-//                 <button> <img src={Nbpicture}></img></button>
-//                 <p> 사진 추가</p>
-//             </div>
+//             <dv className="nb-add-img-ct">
+//                 <div className="nb-picture-add-ct">
+//                     <button> <img src={Nbpicture}></img></button>
+//                     <p> 사진 추가</p>
+//                 </div>
+
+//                 <div className="nb-add-img">
+//                     <img src={Profileback}></img>
+//                     <div className="nb-img-remove">
+//                         <img src={Nbremovebtn}></img>
+//                     </div>
+//                 </div>
+//             </dv>
 //             <p> 0/5개 </p>
 //         </section>
             
