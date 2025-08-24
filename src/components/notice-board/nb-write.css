@@ -194,3 +194,46 @@ margin : 63px auto 0;
 border: 0;
 display: block;
 }
+
+.nb-add-img-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 8px;
+    max-width: 392px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.nb-add-img {
+    width: 80.881px;
+height: 79px;
+flex-shrink: 0;
+border-radius: 6px;
+border: 0.5px solid var(--icon, #DCDCDC);
+position: relative;
+
+}
+
+.nb-add-img > img {
+    object-fit: cover;  width: 100%;
+  height: 100%;
+  
+}
+
+.nb-img-remove {
+    display: flex;
+width: 13px;
+height: 13px;
+padding: 3.545px;
+justify-content: center;
+align-items: center;
+gap: 9.455px;
+flex-shrink: 0;
+border-radius: 6.5px;
+background: var(--Divider-Border, #BCBCBC);
+position: absolute;
+left : 0px;
+z-index: 99;
+justify-content: center;
+align-items: center;
+}

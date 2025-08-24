@@ -69,10 +69,10 @@ function Nball() {
                     <p style={{color : '#1D1B20'}}> 전체 </p>
                     <img src={Nbcategory2} alt="선택된 카테고리 밑줄"/>
                 </div>
-                <div className="category-free"><p> 자유 </p></div>
-                <div className="category-promotion"><p> 홍보 </p></div>
-                <div className="category-info"><p> 정보 </p></div>
-                <div className="category-tmi"><p> TMI </p></div>
+                <div className="category-free"><p onClick={() => navigate('/board/free')}> 자유 </p></div>
+                <div className="category-promotion"><p onClick={() => navigate('/board/promotion')}> 홍보 </p></div>
+                <div className="category-info"><p onClick={() => navigate('/board/info')}> 정보 </p></div>
+                <div className="category-tmi"><p onClick={() => navigate('/board/tmi')}> TMI </p></div>
             </section>
             
             <hr className="nb-hr"/> 
@@ -106,7 +106,7 @@ function Nball() {
                 ))}
             </section>
 
-            <button className="nb-write-btn" onClick={() => navigate('/write')}> +글쓰기 </button>
+            <button className="nb-write-btn" onClick={() => navigate('/board/write')}> +글쓰기 </button>
             <footer className="main-footer">
                 <img src={Home} alt="홈" onClick={() => navigate('/main')} />
                 <img src={Board_red} alt="게시판" onClick={() => navigate('/board')} />

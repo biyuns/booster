@@ -16,6 +16,11 @@ import MyPgedit from './components/mypage/myPg_edit';
 import MyPgpsw from './components/mypage/myPg_psw';
 import MyPgUser from './components/mypage/myPgUser';
 import Nball from './components/notice-board/nb-all';
+import Ninf from './components/notice-board/nb-inf';
+import Npromotion from './components/notice-board/nb.promotion';
+import Nfree from './components/notice-board/nb-free';
+import Ntmi from './components/notice-board/nb.tmi';
+import Nbwrite from './components/notice-board/nb-write';
 
 function App() {
   return (
@@ -37,6 +42,11 @@ function App() {
       <Route path="/mypage/password" element={<MyPgpsw />} />
       <Route path="/mypage/userinfo" element={<MyPgUser />} />
       <Route path="/board" element={<Nball />} />
+      <Route path="/board/inf" element={<Ninf />} />
+      <Route path="/board/promotion" element={<Npromotion />} />
+      <Route path="/board/free" element={<Nfree />} />
+      <Route path="/board/tmi" element={<Ntmi />} />
+      <Route path="/board/write" element={<Nbwrite />} />
 
 
 
