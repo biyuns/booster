@@ -81,7 +81,7 @@ function LoginPg() {
 
                 <div className="password-ct">
                     <label className="login-password"> 비밀번호 </label>
-                    <input tyep="password" id="password" name="password" value={form.password} onChange={handleChange} placeholder="비밀번호를 입력해주세요." required></input>
+                    <input type="password" id="password" name="password" value={form.password} onChange={handleChange} placeholder="비밀번호를 입력해주세요." required></input>
                 </div>
             </section>
             <button className="login-button" onClick={handleLogin} 

@@ -21,3 +21,11 @@ body {
     padding-top : 63px;
     margin-bottom: 20px;
 }
+
+.total_ct2 {
+    min-height: 100vh;
+  background: #FF4500; 
+  max-width: 393px;
+  margin: 0 auto;
+  position: relative;
+}
