@@ -23,6 +23,10 @@ import Ntmi from './components/notice-board/nb.tmi';
 import Nbwrite from './components/notice-board/nb-write';
 import Booncafe from './components/boon/boon_cafe';
 import Nbboard from './components/notice-board/nb-board';
+import BoonFood from './components/boon/boon_food';
+import Boonfitness from './components/boon/boon_fitness';
+import Boonmolan from './components/boon/boon_molan';
+import Boonetc from './components/boon/boon_etc';
 
 function App() {
   return (
@@ -51,6 +55,11 @@ function App() {
       <Route path="/board/write" element={<Nbwrite />} />
       <Route path="/boon/cafe" element={<Booncafe />} />
       <Route path="/board/:postId" element={<Nbboard />} />
+      <Route path="/boon/cafe" element={<Booncafe />} />
+      <Route path="/boon" element={<BoonFood />} />
+      <Route path="/boon/fitness" element={<Boonfitness />} />
+      <Route path="/boon/molan" element={<Boonmolan />} />
+      <Route path="/boon/etc" element={<Boonetc />} />
 
 
 
