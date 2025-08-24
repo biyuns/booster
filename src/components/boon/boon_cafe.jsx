@@ -1,6 +1,5 @@
 // import '../../components/boon/boon_food.css';
-// import { Home, Board, Chat, Boon_red, My,
-//     Ediya, Inuf, Mammonth, Homeground, B491, Bethlehem} from '../../img/img';
+// import { Home, Board, Chat, Boon_red, My} from '../../img/img';
 // import BoonItem from './boon-item';
 
 // function Booncafe() {
@@ -8,7 +7,7 @@
 //         {
 //             id : 1,
 //             name : '이디야커피',
-//             image : Ediya,
+//             image : '/images/img-boon/ediya.svg',
 //             location : '경기 성남시 수정구 산성대로 529 1층',
 //             benefit : '테이크아웃 시 아메리카노(L) 1,800원, (EX) 2,500원, 밀크베버리지 무료 사이즈업 \n아이스티 주문 시 무료 사이즈업 + 무료 샷 추가'
 //         },
