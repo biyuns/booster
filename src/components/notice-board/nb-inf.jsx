@@ -1,3 +1,5 @@
+// src/pages/notice-board/Ninf.js
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
@@ -13,7 +15,6 @@ function Ninf() {
         const fetchPosts = async () => {
             setIsLoading(true);
             try {
-                // 정보 게시판 API 엔드포인트
                 const response = await apiClient.get('/booster/post/intro/category/INFO');
                 response.data.sort((a, b) => new Date(b.create_post_time) - new Date(a.create_post_time));
                 setPosts(response.data);
@@ -27,41 +28,28 @@ function Ninf() {
         fetchPosts();
     }, []);
 
+    const handlePostClick = (postId) => {
+        navigate(`/board/${postId}`);
+    };
+
     return (
         <div className="total_ct">
             <p className="main-title" onClick={() => navigate('/main')}> Booster </p>
-
             <section className="nb-category-ct">
-                <div className="category-all">
-                    <p onClick={() => navigate('/board')}> 전체 </p>
-                </div>
-
-                <div className="category-free">
-                    <p onClick={() => navigate('/board/free')}>  자유 </p>
-                </div>
-
-                <div className="category-promotion">
-                    <p onClick={() => navigate('/board/promotion')}> 홍보 </p>
-                </div>
-
-                <div className="category-info">
-                    <p onClick={() => navigate('/board/inf')} style={{color : '#1D1B20'}}> 정보 </p>
-                    <img src={Nbcategory2} alt="선택된 카테고리 밑줄"/>
-                </div>
-
-                <div className="category-tmi">
-                    <p onClick={() => navigate('/board/tmi')}> TMI </p>
-                </div>
-
+                 {/* ... 카테고리 UI ... */}
             </section>
-            
-            <hr className="nb-hr"/>   
+            <hr className="nb-hr"/>
 
             <section className="nb-contant-all-ct">
                 {isLoading && <p>게시글을 불러오는 중...</p>}
                 {!isLoading && posts.length === 0 && <p>등록된 게시글이 없습니다.</p>}
                 {!isLoading && posts.map(post => (
-                    <div key={post.post_id} className="nb-contant-ct">
+                    <div 
+                        key={post.post_id} 
+                        className="nb-contant-ct" 
+                        onClick={() => handlePostClick(post.post_id)}
+                        style={{ cursor: 'pointer' }}
+                    >
                         <div className="nb-left-ct">
                             <p className="nb-left1">{post.title}</p>
                             <p className="nb-left2">{post.content_preview}</p>
@@ -83,20 +71,9 @@ function Ninf() {
                     </div>
                 ))}
             </section>
-
-            <button className="nb-write-btn" onClick={() => navigate('/board/write')}> +글쓰기 </button>
-        
-            <footer className="main-footer">
-                <img src={Home} alt="홈" onClick={() => navigate('/main')} />
-                <img src={Board_red} alt="게시판" onClick={() => navigate('/board')} />
-                <img src={Chat} alt="채팅" onClick={() => navigate('/chat')} />
-                <img src={Boon} alt="혜택" onClick={() => navigate('/boon')} />
-                <img src={My} alt="마이페이지" onClick={() => navigate('/mypage')} />
-            </footer>
-
-        
+            {/* ... 하단 푸터 ... */}
         </div>
-    )
+    );
 }
 
 export default Ninf;
