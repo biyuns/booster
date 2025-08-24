@@ -1,3 +1,5 @@
+// src/pages/mypage/MyPgUser.jsx
+
 import '../../components/mypage/myPgUser.css';
 import { Profileback } from '../../img/img';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +9,6 @@ import apiClient from '../../api/apiClient';
 function MyPgUser() {
     const navigate = useNavigate();
 
-    // 입력 폼 데이터를 관리하는 상태
     const [formData, setFormData] = useState({
         nickname: '',
         gender: '',
@@ -15,23 +16,22 @@ function MyPgUser() {
         department: '',
     });
 
-    // 페이지가 처음 로드될 때, 현재 프로필 정보를 불러오는 로직
+    // --- 여기가 수정된 부분입니다 ---
     useEffect(() => {
         const fetchCurrentProfile = async () => {
             try {
                 const response = await apiClient.get('/booster/profile');
-                setFormData(response.data); // 성공 시 서버 데이터로 폼을 채움
+                setFormData(response.data);
             } catch (error) {
                 console.error("기존 프로필 정보를 불러오는 데 실패했습니다.", error);
                 alert("프로필 정보를 불러오지 못했습니다. 이전 페이지로 돌아갑니다.");
-                navigate(-1); // 에러 발생 시 이전 페이지로 이동
+                navigate(-1);
             }
         };
         fetchCurrentProfile();
-    // 의존성 배열을 비워두어, 컴포넌트가 처음 마운트될 때 한 번만 실행되도록 함
-    }, []);
+    // useEffect가 사용하는 외부 함수 'navigate'를 의존성 배열에 추가합니다.
+    }, [navigate]);
 
-    // 입력 필드(input, select)의 값이 바뀔 때마다 formData 상태를 업데이트
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -40,7 +40,6 @@ function MyPgUser() {
         }));
     };
 
-    // '수정 완료' 버튼 클릭 시, PATCH 요청을 보내는 핸들러
     const handleSubmit = async () => {
         if (!formData.nickname || !formData.gender || !formData.admissionYear || !formData.department) {
             alert("모든 항목을 입력해주세요.");
@@ -48,12 +47,9 @@ function MyPgUser() {
         }
 
         try {
-            // [중요] 이 요청이 성공하려면 백엔드에서 PATCH 메서드를 허용해야 합니다.
             const response = await apiClient.patch('/booster/profile', formData);
-            
             alert(response.data.message || "프로필이 성공적으로 수정되었습니다.");
             navigate('/mypage');
-
         } catch (error) {
             console.error("프로필 수정 실패:", error);
             if (error.response) {
@@ -71,7 +67,7 @@ function MyPgUser() {
                 <p> 회원 정보 수정 </p>
                 <div className="profile-dummy"></div>
             </section>
-            <hr className="profile-hr"/>   
+            <hr className="profile-hr"/>   
             
             <div className="pf-content-edit-ct">
                 <section className="pf-name">
@@ -98,26 +94,15 @@ function MyPgUser() {
                     <label> 입학연도 </label>
                     <select id="student-num2" name="admissionYear" required value={formData.admissionYear} onChange={handleChange}>
                         <option value="" disabled hidden>선택하세요</option>
-                        <option value="2017">2017학번</option>
-                        <option value="2018">2018학번</option>
-                        <option value="2019">2019학번</option>
-                        <option value="2020">2020학번</option>
-                        <option value="2021">2021학번</option>
-                        <option value="2022">2022학번</option>
-                        <option value="2023">2023학번</option>
-                        <option value="2024">2024학번</option>
-                        <option value="2025">2025학번</option>
-                                                {Array.from({ length: new Date().getFullYear() - 2016 }, (_, i) => 2017 + i).map(year => (
+                        {Array.from({ length: new Date().getFullYear() - 2016 }, (_, i) => 2017 + i).map(year => (
                             <option key={year} value={year}>{year}학번</option>
-                                                ))}
+                        ))}
                     </select>
                 </section>
 
                 <section className="pf-depart">
                     <label> 학부(학과)</label>
-
-                 <select id="department2" name="department" value={formData.department}
-                        onChange={handleChange}>
+                    <select id="department2" name="department" value={formData.department} onChange={handleChange}>
                         <option value="" disabled hidden>선택하세요</option>
                         <option value="의료경영학과">의료경영학과</option>
                         <option value="첨단학부">첨단학부</option>
@@ -132,19 +117,15 @@ function MyPgUser() {
                         <option value="물리치료학과">물리치료학과</option>
                         <option value="간호대학">간호학과</option>
                         <option value="의예과">의예과</option>
-
                     </select>
                 </section>
-
             </div>
-
-                        <div className="ps-edit-button-ct">
-                <button className="ps-edit-complete" onClick={handleSubmit}> 
-                    수정 완료 
-                </button>
+            
+            <div className="ps-edit-button-ct">
+                <button className="ps-edit-complete" onClick={handleSubmit}> 수정 완료 </button>
             </div>
         </div>
-    )
+    );
 }
 
 export default MyPgUser;
