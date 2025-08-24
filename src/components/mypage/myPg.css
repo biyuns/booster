@@ -29,7 +29,13 @@
     align-items: center;
 }
 .user-image-ct > img {
+        width: 100%;
+    height: 100%;
+    
     object-fit: cover;
+    /* 부모의 border-radius를 따라 원형으로 보이게 함 */
+    border-radius: inherit; 
+
 }
 .user-info-ct {
     display : flex;

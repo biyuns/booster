@@ -1,0 +1,130 @@
+/* input css */
+.input-ct {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 89px;
+    width: 100%;
+    left: 0;
+    z-index: 100;
+    background-color: white;
+}
+
+.input-div {
+    display: flex;
+    background-color: #F0F0F0;
+    width: 351px;
+    height: 41px;
+    flex-shrink: 0;
+    justify-content: space-between;
+
+    padding: 10px 15px;
+    box-sizing: border-box;
+
+}
+
+.input-div>input {
+    background-color: #F0F0F0;
+    width: 270px;
+    border: 0;
+    outline: none;
+}
+
+.input-div>input::placeholder {
+    color: #BCBCBC;
+}
+
+
+.input-div>button {
+    display: flex;
+    width: 21px;
+    height: 21px;
+    padding: 5.25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10.5px;
+    flex-shrink: 0;
+    background: var(--Primary, #FF4500);
+    border-radius: 50%;
+    border: 0;
+}
+
+
+
+/* chat css */
+.chat-ct {
+    overflow-y: scroll;
+    height: 710px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-top: 47px;
+    padding-bottom: 29px;
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+}
+
+
+.chat-ct::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+/* 개인 메세지css */
+.user-msg-ct {
+    align-self: flex-end;
+    margin-right: 21px;
+
+}
+
+.bot-msg-ct {
+    display: flex;
+    align-self: flex-start;
+    margin-left: 21px;
+    align-items: end;
+}
+
+
+.user-msg-ct>p {
+    max-width: 227px;
+    border-radius: 29px;
+    background: var(--Line, #F0F0F0);
+    flex-shrink: 0;
+    font-family: "Gmarket Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    /* 166.667% */
+
+    color: var(--Typo-heading, #1D1B20);
+    font-feature-settings: 'liga' off, 'clig' off;
+    letter-spacing: 0.24px;
+
+
+    padding: 19px 24px;
+    box-sizing: border-box;
+
+    word-break: break-word;
+}
+
+
+.bot-msg-ct>p {
+    max-width: 263px;
+    flex-shrink: 0;
+    color: var(--Typo-heading, #1D1B20);
+    font-family: "Gmarket Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    /* 166.667% */
+    letter-spacing: 0.24px;
+
+
+
+    box-sizing: border-box;
+    word-break: break-word;
+}
