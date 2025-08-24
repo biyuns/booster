@@ -139,9 +139,9 @@ function SignUpPg2() {
                     <select id="department2" name="department" required onChange={changeForm} className={form.department === "" ? "" : "bold2"}>
                         <option value="" disabled hidden>선택하세요</option>
                         <option value="의료경영학과">의료경영학과</option>
-                        <option value="사회복지전공">첨단학부</option>
-                        <option value="사회복지전공">자연계열학부</option>
-                        <option value="사회복지전공">인문사회계열학부</option>
+                        <option value="첨단학부">첨단학부</option>
+                        <option value="자연계열학부">자연계열학부</option>
+                        <option value="인문사회계열학부">인문사회계열학부</option>
                         <option value="자유전공학부">자유전공학부</option>
                         <option value="임상병리학과">임상병리학과</option>
                         <option value="안경광학과">안경광학과</option>

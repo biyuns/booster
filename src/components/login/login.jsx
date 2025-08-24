@@ -3,6 +3,8 @@ import './login.css';
 import React, { useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import apiClient from '../../api/apiClient';
+
 function LoginPg() {
 
     const navigate = useNavigate();
@@ -24,8 +26,8 @@ function LoginPg() {
         }));
     };
 
-    useEffect(() => {
-        const { email, password} = form;
+        useEffect(() => {
+        const { email, password } = form;
         if (email.trim() && password.trim()) {
             setIsButtonActive(true);
         } else {
@@ -33,41 +35,51 @@ function LoginPg() {
         }
     }, [form]);
 
-    const handleLogin = async() => {
-        if(!isButtonActive) return;
+    // 2. handleLogin 함수를 apiClient를 사용하도록 수정합니다.
+    const handleLogin = async () => {
+        if (!isButtonActive) return;
 
         setLoginError(false);
     
         try {
-            const response = await fetch('/booster/login', {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json',
-                },
-                body : JSON.stringify({
-                    email: form.email,
-                    password: form.password,
-                }),
+            // apiClient.post를 사용하여 백엔드에 로그인 요청
+            const response = await apiClient.post('/booster/login', {
+                email: form.email,
+                password: form.password,
             });
 
-            if (response.ok) { 
-                const result = await response.json();
-                localStorage.setItem('accessToken', result.accessToken); 
+            // 성공 시, 응답 데이터에서 accessToken을 추출하여 localStorage에 저장
+            const accessToken = response.data.accessToken;
+            if (accessToken) {
+                localStorage.setItem('accessToken', accessToken);
                 console.log('로그인에 성공했습니다.');
-                navigate('/main');
-            } else { 
+                navigate('/main'); // 메인 페이지로 이동
+            } else {
+                // accessToken이 응답에 없는 경우
                 setLoginError(true);
+                alert('로그인에 실패했습니다: 토큰 정보가 없습니다.');
             }
         } catch (error) {
             console.error('로그인 API 요청 오류:', error);
             setLoginError(true);
-            alert('로그인 중 문제가 발생했습니다. 네트워크 상태를 확인해주세요.');
+            
+            // 더 구체적인 에러 메시지 제공
+            if (error.response) {
+                // 서버가 4xx, 5xx 에러로 응답한 경우
+                alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+            } else if (error.request) {
+                // 서버로부터 응답을 받지 못한 경우 (네트워크, CORS, SSL 문제 등)
+                alert('서버에 연결할 수 없습니다. 네트워크 상태를 확인해주세요.');
+            } else {
+                alert('로그인 중 알 수 없는 오류가 발생했습니다.');
+            }
         }
     };
 
     const handleGoToSingUp = () => {
         navigate('/signup');
     };
+
 
     return (
         <div className="total_ct">
