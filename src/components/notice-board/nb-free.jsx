@@ -36,7 +36,7 @@ function Nfree() {
 
                 <div className="category-free">
                     <p onClick={() => navigate('/board/free')} style={{color : '#1D1B20'}}> 자유 </p>
-                    <img src={Nbcategory2}></img>
+                    <img src={Nbcategory2} alt="free"></img>
                 </div>
 
                 <div className="category-promotion">
