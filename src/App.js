@@ -15,6 +15,7 @@ import MyPg from './components/mypage/myPg';
 import MyPgedit from './components/mypage/myPg_edit';
 import MyPgpsw from './components/mypage/myPg_psw';
 import MyPgUser from './components/mypage/myPgUser';
+import Nball from './components/notice-board/nb-all';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
       <Route path="/mypage/profileedit" element={<MyPgedit />} />
       <Route path="/mypage/password" element={<MyPgpsw />} />
       <Route path="/mypage/userinfo" element={<MyPgUser />} />
+      <Route path="/board" element={<Nball />} />
 
 
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'https://your-api-server.com', // API 서버 주소
+    baseURL: 'https://boosters.work', // API 서버 주소
     // 매우 중요: 모든 요청에 자동으로 쿠키를 포함하도록 설정합니다.
     withCredentials: true,
 });
