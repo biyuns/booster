@@ -2,8 +2,8 @@ import '../../components/mypage/myPg_edit.css';
 import { Profileback, Profileremove, Mypagelogo } from '../../img/img';
 import apiClient from '../../api/apiClient'
 import React, {useState, useEffect, useRef} from 'react';
-import Mypg_edit_modal from '../modal/mypg-edit-modal';
-import Mypg_remove_modal from '../modal/mypg-remove-modal';
+import Mypgeditmodal from '../../components/modal/MypgEditModal';
+import Mypgremovemodal from '../../components/modal/MypgRemoveModal'
 import { useNavigate } from 'react-router-dom';
 
 function MyPgedit() {
@@ -107,14 +107,14 @@ function MyPgedit() {
                         {/* <button className="edit-complete"> 수정 완료 </button> */}
                         </div>
               {isDeleteModalOpen && (
-                <Mypg_remove_modal
+                <Mypgremovemodal
                     onClose={closeDeleteModal}
                     onConfirm={handleDeleteConfirm} // 삭제 API 호출 함수를 넘겨줌
                 />
             )}
             
             {isEditModalOpen && (
-                <Mypg_edit_modal
+                <Mypgeditmodal
                     onClose={closeEditModal}
                     onAlbumSelect={triggerFileInput} // 파일 선택창을 여는 함수를 넘겨줌
                 />

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import '../../components/modal/mypg-modal.css'; 
-function Mypg_edit_modal({ onClose, onAlbumSelect }) {
+function Mypgeditmodal({ onClose, onAlbumSelect }) {
     return (
         <div className="mypg-modal-overlay" onClick={onClose}>
             <div className="mypg-modal-content" onClick={(e) => e.stopPropagation()}>
@@ -29,4 +29,4 @@ function Mypg_edit_modal({ onClose, onAlbumSelect }) {
     );
 }
 
-export default Mypg_edit_modal;
+export default Mypgeditmodal;

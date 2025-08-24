@@ -1,5 +1,4 @@
 import '../../components/mainpg/mainPg.css';
-import ai_research from '../../img/main-ai-search.svg';
 import board from '../../img/board.svg';
 import boon from '../../img/boon.svg';
 import chat from '../../img/chat.svg';

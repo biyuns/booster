@@ -1,5 +1,5 @@
 import '../../components/mypage/myPgUser.css';
-import { Profileback, Profileremove, Mypagelogo } from '../../img/img';
+import { Profileback } from '../../img/img';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import apiClient from '../../api/apiClient';

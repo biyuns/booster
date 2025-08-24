@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../components/modal/mypg-modal.css'; // 공통 모달 스타일을 import 합니다.
 
-function Mypg_remove_modal({ onClose, onConfirm }) {
+function Mypgremovemodal({ onClose, onConfirm }) {
     return (
         <div className="mypg-modal-overlay" onClick={onClose}>
             <div className="mypg-modal-content" onClick={(e) => e.stopPropagation()}>
@@ -18,4 +18,4 @@ function Mypg_remove_modal({ onClose, onConfirm }) {
     );
 }
 
-export default Mypg_remove_modal;
+export default Mypgremovemodal;
