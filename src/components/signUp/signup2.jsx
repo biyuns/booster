@@ -9,7 +9,7 @@ import SignupHeader2 from '../header/SignupHeader2';
 function SignUpPg2() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { email, password } = location.stat || {};
+    const { email, password } = location.state || {};
 
     const [form, setForm] = useState({
         name: "",
