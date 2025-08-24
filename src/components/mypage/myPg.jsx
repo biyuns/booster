@@ -9,9 +9,9 @@ import React, { useEffect, useState } from 'react';
 function MyPg() {
     const navigate = useNavigate();
 
-    // 1. 서버 원본 데이터를 저장할 상태
+    // 서버 원본 데이터를 저장할 상태
     const [profile, setProfile] = useState(null); 
-    // 2. 화면에 표시할 가공된 성별 데이터를 저장할 상태
+    // 화면에 표시할 가공된 성별 데이터를 저장할 상태
     const [displayGender, setDisplayGender] = useState('');
     
     const [isLoading, setIsLoading] = useState(true); 
@@ -21,15 +21,22 @@ function MyPg() {
             try {
                 const response = await apiClient.get('/booster/profile');
                 const profileData = response.data;
+                
+                // --- 프로필 이미지 처리 로직 ---
+                const imageUrl = profileData.profileImageUrl;
+                // 서버에서 받은 URL이 존재하고 'default-profile.png'가 아니면 그 URL을,
+                // 아니면 (null이거나 default 이미지일 때) 로컬 이미지를 사용하도록 설정
+                profileData.displayImageUrl = (imageUrl && !imageUrl.includes('default-profile.png')) ? imageUrl : Mypagelogo;
+                
                 setProfile(profileData);
 
-                // --- 3. 성별 데이터 변환 로직 ---
+                // --- 성별 데이터 변환 로직 ---
                 if (profileData.gender === 'MALE') {
                     setDisplayGender('남자');
                 } else if (profileData.gender === 'FEMALE') {
                     setDisplayGender('여자');
                 } else {
-                    setDisplayGender(''); // 그 외의 경우 (값이 없거나 다른 값일 때)
+                    setDisplayGender('');
                 }
 
             } catch (error) {
@@ -65,23 +72,21 @@ function MyPg() {
                 <div className="user-ct">
                     <div className="user-top-ct">
                         <div className="user-image-ct">
-                            {/* profile.profileImageUrl이 없거나 비어있으면 Mypagelogo를 기본값으로 사용 */}
-                            <img src={profile?.profileImageUrl || Mypagelogo} alt="사용자이미지" />
+                            {/* 로딩 중이 아닐 때만 이미지를 보여주도록 처리 */}
+                            {!isLoading && <img src={profile?.displayImageUrl} alt="사용자이미지" />}
                         </div>
-
                         <div className="user-info-ct">
                             {isLoading ? (
                                 <p className="user-name">로딩 중...</p>
-                            ) : profile ? ( // profile 데이터가 성공적으로 로드되었는지 확인
+                            ) : profile ? (
                                 <>
                                     <p className="user-name">{profile.nickname}</p>
                                     <p className="user-info">
-                                        {/* 4. 변환된 성별(displayGender)을 화면에 표시 */}
                                         {displayGender} / {profile.admissionYear} / {profile.department}
                                     </p>
                                 </>
                             ) : (
-                                <p>프로필 정보를 불러올 수 없습니다.</p> // 에러 또는 데이터 없음
+                                <p>프로필 정보를 불러올 수 없습니다.</p>
                             )}
                         </div>
                     </div>
