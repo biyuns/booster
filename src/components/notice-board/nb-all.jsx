@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { 
-    Nbcategory2, Nbcategory3, Geul1, Geul2, Geul3, Heart, 
+    Nbcategory2, Geul1, Geul2, Geul3, Heart, 
     Home, Board_red, Chat, Boon, My 
 } from "../../img/img";
 import '../notice-board/nb-category.css';
