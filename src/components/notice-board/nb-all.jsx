@@ -51,16 +51,13 @@ function Nball() {
             }
         };
         fetchPosts();
-        
-
-        // --- UI 테스트용 코드 ---
-    //     const mockAllPosts = Object.values(MOCK_ALL_POSTS).flat();
-    //     mockAllPosts.sort((a, b) => new Date(b.create_post_time) - new Date(a.create_post_time));
-    //     setPosts(mockAllPosts);
-    //     setIsLoading(false);
 
      }, []);
 
+         const handlePostClick = (postId) => {
+        // App.js에 정의해둔 상세 페이지 경로로 이동시킵니다.
+        navigate(`/board/${postId}`);
+    };
     return (
         <div className="total_ct">
             <p className="main-title" onClick={() => navigate('/main')}> Booster </p>
@@ -81,7 +78,13 @@ function Nball() {
                 {isLoading && <p>게시글을 불러오는 중...</p>}
                 {!isLoading && posts.length === 0 && <p>등록된 게시글이 없습니다.</p>}
                 {!isLoading && posts.map(post => (
-                    <div key={post.post_id} className="nb-contant-ct">
+                                    <div 
+                        key={post.post_id} 
+                        className="nb-contant-ct" 
+                        onClick={() => handlePostClick(post.post_id)}
+                        style={{ cursor: 'pointer' }}
+                        >
+
                         <div className="nb-left-ct">
                             <p className="nb-left1">{post.title}</p>
                             <p className="nb-left2">{post.content_preview}</p>
