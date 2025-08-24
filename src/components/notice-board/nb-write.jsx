@@ -15,6 +15,15 @@ const CATEGORY_OPTIONS = [
   { value: 'TMI',   label: 'TMI' },
 ];
 
+// --- 여기에 추가 ---
+// 백엔드로 보낼 값을 매핑하는 객체
+const CATEGORY_MAP = {
+  FREE: '자유 게시판',
+  PROMO: '홍보 게시판',
+  INFO: '정보 게시판',
+  TMI: 'tmi 게시판', // 요청하신대로 소문자 'tmi'로 설정
+};
+
 function Nbwrite() {
   // --- React Hooks 및 상태 관리 ---
   const navigate = useNavigate();
@@ -54,14 +63,11 @@ function Nbwrite() {
     }
 
     const filesToProcess = files.slice(0, availableSlots);
-
-    // [중요] 실제 서비스에서는 이 부분에서 서버로 파일을 업로드하고,
-    // 응답으로 받은 URL을 상태에 저장해야 합니다.
-    // 현재는 데모를 위해 로컬 미리보기 URL을 생성하여 사용합니다.
+    
+    // 로컬 미리보기 URL을 생성하여 사용
     const localPreviewUrls = filesToProcess.map(file => URL.createObjectURL(file));
     setImgUrls(prev => [...prev, ...localPreviewUrls]);
 
-    // 다음에 같은 파일을 또 선택할 수 있도록 input 값을 초기화
     e.target.value = '';
   };
 
@@ -79,10 +85,14 @@ function Nbwrite() {
   const handleSubmit = async () => {
     if (!canSubmit) return;
 
+    // --- 수정된 부분 ---
+    // 기존 category 코드 ('FREE')를 백엔드가 원하는 문자열 ('자유 게시판')로 변환
+    const categoryToSend = CATEGORY_MAP[category];
+
     const requestBody = {
       title: title.trim(),
       content: content.trim(),
-      category: category,
+      category: categoryToSend, // 변환된 값을 사용
       isAnonymous: isAnonymous,
       introImgUrl: introImgUrl,
       imgUrls: imgUrls,
