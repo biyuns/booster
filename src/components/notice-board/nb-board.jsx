@@ -63,7 +63,7 @@
 //                 </div>
 //             </section>
 
-//             <div className="nb2-line"></div>
+//             <div className="nb2-line">.</div>
 
 //             <section className="user-comment-total-ct">
 //                 <div className="user-comment-ct">
@@ -79,7 +79,7 @@
 //                     <p> 맛있겠다 당장 내 입으로.</p>
 
 
-//                 <img src={Nbline} alt="구분선"/>
+//                 <img className="nb2-line2"src={Nbline} alt="구분선"/>
 
 //                 <div className="user-input-comment-ct">
 //                     <div className="user-input-ct">
