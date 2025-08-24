@@ -1,95 +1,188 @@
-// src/pages/notice-board/Nball.js
+// src/pages/notice-board/Nbwrite.jsx
 
-import React, { useState, useEffect } from "react";
-// 1. useNavigate를 import 합니다.
+import React, { useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Profileback, Nbpicture, Nbanonymous, Nbremovebtn } from "../../img/img";
+import "../../components/notice-board/nb-write.css";
 import apiClient from "../../api/apiClient";
-import { 
-    Nbcategory2, Geul1, Geul2, Geul3, Heart, 
-    Home, Board_red, Chat, Boon, My 
-} from "../../img/img";
-import '../notice-board/nb-category.css';
 
-function Nball() {
-    // 2. navigate 함수를 사용할 수 있도록 초기화합니다.
-    const navigate = useNavigate();
-    const [posts, setPosts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+// --- 상수 정의 ---
+const MAX_IMAGES = 5;
+const CATEGORY_OPTIONS = [
+  { value: 'FREE',  label: '자유' },
+  { value: 'PROMO', label: '홍보' },
+  { value: 'INFO',  label: '정보' },
+  { value: 'TMI',   label: 'TMI' },
+];
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            setIsLoading(true);
-            try {
-                const response = await apiClient.get('/booster/post/intro');
-                const allPosts = Object.values(response.data).flat();
-                allPosts.sort((a, b) => new Date(b.create_post_time) - new Date(a.create_post_time));
-                setPosts(allPosts);
-            } catch (error) {
-                console.error("전체 게시판 데이터 로딩 실패:", error);
-                // API 실패 시 목업 데이터를 사용하지 않으려면 빈 배열로 설정
-                setPosts([]);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchPosts();
-    }, []);
+function Nbwrite() {
+  // --- React Hooks 및 상태 관리 ---
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
-    // 3. handlePostClick 함수를 useEffect 밖으로 꺼냅니다.
-    const handlePostClick = (postId) => {
-        // App.js에 정의해둔 상세 페이지 경로로 이동시킵니다.
-        navigate(`/board/${postId}`);
+  // 폼 데이터 상태
+  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [imgUrls, setImgUrls] = useState([]); // 업로드 완료된 이미지 URL 배열
+
+  // 파생된 상태 (Derived State)
+  const imageCount = imgUrls.length;
+  const introImgUrl = useMemo(() => (imgUrls.length > 0 ? imgUrls[0] : null), [imgUrls]);
+  const canSubmit = useMemo(() => category && title.trim() && content.trim(), [category, title, content]);
+
+  // --- 이벤트 핸들러 함수 ---
+
+  // '사진 추가' 버튼 클릭 시, 숨겨진 파일 입력창을 트리거
+  const handleClickAddImage = () => {
+    if (imageCount >= MAX_IMAGES) {
+      alert(`이미지는 최대 ${MAX_IMAGES}장까지만 추가할 수 있습니다.`);
+      return;
+    }
+    fileInputRef.current?.click();
+  };
+
+  // 파일이 선택되었을 때 실행되는 함수
+  const handleChangeFiles = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const availableSlots = MAX_IMAGES - imageCount;
+    if (files.length > availableSlots) {
+      alert(`최대 ${availableSlots}장까지만 더 추가할 수 있습니다.`);
+    }
+
+    const filesToProcess = files.slice(0, availableSlots);
+
+    // [중요] 실제 서비스에서는 이 부분에서 서버로 파일을 업로드하고,
+    // 응답으로 받은 URL을 상태에 저장해야 합니다.
+    // 현재는 데모를 위해 로컬 미리보기 URL을 생성하여 사용합니다.
+    const localPreviewUrls = filesToProcess.map(file => URL.createObjectURL(file));
+    setImgUrls(prev => [...prev, ...localPreviewUrls]);
+
+    // 다음에 같은 파일을 또 선택할 수 있도록 input 값을 초기화
+    e.target.value = '';
+  };
+
+  // 개별 이미지 제거
+  const handleRemoveImage = (index) => {
+    setImgUrls(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // 익명 모드 토글
+  const toggleAnonymous = () => {
+    setIsAnonymous(prev => !prev);
+  };
+
+  // 최종 제출 처리
+  const handleSubmit = async () => {
+    if (!canSubmit) return;
+
+    const requestBody = {
+      title: title.trim(),
+      content: content.trim(),
+      category: category,
+      isAnonymous: isAnonymous,
+      introImgUrl: introImgUrl,
+      imgUrls: imgUrls,
     };
 
-    return (
-        <div className="total_ct">
-            <p className="main-title" onClick={() => navigate('/main')}> Booster </p>
-            <section className="nb-category-ct">
-                {/* ... 카테고리 링크들 ... */}
-            </section>
-            
-            <hr className="nb-hr"/> 
+    try {
+      const response = await apiClient.post('/booster/create', requestBody);
+      alert(response.data?.message || '게시글이 성공적으로 등록되었습니다.');
+      navigate('/board'); // 게시판 목록 페이지로 이동
+    } catch (error) {
+      console.error('게시글 작성 실패:', error);
+      if (error?.response) {
+        alert(error.response.data?.message || '게시글 등록 중 오류가 발생했습니다.');
+      } else if (error?.request) {
+        alert('서버로부터 응답을 받지 못했습니다. 네트워크 상태를 확인해주세요.');
+      } else {
+        alert('요청 중 알 수 없는 오류가 발생했습니다.');
+      }
+    }
+  };
 
-            <section className="nb-contant-all-ct">
-                {isLoading && <p>게시글을 불러오는 중...</p>}
-                {!isLoading && posts.length === 0 && <p>등록된 게시글이 없습니다.</p>}
-                
-                {!isLoading && posts.map(post => (
-                    // 4. 각 게시글을 감싸는 div에 onClick 이벤트를 추가합니다.
-                    <div 
-                        key={post.post_id} 
-                        className="nb-contant-ct" 
-                        onClick={() => handlePostClick(post.post_id)}
-                        style={{ cursor: 'pointer' }}
-                    >
-                        <div className="nb-left-ct">
-                            <p className="nb-left1">{post.title}</p>
-                            <p className="nb-left2">{post.content_preview}</p>
-                            <p className="nb-left3">{post.category}</p>
-                        </div>
-                        <div className="nb-right-all-ct">
-                            <div className="nb-img-ct">
-                                <img src={post.intro_img_url || '/images/img-boon/galbe.svg'} alt={`${post.title} 썸네일`} />
-                            </div>
-                            <div className="nb-right-ct">    
-                                <div className="nb-comment-ct">
-                                    <img src={Geul3} alt="댓글 아이콘" /><img src={Geul2} alt="" /><img src={Geul1} alt="" />
-                                </div>
-                                <p>{post.comment_count}</p>
-                                <img src={Heart} alt="공감 아이콘" />
-                                <p>{post.like_count || 0}</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </section>
+  // --- JSX 렌더링 ---
+  return (
+    <div className="total_ct">
+      <section className="pf-edit-ct">
+        <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
+        <p> 게시글 작성 </p>
+        <div className="profile-dummy"></div>
+      </section>
+      <hr className="profile-hr" />
 
-            <button className="nb-write-btn" onClick={() => navigate('/board/write')}> +글쓰기 </button>
-            <footer className="main-footer">
-                {/* ... 푸터 아이콘들 ... */}
-            </footer>
+      {/* 이미지 추가 섹션 */}
+      <section className="np-add-total-ct">
+        <div className="nb-add-img-ct">
+          <div className="nb-picture-add-ct" onClick={handleClickAddImage}>
+            <button type="button"><img src={Nbpicture} alt="사진 추가 아이콘" /></button>
+            <p> 사진 추가</p>
+          </div>
+          {imgUrls.map((url, index) => (
+            <div className="nb-add-img" key={index}>
+              <img src={url} alt={`첨부 이미지 ${index + 1}`} />
+              <div className="nb-img-remove" onClick={() => handleRemoveImage(index)}>
+                <img src={Nbremovebtn} alt="이미지 삭제" />
+              </div>
+            </div>
+          ))}
         </div>
-    );
+        <p> {imageCount}/{MAX_IMAGES}개 </p>
+        <input
+          type="file"
+          ref={fileInputRef}
+          multiple
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleChangeFiles}
+        />
+      </section>
+      
+      {/* 카테고리 선택 */}
+      <section className="nb-category-choose-ct">
+        <label> 카테고리 </label>
+        <select className="nb-write-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="" disabled>선택하세요</option>
+          {CATEGORY_OPTIONS.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+      </section>
+      
+      {/* 제목 입력 */}
+      <section className="nb-write-title-ct">
+        <label> 제목 </label>
+        <input className="nb-write-input" placeholder="게시글의 제목을 입력해주세요." value={title} onChange={(e) => setTitle(e.target.value)} />
+      </section>
+      
+      {/* 본문 입력 */}
+      <section className="nb-write-contant-ct">
+        <label> 본문 </label>
+        <textarea id="nb-write-textarea" placeholder="Booster에서 자유롭게 얘기해보세요." value={content} onChange={(e) => setContent(e.target.value)} />
+      </section>
+
+      {/* 익명 토글 */}
+      <div className="nb-write-anonymous" onClick={toggleAnonymous}>
+        <button type="button"><img src={Nbanonymous} alt="익명 아이콘" /></button>
+        <p> 익명 </p>
+      </div>
+
+      {/* 작성 완료 버튼 */}
+      <div className="nb-btn-ct">
+        <button
+          className="nb-write-complete-btn"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          style={{ backgroundColor: canSubmit ? '#FF4500' : '' }}
+        >
+          작성완료
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default Nball;
+export default Nbwrite;
