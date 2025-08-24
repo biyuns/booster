@@ -44,7 +44,7 @@ function App() {
       <Route path="/mypage/password" element={<MyPgpsw />} />
       <Route path="/mypage/userinfo" element={<MyPgUser />} />
       <Route path="/board" element={<Nball />} />
-      <Route path="/board/inf" element={<Ninf />} />
+      <Route path="/board/info" element={<Ninf />} />
       <Route path="/board/promotion" element={<Npromotion />} />
       <Route path="/board/free" element={<Nfree />} />
       <Route path="/board/tmi" element={<Ntmi />} />
