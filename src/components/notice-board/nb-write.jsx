@@ -1,6 +1,6 @@
 // src/pages/notice-board/Nbwrite.jsx
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Profileback, Nbpicture, Nbanonymous, Nbremovebtn } from "../../img/img";
 import "../../components/notice-board/nb-write.css";
