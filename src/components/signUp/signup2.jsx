@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import SignupHeader2 from '../header/SignupHeader2';
 
 function SignUpPg2() {
@@ -78,12 +79,12 @@ function SignUpPg2() {
                 password: password,
                 nickname: form.name,
                 admissionYear: parseInt(form.studentNum, 10),
-                gender: form.gender,
+                gender: form.gender.toUpperCase(),
                 department: form.department
             };
 
             try {
-                const response = await axios.post('/booster/join', requestBody);
+                const response = await apiClient.post('/booster/join', requestBody);
                 
                 console.log("가입 정보:", requestBody);
                 console.log("회원가입 성공:", response.data);
