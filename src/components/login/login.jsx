@@ -39,7 +39,7 @@ function LoginPg() {
         setLoginError(false);
     
         try {
-            const response = await fetch('booster/login', {
+            const response = await fetch('/booster/login', {
                 method : 'POST',
                 headers : {
                     'Content-Type' : 'application/json',

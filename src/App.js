@@ -21,6 +21,7 @@ import Npromotion from './components/notice-board/nb.promotion';
 import Nfree from './components/notice-board/nb-free';
 import Ntmi from './components/notice-board/nb.tmi';
 import Nbwrite from './components/notice-board/nb-write';
+import Booncafe from './components/boon/boon_cafe';
 
 function App() {
   return (
@@ -47,6 +48,8 @@ function App() {
       <Route path="/board/free" element={<Nfree />} />
       <Route path="/board/tmi" element={<Ntmi />} />
       <Route path="/board/write" element={<Nbwrite />} />
+      <Route path="/boon/cafe" element={<Booncafe />} />
+      {/* <Route path="/board/write" element={<Nbwrite />} /> */}
 
 
 

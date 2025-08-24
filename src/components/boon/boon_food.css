@@ -21,6 +21,7 @@ margin-bottom: 13px;
     flex-direction: column;
 }
 
+
 .boon-boon-ct > p {
     /* ... 기존 스타일 ... */
     white-space: pre-line; /* \n을 기준으로 줄바꿈을 적용 */
