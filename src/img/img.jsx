@@ -45,6 +45,8 @@ import Nbheart from './nbheart.svg'
 import Nbline from './nb2line.svg'
 import Nbsubmit from './nb2input.svg'
 import Nbcheck from './nb2an.svg'
+import NbCommentlogo from "./nb2commentlogo.svg"
+
 export {
     Board_red, Board, Boon_red, Boon, Boonicon, Chat_red,
     Chat, Geul1, Geul2, Geul3, Heart, Home_red, Home,
@@ -54,6 +56,6 @@ export {
     BoonBoonlogo, BoonlocationLogo, Nbcategory2, Nbcategory3, Nbpicture
     ,Nbanonymous, Nbstate, SgChoose, SgChoose2, Sghr1, SgChoose3, SgChoose4
     ,MgMainMove, SignUpCom, Boosterlogo, Nbremovebtn, Nbgeul1, Nbgeul2, Nbgeul3
-    ,Nbheart, Nbline, Nbcheck, Nbsubmit
+    ,Nbheart, Nbline, Nbcheck, Nbsubmit, NbCommentlogo
 
 }

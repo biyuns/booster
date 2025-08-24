@@ -1,198 +1,172 @@
 // src/pages/notice-board/Nbwrite.jsx
 
-import React, { useState, useMemo, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Profileback, Nbpicture, Nbanonymous, Nbremovebtn } from "../../img/img";
 import "../../components/notice-board/nb-write.css";
 import apiClient from "../../api/apiClient";
 
-// --- 상수 정의 ---
 const MAX_IMAGES = 5;
 const CATEGORY_OPTIONS = [
-  { value: 'FREE',  label: '자유' },
-  { value: 'PROMO', label: '홍보' },
-  { value: 'INFO',  label: '정보' },
-  { value: 'TMI',   label: 'TMI' },
+    { value: 'FREE',  label: '자유' },
+    { value: 'PROMO', label: '홍보' },
+    { value: 'INFO',  label: '정보' },
+    { value: 'TMI',   label: 'TMI' },
 ];
 
-// --- 여기에 추가 ---
-// 백엔드로 보낼 값을 매핑하는 객체
-const CATEGORY_MAP = {
-  FREE: '자유 게시판',
-  PROMO: '홍보 게시판',
-  INFO: '정보 게시판',
-  TMI: 'tmi 게시판', // 요청하신대로 소문자 'tmi'로 설정
+// 카테고리 표시 이름 -> API 전송 값 변환
+const CATEGORY_LABEL_TO_VALUE = {
+    '자유': 'FREE',
+    '홍보': 'PROMO',
+    '정보': 'INFO',
+    'TMI': 'TMI',
 };
 
 function Nbwrite() {
-  // --- React Hooks 및 상태 관리 ---
-  const navigate = useNavigate();
-  const fileInputRef = useRef(null);
+    const navigate = useNavigate();
+    const { postId } = useParams();
+    const location = useLocation();
 
-  // 폼 데이터 상태
-  const [category, setCategory] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [isAnonymous, setIsAnonymous] = useState(false);
-  const [imgUrls, setImgUrls] = useState([]); // 업로드 완료된 이미지 URL 배열
-
-  // 파생된 상태 (Derived State)
-  const imageCount = imgUrls.length;
-  const introImgUrl = useMemo(() => (imgUrls.length > 0 ? imgUrls[0] : null), [imgUrls]);
-  const canSubmit = useMemo(() => category && title.trim() && content.trim(), [category, title, content]);
-
-  // --- 이벤트 핸들러 함수 ---
-
-  // '사진 추가' 버튼 클릭 시, 숨겨진 파일 입력창을 트리거
-  const handleClickAddImage = () => {
-    if (imageCount >= MAX_IMAGES) {
-      alert(`이미지는 최대 ${MAX_IMAGES}장까지만 추가할 수 있습니다.`);
-      return;
-    }
-    fileInputRef.current?.click();
-  };
-
-  // 파일이 선택되었을 때 실행되는 함수
-  const handleChangeFiles = (e) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-
-    const availableSlots = MAX_IMAGES - imageCount;
-    if (files.length > availableSlots) {
-      alert(`최대 ${availableSlots}장까지만 더 추가할 수 있습니다.`);
-    }
-
-    const filesToProcess = files.slice(0, availableSlots);
+    const isEditMode = !!postId;
+    const fileInputRef = useRef(null);
     
-    // 로컬 미리보기 URL을 생성하여 사용
-    const localPreviewUrls = filesToProcess.map(file => URL.createObjectURL(file));
-    setImgUrls(prev => [...prev, ...localPreviewUrls]);
+    const [initialData] = useState(location.state?.post || null);
 
-    e.target.value = '';
-  };
+    const [category, setCategory] = useState(() => {
+        if (isEditMode && initialData?.category) {
+            return CATEGORY_LABEL_TO_VALUE[initialData.category] || "";
+        }
+        return "";
+    });
+    const [title, setTitle] = useState(initialData?.title || "");
+    const [content, setContent] = useState(initialData?.content || "");
+    const [isAnonymous, setIsAnonymous] = useState(initialData?.is_anonymous || false);
+    const [imgUrls, setImgUrls] = useState(initialData?.img_url || []);
 
-  // 개별 이미지 제거
-  const handleRemoveImage = (index) => {
-    setImgUrls(prev => prev.filter((_, i) => i !== index));
-  };
+    const imageCount = imgUrls.length;
+    const canSubmit = useMemo(() => category && title.trim() && content.trim(), [category, title, content]);
 
-  // 익명 모드 토글
-  const toggleAnonymous = () => {
-    setIsAnonymous(prev => !prev);
-  };
-
-  // 최종 제출 처리
-  const handleSubmit = async () => {
-    if (!canSubmit) return;
-
-    // --- 수정된 부분 ---
-    // 기존 category 코드 ('FREE')를 백엔드가 원하는 문자열 ('자유 게시판')로 변환
-    const categoryToSend = CATEGORY_MAP[category];
-
-    const requestBody = {
-      title: title.trim(),
-      content: content.trim(),
-      category: categoryToSend, // 변환된 값을 사용
-      isAnonymous: isAnonymous,
-      introImgUrl: introImgUrl,
-      imgUrls: imgUrls,
+    const handleClickAddImage = () => {
+        if (imageCount >= MAX_IMAGES) {
+            alert(`이미지는 최대 ${MAX_IMAGES}장까지만 추가할 수 있습니다.`);
+            return;
+        }
+        fileInputRef.current?.click();
     };
 
-    try {
-      const response = await apiClient.post('/booster/create', requestBody);
-      alert(response.data?.message || '게시글이 성공적으로 등록되었습니다.');
-      navigate('/board'); // 게시판 목록 페이지로 이동
-    } catch (error) {
-      console.error('게시글 작성 실패:', error);
-      if (error?.response) {
-        alert(error.response.data?.message || '게시글 등록 중 오류가 발생했습니다.');
-      } else if (error?.request) {
-        alert('서버로부터 응답을 받지 못했습니다. 네트워크 상태를 확인해주세요.');
-      } else {
-        alert('요청 중 알 수 없는 오류가 발생했습니다.');
-      }
-    }
-  };
+    const handleChangeFiles = (e) => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        const availableSlots = MAX_IMAGES - imageCount;
+        if (files.length > availableSlots) {
+            alert(`최대 ${availableSlots}장까지만 더 추가할 수 있습니다.`);
+        }
+        const filesToProcess = files.slice(0, availableSlots);
+        const localPreviewUrls = filesToProcess.map(file => URL.createObjectURL(file));
+        setImgUrls(prev => [...prev, ...localPreviewUrls]);
+        e.target.value = '';
+    };
 
-  // --- JSX 렌더링 ---
-  return (
-    <div className="total_ct">
-      <section className="pf-edit-ct">
-        <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
-        <p> 게시글 작성 </p>
-        <div className="profile-dummy"></div>
-      </section>
-      <hr className="profile-hr" />
+    const handleRemoveImage = (index) => {
+        setImgUrls(prev => prev.filter((_, i) => i !== index));
+    };
 
-      {/* 이미지 추가 섹션 */}
-      <section className="np-add-total-ct">
-        <div className="nb-add-img-ct">
-          <div className="nb-picture-add-ct" onClick={handleClickAddImage}>
-            <button type="button"><img src={Nbpicture} alt="사진 추가 아이콘" /></button>
-            <p> 사진 추가</p>
-          </div>
-          {imgUrls.map((url, index) => (
-            <div className="nb-add-img" key={index}>
-              <img src={url} alt={`첨부 이미지 ${index + 1}`} />
-              <div className="nb-img-remove" onClick={() => handleRemoveImage(index)}>
-                <img src={Nbremovebtn} alt="이미지 삭제" />
-              </div>
+    const toggleAnonymous = () => setIsAnonymous(prev => !prev);
+
+    const handleSubmit = async () => {
+        if (!canSubmit) return;
+
+        try {
+            if (isEditMode) {
+                // 수정 모드: PUT 요청
+                const requestBody = {
+                    title: title.trim(),
+                    isAnonymous: isAnonymous,
+                    // API 명세에 content, category, images가 없으므로 생략. 필요시 추가해야 함.
+                };
+                await apiClient.put(`/booster/edit/${postId}`, requestBody);
+                alert('게시글이 성공적으로 수정되었습니다.');
+                navigate(`/board/${postId}`);
+            } else {
+                // 작성 모드: POST 요청
+                // [주의] 이미지 업로드 로직은 별도 구현이 필요합니다.
+                // 현재는 URL 문자열을 보내는 방식이므로, 실제 파일 업로드 후 URL을 받아와야 합니다.
+                const requestBody = {
+                    title: title.trim(),
+                    content: content.trim(),
+                    category: category,
+                    isAnonymous: isAnonymous,
+                    introImgUrl: imgUrls.length > 0 ? imgUrls[0] : null,
+                    imgUrls: imgUrls,
+                };
+                await apiClient.post('/booster/create', requestBody);
+                alert('게시글이 성공적으로 등록되었습니다.');
+                navigate('/board');
+            }
+        } catch (error) {
+            console.error('처리 실패:', error);
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    };
+
+    return (
+        <div className="total_ct">
+            <section className="pf-edit-ct">
+                <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
+                <p>{isEditMode ? '게시글 수정' : '게시글 작성'}</p>
+                <div className="profile-dummy"></div>
+            </section>
+            <hr className="profile-hr" />
+
+            <section className="np-add-total-ct">
+                <div className="nb-add-img-ct">
+                    <div className="nb-picture-add-ct" onClick={handleClickAddImage}>
+                        <button type="button"><img src={Nbpicture} alt="사진 추가 아이콘" /></button>
+                        <p> 사진 추가</p>
+                    </div>
+                    {imgUrls.map((url, index) => (
+                        <div className="nb-add-img" key={index}>
+                            <img src={url} alt={`첨부 이미지 ${index + 1}`} />
+                            <div className="nb-img-remove" onClick={() => handleRemoveImage(index)}>
+                                <img src={Nbremovebtn} alt="이미지 삭제" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <p>{imageCount}/{MAX_IMAGES}개</p>
+                <input type="file" ref={fileInputRef} multiple accept="image/*" style={{ display: 'none' }} onChange={handleChangeFiles} />
+            </section>
+            
+            <section className="nb-category-choose-ct">
+                <label> 카테고리 </label>
+                <select className="nb-write-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                    <option value="" disabled>선택하세요</option>
+                    {CATEGORY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+            </section>
+            
+            <section className="nb-write-title-ct">
+                <label> 제목 </label>
+                <input className="nb-write-input" placeholder="게시글의 제목을 입력해주세요." value={title} onChange={(e) => setTitle(e.target.value)} />
+            </section>
+            
+            <section className="nb-write-contant-ct">
+                <label> 본문 </label>
+                <textarea id="nb-write-textarea" placeholder="Booster에서 자유롭게 얘기해보세요." value={content} onChange={(e) => setContent(e.target.value)} />
+            </section>
+
+            <div className="nb-write-anonymous" onClick={toggleAnonymous}>
+                <button type="button"><img src={Nbanonymous} alt="익명 아이콘" /></button>
+                <p> 익명 </p>
             </div>
-          ))}
+
+            <div className="nb-btn-ct">
+                <button className="nb-write-complete-btn" onClick={handleSubmit} disabled={!canSubmit} style={{ backgroundColor: canSubmit ? '#FF4500' : '' }}>
+                    {isEditMode ? '수정완료' : '작성완료'}
+                </button>
+            </div>
         </div>
-        <p> {imageCount}/{MAX_IMAGES}개 </p>
-        <input
-          type="file"
-          ref={fileInputRef}
-          multiple
-          accept="image/*"
-          style={{ display: 'none' }}
-          onChange={handleChangeFiles}
-        />
-      </section>
-      
-      {/* 카테고리 선택 */}
-      <section className="nb-category-choose-ct">
-        <label> 카테고리 </label>
-        <select className="nb-write-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="" disabled>선택하세요</option>
-          {CATEGORY_OPTIONS.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </section>
-      
-      {/* 제목 입력 */}
-      <section className="nb-write-title-ct">
-        <label> 제목 </label>
-        <input className="nb-write-input" placeholder="게시글의 제목을 입력해주세요." value={title} onChange={(e) => setTitle(e.target.value)} />
-      </section>
-      
-      {/* 본문 입력 */}
-      <section className="nb-write-contant-ct">
-        <label> 본문 </label>
-        <textarea id="nb-write-textarea" placeholder="Booster에서 자유롭게 얘기해보세요." value={content} onChange={(e) => setContent(e.target.value)} />
-      </section>
-
-      {/* 익명 토글 */}
-      <div className="nb-write-anonymous" onClick={toggleAnonymous}>
-        <button type="button"><img src={Nbanonymous} alt="익명 아이콘" /></button>
-        <p> 익명 </p>
-      </div>
-
-      {/* 작성 완료 버튼 */}
-      <div className="nb-btn-ct">
-        <button
-          className="nb-write-complete-btn"
-          onClick={handleSubmit}
-          disabled={!canSubmit}
-          style={{ backgroundColor: canSubmit ? '#FF4500' : '' }}
-        >
-          작성완료
-        </button>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Nbwrite;
