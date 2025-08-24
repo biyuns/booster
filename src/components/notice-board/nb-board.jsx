@@ -1,102 +1,238 @@
-// // src/pages/notice-board/Nbboard.jsx
+// src/pages/notice-board/Nbboard.jsx
 
-// import { Profileback, Nbstate, Nbgeul1, Nbgeul2, Nbgeul3,Nbheart, Mypagelogo
-//     , Nbline, Nbcheck, Nbsubmit
-//  } from "../../img/img";
-// import '../../components/notice-board/nb-board.css';
-// function Nbboard() {
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import apiClient from '../../api/apiClient';
 
-//     return (
-//         <div className="total_ct">
-//             <section className="nb-top-ct">
-//                 <img src={Profileback} alt="뒤로가기"/>
-//                 <p> 전체 </p>
-//                 <img src={Nbstate} alt="수정"/>
-//             </section>
+import {
+    Profileback, Nbstate, Nbgeul1, Nbgeul2, Nbgeul3, Nbheart,
+    Nbline, Nbcheck, Nbsubmit, NbCommentlogo
+} from "../../img/img";
+import '../../components/notice-board/nb-board.css';
+import MypgRemoveModal from '../../components/modal/MypgRemoveModal';
 
-//             <div className="nb2-board-top-ct">
-//                 <div className="nb2-top-img-ct">
-//                     <img src={'/images/img-boon/kimchi.svg'} alt="사용자사진"></img>
-//                 </div>
+const formatPostTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${month}/${day} ${hours}:${minutes}`;
+};
 
-//                 <div className="nb2-name-time">
-//                     <p className="nb2-name"> 이름 </p>
-//                     <p className="nb2-time"> 08/12 16:35</p>
-//                 </div>
-//             </div>
+const CURRENT_USER_ID = 1; // [가정] 실제로는 로그인 상태에서 가져와야 합니다.
 
-//             <p className="nb2-title"> 나만 아는 을지대 숨은 맛집</p>
+function Nbboard() {
+    const { postId } = useParams();
+    const navigate = useNavigate();
 
-//             <p className="nb2-contant"> 맨날 학교 앞에서 뭐 먹을지 고민하면 여기 가봐. 가격 착하고, 양 품짐하고, 사장님도 친절 혼밥도 편하고, 친구들이랑 가도 딱 좋음</p>
+    const [post, setPost] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
+    const [isAnonymousComment, setIsAnonymousComment] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
+    const menuRef = useRef(null);
 
-//             <div className="nb2-user-push-img-ct">
-//                 <div className="nb2-user-img">
-//                     <img src={'/images/img-boon/kimchi.svg'}></img>
-//                 </div>
-//                 <div className="nb2-user-img">
-//                     <img src={'/images/img-boon/kimchi.svg'}></img>
-//                 </div>
-//                 <div className="nb2-user-img">
-//                     <img src={'/images/img-boon/kimchi.svg'}></img>
-//                 </div>
-//                 <div className="nb2-user-img">
-//                     <img src={'/images/img-boon/kimchi.svg'}></img>
-//                 </div>
-//                 <div className="nb2-user-img">
-//                     <img src={'/images/img-boon/kimchi.svg'}></img>
-//                 </div>
-//             </div>
+    const fetchComments = async () => {
+        try {
+            const response = await apiClient.get(`/booster/${postId}/comment`);
+            setComments(response.data || []);
+        } catch (err) {
+            console.error("댓글 로딩 실패:", err);
+        }
+    };
 
-//             <section className="nb2-dat-heart">
-//                 <div className="nb2-comment-total-ct">
-//                 <div className="nb2-coment-ct">
-//                     <img src={Nbgeul1} alt="댓글"></img>
-//                     <img src={Nbgeul2} alt="댓글"></img>
-//                     <img src={Nbgeul3} alt="댓글"></img>
-//                 </div>
-//                     <p> 21 </p>
-//                 </div>
+    useEffect(() => {
+        if (!postId) {
+            setError('잘못된 접근입니다.');
+            setIsLoading(false);
+            return;
+        }
+        const fetchPostAndComments = async () => {
+            setIsLoading(true);
+            try {
+                const [postResponse, commentsResponse] = await Promise.all([
+                    apiClient.get(`/booster/${postId}`),
+                    apiClient.get(`/booster/${postId}/comment`)
+                ]);
+                setPost(postResponse.data);
+                setComments(commentsResponse.data || []);
+            } catch (err) {
+                console.error("데이터 로딩 실패:", err);
+                setError("데이터를 불러오는 데 실패했습니다.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchPostAndComments();
+    }, [postId]);
 
-//                 <div className="nb2-heart-ct">
-//                     <img src={Nbheart} alt="하트"/>
-//                     <p> 3</p>
-//                 </div>
-//             </section>
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
-//             <div className="nb2-line">.</div>
+    const handleEdit = () => {
+        setIsMenuOpen(false);
+        navigate(`/board/edit/${postId}`, { state: { post } });
+    };
 
-//             <section className="user-comment-total-ct">
-//                 <div className="user-comment-ct">
-//                     <div className="user-img-ct">
-//                         <img src={Mypagelogo} alt="기본이미지"/>
-//                     </div>
+    const openDeleteModal = (type, id) => {
+        setItemToDelete({ type, id });
+        setIsMenuOpen(false);
+        setIsDeleteModalOpen(true);
+    };
+    
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+        setItemToDelete({ type: null, id: null });
+    };
 
-//                     <div className="user-name-time-ct">
-//                         <p> 김을지</p>
-//                         <p> 08/12 17:01</p>
-//                     </div>
-//                 </div>
-//                     <p> 맛있겠다 당장 내 입으로.</p>
+    const confirmDelete = async () => {
+        const { type, id } = itemToDelete;
+        const isPostDelete = type === 'post';
+        const url = isPostDelete ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
+        
+        try {
+            await apiClient.delete(url);
+            alert('삭제되었습니다.');
+            if (isPostDelete) {
+                navigate('/board');
+            } else {
+                fetchComments();
+            }
+        } catch (err) {
+            console.error("삭제 실패:", err);
+            alert('삭제에 실패했습니다.');
+        } finally {
+            closeDeleteModal();
+        }
+    };
 
+    const handleCommentSubmit = async () => {
+        if (!newComment.trim()) return alert("댓글 내용을 입력해주세요.");
+        try {
+            const payload = {
+                content: newComment,
+                isAnonymous: isAnonymousComment,
+            };
+            await apiClient.post(`/booster/${postId}/comment`, payload);
+            setNewComment("");
+            setIsAnonymousComment(false);
+            fetchComments();
+        } catch (err) {
+            console.error("댓글 작성 실패:", err);
+            alert("댓글 작성에 실패했습니다.");
+        }
+    };
+    
+    if (isLoading) return <div className="loading-message">로딩 중...</div>;
+    if (error) return <div className="error-message">{error}</div>;
+    if (!post) return <div className="info-message">게시글을 찾을 수 없습니다.</div>;
 
-//                 <img className="nb2-line2"src={Nbline} alt="구분선"/>
+    return (
+        <>
+            <div className="total_ct">
+                <section className="nb-top-ct">
+                    <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
+                    <p>{post.category}</p>
+                    {post.author_id === CURRENT_USER_ID && (
+                        <div className="nb-menu-container" ref={menuRef}>
+                            <img src={Nbstate} alt="메뉴 열기" onClick={() => setIsMenuOpen(!isMenuOpen)} />
+                            {isMenuOpen && (
+                                <div className="nb-menu-dropdown">
+                                    <button onClick={handleEdit}>수정</button>
+                                    <button onClick={() => openDeleteModal('post', post.post_id)}>삭제</button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </section>
 
-//                 <div className="user-input-comment-ct">
-//                     <div className="user-input-ct">
-//                         <input type="text" placeholder="댓글을 입력하세요."></input>
-//                         <div className="nb2-anoymouse-check-ct">
-//                             <img src={Nbcheck} alt="익명체크"></img>
-//                         </div>
+                <div className="nb2-board-top-ct">
+                    <div className="nb2-top-img-ct">
+                        <img src={post.is_anonymous ? NbCommentlogo : (post.intro_img_url || NbCommentlogo)} alt="프로필 사진"/>
+                    </div>
+                    <div className="nb2-name-time">
+                        <p className="nb2-name">{post.is_anonymous ? '익명' : post.author_nickname}</p>
+                        <p className="nb2-time">{formatPostTime(post.create_post_time)}</p>
+                    </div>
+                </div>
 
-//                         <div className="nb2-submit-ct">
-//                             <img src={Nbsubmit} alt="전송버튼"/>
-//                         </div>
-//                     </div>
-//                 </div>
+                <p className="nb2-title">{post.title}</p>
+                <p className="nb2-contant">{post.content}</p>
                 
-//             </section>
-//         </div>
-//     );
-// }
+                {post.img_url && post.img_url.length > 0 && (
+                    <div className="nb2-user-push-img-ct">
+                        {post.img_url.map((url, index) => <div className="nb2-user-img" key={index}><img src={url} alt={`첨부 이미지 ${index + 1}`} /></div>)}
+                    </div>
+                )}
 
-// export default Nbboard;
+                <section className="nb2-dat-heart">
+                    <div className="nb2-comment-total-ct">
+                        <div className="nb2-coment-ct"><img src={Nbgeul1} alt="댓글 아이콘"/><img src={Nbgeul2} alt=""/><img src={Nbgeul3} alt=""/></div>
+                        <p>{comments.length || 0}</p>
+                    </div>
+                    <div className="nb2-heart-ct"><img src={Nbheart} alt="하트"/><p>{post.like_count || 0}</p></div>
+                </section>
+
+                <div className="nb2-line"></div>
+
+                <section className="user-comment-total-ct">
+                    {comments.map(comment => (
+                        <div key={comment.comment_id}>
+                            <div className="user-comment-ct">
+                                <div className="user-img-ct">
+                                    <img src={NbCommentlogo} alt="댓글 작성자 이미지"/>
+                                </div>
+                                <div className="user-name-time-ct">
+                                    <p className="user-name3">{comment.author_nickname}</p>
+                                    <p className="user-time3">{comment.formatted_date}</p>
+                                </div>
+                                {comment.is_author && (
+                                    <div className="comment-delete-button-container">
+                                        <button onClick={() => openDeleteModal('comment', comment.comment_id)}>삭제</button>
+                                    </div>
+                                )}
+                            </div>
+                            <p className="user-content3">{comment.content}</p>
+                            <img className="nb2-line2" src={Nbline} alt="구분선"/>
+                        </div>
+                    ))}
+                    
+                    <div className="user-input-comment-ct">
+                        <div className="user-input-ct">
+                            <input type="text" placeholder="댓글을 입력하세요." value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+                            <div className="nb2-e-ct" onClick={() => setIsAnonymousComment(!isAnonymousComment)}>
+                                <div className="nb2-anoymouse-check-ct">
+                                    <img src={Nbcheck} alt="익명체크" style={{ opacity: isAnonymousComment ? 1 : 0.5 }}/>
+                                </div>
+                                <p className="nb2-e"> 익명 </p>
+                            </div>
+                            <div className="nb2-submit-ct" onClick={handleCommentSubmit}><img src={Nbsubmit} alt="전송버튼"/></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            {isDeleteModalOpen && (
+                <MypgRemoveModal 
+                    onClose={closeDeleteModal}
+                    onConfirm={confirmDelete}
+                />
+            )}
+        </>
+    );
+}
+
+export default Nbboard;

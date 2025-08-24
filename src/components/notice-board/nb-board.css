@@ -181,18 +181,222 @@ letter-spacing: 0.24px;
 
 .user-comment-total-ct {
     width: 100%;
-    padding : 0px 21px;
+    padding : 0px;
 }
 
 .user-comment-ct {
     display : flex;
     flex-direction: row;
     gap : 7px;
+    align-items: center;
+    margin-top : 11px;
+    padding : 0 21px;
 }
+
 
 .nb2-line {
     width: 393px;
 height: 12px;
 flex-shrink: 0;
 background: var(--Surface, #F5F5F5);
+margin-top: 7px;
+}
+
+.user-img-ct {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+width: 22px;
+height: 22px;
+flex-shrink: 0;
+border-radius: 22px;
+background: #BCBCBC;
+}
+
+.user-img-ct > img {
+    border-radius: 22px;
+    flex-shrink: 0;
+}
+
+.user-name3 {
+    color: var(--Typo-heading, #1D1B20);
+
+/* small */
+font-family: "GmarketSans";
+font-size: 8px;
+font-style: normal;
+font-weight: 400;
+/* line-height: 180%; 14.4px */
+}
+
+.user-time3 {
+    color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+
+/* body5 */
+font-family: "GmarketSans";
+font-size: 6px;
+font-style: normal;
+font-weight: 400;
+/* line-height: 163%; 9.78px */
+}
+
+.user-content3 {
+    color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+
+/* small */
+font-family: "GmarketSans";
+font-size: 8px;
+font-style: normal;
+font-weight: 400;
+/* line-height: 180%; 14.4px */
+margin-top : 9px;
+padding : 0 21px;
+}
+
+.user-name-time-ct {
+    display: flex;
+    flex-direction: column;
+    gap : 3px;  
+    padding-top: 4px;
+}
+
+.user-input-comment-ct {
+    display: flex;
+width: 393px;
+padding-bottom: 29px;
+flex-direction: column;
+align-items: center;
+gap: 19px;
+background: var(--Background, #FFF);
+position: absolute;
+bottom: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.user-input-ct  > input {
+    width: 351px;
+height: 41px;
+border-radius: 5px;
+background: var(--Line, #F0F0F0);
+border: 0px;
+padding : 11px 33px 11px 53px;  
+
+}
+
+.nb2-e-ct {
+    display : flex;
+    flex-direction: row;
+    gap : 3px;
+    position: absolute;
+    left : 32px;
+    bottom : 41px;
+    align-items: center;
+}
+
+.nb2-anoymouse-check-ct {
+    width: 12px;
+height: 12px;
+flex-shrink: 0;
+border-radius: 3px;
+background: var(--Divider-Border, #BCBCBC);
+display : Flex;
+align-items: center;
+justify-content: center;
+    
+}
+
+.nb2-e {
+    color: var(--Divider-Border, var(--Divider-Border, #BCBCBC));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* body6 */
+font-family: "GmarketSans";
+font-size: 9px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 177.778% */
+letter-spacing: 0.24px;
+}
+
+.nb2-submit-ct {
+    position: absolute;
+    right : 32px;
+    bottom: 39px;
+}
+
+.user-input-ct > input::placeholder { 
+    color: var(--Divider-Border, var(--Divider-Border, #BCBCBC));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Subtitle */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 19px; /* 158.333% */
+}
+
+/* nb-board.css 파일에 아래 코드를 추가하세요 */
+
+/* 메뉴 아이콘과 드롭다운을 함께 묶는 컨테이너 */
+.nb-menu-container {
+  position: relative; /* 자식 요소인 드롭다운의 위치 기준점이 됨 */
+  z-index: 10; /* 다른 요소들보다 위에 표시되도록 함 */
+}
+
+/* 드롭다운 메뉴 스타일 */
+.nb-menu-dropdown {
+  position: absolute; /* .nb-menu-container를 기준으로 위치를 잡음 */
+  top: 100%; /* 아이콘 바로 아래에 위치 */
+  right: 0; /* 오른쪽 정렬 */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column; /* 버튼들을 세로로 쌓음 */
+  justify-content: center;
+  align-items: center;
+  width: 65px; /* 메뉴의 너비 */
+  /* padding: 4px 0;  */
+}
+
+/* 드롭다운 메뉴 안의 버튼들 */
+.nb-menu-dropdown button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* medium */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 166.667% */
+letter-spacing: 0.24px;
+border-radius: 8px;
+}
+
+/* 버튼에 마우스를 올렸을 때의 효과 */
+.nb-menu-dropdown button:hover {
+  background-color: #707070;
+  color: var(--Background, var(--Background, #FFF));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* medium */
+font-family: "GmarketSans";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 166.667% */
+letter-spacing: 0.24px;
+
+border-radius: 8px;
 }
