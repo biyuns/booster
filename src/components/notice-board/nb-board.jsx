@@ -1,119 +1,102 @@
-// src/pages/notice-board/Nbboard.jsx
+// // src/pages/notice-board/Nbboard.jsx
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import apiClient from '../../api/apiClient';
-import { Profileback, Nbstate, Geul1, Geul2, Geul3, Heart, Mypagelogo } from "../../img/img";
-import '../../components/notice-board/nb-board.css';
+// import { Profileback, Nbstate, Nbgeul1, Nbgeul2, Nbgeul3,Nbheart, Mypagelogo
+//     , Nbline, Nbcheck, Nbsubmit
+//  } from "../../img/img";
+// import '../../components/notice-board/nb-board.css';
+// function Nbboard() {
 
-// 날짜 형식을 MM/DD HH:mm으로 변환하는 헬퍼 함수
-const formatPostTime = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${month}/${day} ${hours}:${minutes}`;
-};
+//     return (
+//         <div className="total_ct">
+//             <section className="nb-top-ct">
+//                 <img src={Profileback} alt="뒤로가기"/>
+//                 <p> 전체 </p>
+//                 <img src={Nbstate} alt="수정"/>
+//             </section>
 
-function Nbboard() {
-    const navigate = useNavigate();
-    // 1. URL에서 postId 파라미터 추출
-    const { postId } = useParams();
-    
-    // 2. 게시글 데이터, 로딩, 에러 상태 관리
-    const [post, setPost] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+//             <div className="nb2-board-top-ct">
+//                 <div className="nb2-top-img-ct">
+//                     <img src={'/images/img-boon/kimchi.svg'} alt="사용자사진"></img>
+//                 </div>
 
-    // 3. postId가 변경될 때마다 API 호출
-    useEffect(() => {
-        if (!postId) {
-            setError('게시글 ID가 유효하지 않습니다.');
-            setIsLoading(false);
-            return;
-        }
+//                 <div className="nb2-name-time">
+//                     <p className="nb2-name"> 이름 </p>
+//                     <p className="nb2-time"> 08/12 16:35</p>
+//                 </div>
+//             </div>
 
-        const fetchPost = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await apiClient.get(`/booster/${postId}`);
-                setPost(response.data);
-            } catch (err) {
-                console.error("상세 게시글 로딩 실패:", err);
-                setError('게시글을 불러오는 데 실패했습니다.');
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchPost();
-    }, [postId]);
+//             <p className="nb2-title"> 나만 아는 을지대 숨은 맛집</p>
 
-    // 4. 로딩 및 에러 상태에 따른 UI 처리
-    if (isLoading) {
-        return <div className="loading-message">게시글을 불러오는 중...</div>;
-    }
-    if (error) {
-        return <div className="error-message">{error}</div>;
-    }
-    if (!post) {
-        return <div className="info-message">해당 게시글을 찾을 수 없습니다.</div>;
-    }
+//             <p className="nb2-contant"> 맨날 학교 앞에서 뭐 먹을지 고민하면 여기 가봐. 가격 착하고, 양 품짐하고, 사장님도 친절 혼밥도 편하고, 친구들이랑 가도 딱 좋음</p>
 
-    // 5. 받아온 데이터로 화면 렌더링
-    return (
-        <div className="total_ct">
-            <section className="pf-edit-ct2">
-                <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
-                <p> {post.category} </p>
-                <img src={Nbstate} alt="상태 아이콘" />
-            </section>
+//             <div className="nb2-user-push-img-ct">
+//                 <div className="nb2-user-img">
+//                     <img src={'/images/img-boon/kimchi.svg'}></img>
+//                 </div>
+//                 <div className="nb2-user-img">
+//                     <img src={'/images/img-boon/kimchi.svg'}></img>
+//                 </div>
+//                 <div className="nb2-user-img">
+//                     <img src={'/images/img-boon/kimchi.svg'}></img>
+//                 </div>
+//                 <div className="nb2-user-img">
+//                     <img src={'/images/img-boon/kimchi.svg'}></img>
+//                 </div>
+//                 <div className="nb2-user-img">
+//                     <img src={'/images/img-boon/kimchi.svg'}></img>
+//                 </div>
+//             </div>
 
-            <section className="board-topct">
-                <div className="boadr-imgname-ct">
-                    <div className="bd-img">
-                        {/* 익명이거나 프로필 이미지가 없으면 기본 로고 표시 */}
-                        <img src={!post.is_anonymous && post.author_profile_image_url ? post.author_profile_image_url : Mypagelogo} alt="작성자 프로필" />
-                    </div>
-                    <div className="bd-name-month-ct">
-                        {/* 익명이면 '익명', 아니면 'author_nickname' 표시 */}
-                        <p>{post.is_anonymous ? '익명' : post.author_nickname}</p>
-                        <p>{formatPostTime(post.create_post_time)}</p>
-                    </div>
-                </div>
+//             <section className="nb2-dat-heart">
+//                 <div className="nb2-comment-total-ct">
+//                 <div className="nb2-coment-ct">
+//                     <img src={Nbgeul1} alt="댓글"></img>
+//                     <img src={Nbgeul2} alt="댓글"></img>
+//                     <img src={Nbgeul3} alt="댓글"></img>
+//                 </div>
+//                     <p> 21 </p>
+//                 </div>
 
-                <div className="bd-title">
-                    <p className="bd-title-main">{post.title}</p>
-                    <p className="bd-title-sub">{post.content}</p>
-                </div>
+//                 <div className="nb2-heart-ct">
+//                     <img src={Nbheart} alt="하트"/>
+//                     <p> 3</p>
+//                 </div>
+//             </section>
+
+//             <div className="nb2-line"></div>
+
+//             <section className="user-comment-total-ct">
+//                 <div className="user-comment-ct">
+//                     <div className="user-img-ct">
+//                         <img src={Mypagelogo} alt="기본이미지"/>
+//                     </div>
+
+//                     <div className="user-name-time-ct">
+//                         <p> 김을지</p>
+//                         <p> 08/12 17:01</p>
+//                     </div>
+//                 </div>
+//                     <p> 맛있겠다 당장 내 입으로.</p>
 
 
-                {/* 첨부된 이미지가 있을 때만 이미지 섹션을 표시 */}
-                {post.img_url && post.img_url.length > 0 && (
-                    <div className="bd-img-total-ct">
-                        {post.img_url.map((url, index) => (
-                            <img key={index} src={url} alt={`첨부 이미지 ${index + 1}`} />
-                        ))}
-                    </div>
-                )}
+//                 <img src={Nbline} alt="구분선"/>
 
-                <div className="bd-comment-heart-ct">
-                    <div className="bd-comment-ct">
-                        <img src={Geul3} alt="댓글 아이콘" />
-                        <img src={Geul2} alt="" />
-                        <img src={Geul1} alt="" />
-                    </div>
-                    {/* 댓글, 좋아요가 없을 경우 0으로 표시 */}
-                    <p> {post.comment_count || 0} </p>
-                    <img src={Heart} alt="공감 아이콘" style={{ fill: post.liked_by_current_user ? 'red' : 'gray' }} />
-                    <p> {post.like_count || 0} </p>
-                </div>
-            </section>
-            {/* 댓글 입력 및 목록 컴포넌트가 추가될 수 있는 위치 */}
-        </div>
-    );
-}
+//                 <div className="user-input-comment-ct">
+//                     <div className="user-input-ct">
+//                         <input type="text" placeholder="댓글을 입력하세요."></input>
+//                         <div className="nb2-anoymouse-check-ct">
+//                             <img src={Nbcheck} alt="익명체크"></img>
+//                         </div>
 
-export default Nbboard;
+//                         <div className="nb2-submit-ct">
+//                             <img src={Nbsubmit} alt="전송버튼"/>
+//                         </div>
+//                     </div>
+//                 </div>
+                
+//             </section>
+//         </div>
+//     );
+// }
+
+// export default Nbboard;

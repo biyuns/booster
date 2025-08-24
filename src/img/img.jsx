@@ -38,7 +38,13 @@ import MgMainMove from './mainmove.svg'
 import SignUpCom from './signupcomplete.svg'
 import Boosterlogo from './booster-logo.svg'
 import Nbremovebtn from './nbremove.svg'
-
+import Nbgeul1 from './nbgeul1.svg'
+import Nbgeul2 from './nbgeul2.svg'
+import Nbgeul3 from './nbgeul3.svg'
+import Nbheart from './nbheart.svg'
+import Nbline from './nb2line.svg'
+import Nbsubmit from './nb2input.svg'
+import Nbcheck from './nb2an.svg'
 export {
     Board_red, Board, Boon_red, Boon, Boonicon, Chat_red,
     Chat, Geul1, Geul2, Geul3, Heart, Home_red, Home,
@@ -47,6 +53,7 @@ export {
     ,Mypagelogo, Mypagepwedit, Profileback, Profileremove,
     BoonBoonlogo, BoonlocationLogo, Nbcategory2, Nbcategory3, Nbpicture
     ,Nbanonymous, Nbstate, SgChoose, SgChoose2, Sghr1, SgChoose3, SgChoose4
-    ,MgMainMove, SignUpCom, Boosterlogo, Nbremovebtn
+    ,MgMainMove, SignUpCom, Boosterlogo, Nbremovebtn, Nbgeul1, Nbgeul2, Nbgeul3
+    ,Nbheart, Nbline, Nbcheck, Nbsubmit
 
 }
