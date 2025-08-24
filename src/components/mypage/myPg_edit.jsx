@@ -93,7 +93,7 @@ function MyPgedit() {
                 <div className="img-total-ct">
                     
                     <div className="pf-img">
-                        <img src={Mypagelogo} alt="profile-image"></img>
+                        <img src={profileImage} alt="profile-image"></img>
                     </div>
                 
                     <div className="pf-remove-bt" onClick={openDeleteModal} style={{ cursor: 'pointer' }}>
