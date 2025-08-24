@@ -10,11 +10,17 @@ import SignUpServ from './components/signUp/signUp_serv';
 import SignUpCommu from './components/signUp/signUp_commu';
 import SignUpPI from './components/signUp/signUp_PI';
 import SignUpPg3 from './components/signUp/signup3';
+import Splash from './components/login/Splash';
+import MyPg from './components/mypage/myPg';
+import MyPgedit from './components/mypage/myPg_edit';
+import MyPgpsw from './components/mypage/myPg_psw';
+import MyPgUser from './components/mypage/myPgUser';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginPg />} />
+      <Route path="/" element={<Splash />} />
+      <Route path="/login" element={<LoginPg />} />
 
       <Route path="/main" element={<MainPg />} />
 
@@ -25,7 +31,10 @@ function App() {
       <Route path="/signup/service" element={<SignUpServ />} />
       <Route path="/signup/community" element={<SignUpCommu />} />
       <Route path="/signup/pi" element={<SignUpPI />} />
-      {/* <Route path="/main" element={<MainPg />} /> */}
+      <Route path="/mypage" element={<MyPg />} />
+      <Route path="/mypage/profileedit" element={<MyPgedit />} />
+      <Route path="/mypage/password" element={<MyPgpsw />} />
+      <Route path="/mypage/userinfo" element={<MyPgUser />} />
 
 
 

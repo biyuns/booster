@@ -2,11 +2,14 @@ import '../../styles/total.css'
 import '../../components/signUp/signup2.css'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import SignupHeader2 from '../header/SignupHeader2';
 
 function SignUpPg2() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { email, password } = location.stat || {};
 
     const [form, setForm] = useState({
         name: "",
@@ -16,6 +19,13 @@ function SignUpPg2() {
     });
 
     const [isNextButtonActive, setIsNextButtonActive] = useState(false);
+
+        useEffect(() => {
+        if (!email || !password) {
+            alert('필수 정보가 누락되었습니다. 첫 단계부터 다시 진행해주세요.');
+            navigate('/signup/step1');
+        }
+    }, [email, password, navigate]);
 
     const changeForm = (e) => {
         let targetName = e.target.name;
@@ -29,6 +39,7 @@ function SignUpPg2() {
     };
 
     const clickButton = (e) => {
+        e.preventDefault()
         setForm((prev) => ({
             ...prev,
             gender: e.target.value,
@@ -39,30 +50,53 @@ function SignUpPg2() {
         const allFieldsFilled = Object.values(form).every(value => value !== "");
         setIsNextButtonActive(allFieldsFilled);
     }, [form]);
-    const handleNext = () => {
-        if (!isNextButtonActive) {
-            if (form.name === "") {
-                alert("이름을 입력해주세요.");
-                return;
+ const handleNext = async (e) => {
+        e.preventDefault(); // form 새로고침 방지
+
+        // 요청하신 상세 유효성 검사 로직을 유지합니다.
+        if (form.name === "") {
+            alert("이름을 입력해주세요.");
+            return;
+        }
+        if (form.gender === "") {
+            alert("성별을 선택해주세요.");
+            return;
+        }
+        if (form.studentNum === "") {
+            alert("입학년도를 선택해주세요.");
+            return;
+        }
+        if (form.department === "") {
+            alert("학부(학과)를 선택해주세요.");
+            return;
+        }
+        
+        // 모든 필드가 채워졌을 때 API 요청을 보냅니다.
+        if (isNextButtonActive) {
+            const requestBody = {
+                email: email,
+                password: password,
+                nickname: form.name,
+                admissionYear: parseInt(form.studentNum, 10),
+                gender: form.gender,
+                department: form.department
+            };
+
+            try {
+                const response = await axios.post('/booster/join', requestBody);
+                
+                console.log("가입 정보:", requestBody);
+                console.log("회원가입 성공:", response.data);
+                
+                // 요청하신 대로 회원가입 완료 후 '/signup/step3'로 이동합니다.
+                navigate('/signup/step3');
+
+            } catch (error) {
+                console.error("회원가입 실패:", error.response ? error.response.data : error.message);
+                alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
-            if (form.gender === "") {
-                alert("성별을 선택해주세요.");
-                return;
-            }
-            if (form.studentNum === "") {
-                alert("입학년도를 선택해주세요.");
-                return;
-            }
-            if (form.department === "") {
-                alert("학부(학과)를 선택해주세요.");
-                return;
-            }
-        } else {
-            console.log("가입 정보:", form);
-            navigate('/signup/step3'); 
         }
     };
-
 
     return (
         <div className="total_ct">

@@ -1,0 +1,17 @@
+
+.splash-img-ct {
+    margin : 0px 124px 261px 124px;
+    padding-top :321px; 
+    }
+.splash-booster {
+    color: var(--Background, var(--Background, #FFF));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* Heading 3 */
+font-family: "GmarketSans";
+font-size: 32px;
+font-style: normal;
+font-weight: 400;
+line-height: 43px; /* 134.375% */
+text-align: center;
+}

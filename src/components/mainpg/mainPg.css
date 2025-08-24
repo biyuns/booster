@@ -1,7 +1,15 @@
 * {
   box-sizing: border-box;
 }
+.total3_ct {
+      min-height: 100vh;
+  background: #FFF; 
+  max-width: 393px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 89px;
 
+}
 .ai-ct {
     width : 368px;
     height : 160px;
@@ -207,6 +215,9 @@
 .issue-total-ct {
     display : flex;
     flex-direction: row;
+    
+    max-width: 392px;
+    overflow-x: auto;
 }
 
 .issue-list-ct {
@@ -216,6 +227,7 @@
     background: #FFF;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10);
     margin-left : 21px;
+    flex-shrink: 0;
 }
 
 .list-top-ct {
@@ -269,6 +281,10 @@ font-weight: 500;
 line-height: 16px; 
 letter-spacing: 0.24px;
 margin-top : 12px;
+    white-space: nowrap;      /* 텍스트를 한 줄로 만듦 */
+    overflow: hidden;         /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis;  /* 숨겨진 텍스트를 ...으로 표시 */
+    width: 146px; /* (170px - 좌우여백 12px*2) 와 비슷하게 설정 */
 }
 
 .geul-content {
@@ -280,11 +296,19 @@ margin-top : 12px;
     color : #707070;
     margin-top : 3px;
     width : 130px;
-    word-break: break-word  s;
+    word-break: break-word;
+        overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 보여줄 줄 수 */
+    -webkit-box-orient: vertical;
+    width: 146px; /* 제목과 동일하게 설정 */
 }
 
 .geul-title, .geul-content {
-    margin-left : 12px;
+        margin-left: 12px;
+    margin-right: 12px;
+    padding-right : 12px;
 }
 
 .list-bottom-ct {

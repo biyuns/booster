@@ -19,7 +19,7 @@ function SignUpPg3() {
 
             <p className='signup3-chuk'> 가입을 축하합니다. </p>
 
-            <button className='signup3-button'onClick={() => navigate('/main')}> 확인 </button>
+            <button className='signup3-button'onClick={() => navigate('/login')}> 확인 </button>
 
         </div>
 

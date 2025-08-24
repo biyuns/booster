@@ -50,14 +50,19 @@ useEffect(() => {
     }, [form]); 
 
 
-    const handleNext = () => {
-        if (!isNextButtonActive) {
-            alert('이메일과 비밀번호를 올바르게 입력해주세요.');
-            return;
-        }
-        navigate('/signup/step2');
-    };
-
+const handleNext = () => {
+    if (!isNextButtonActive) {
+        alert('이메일과 비밀번호를 올바르게 입력해주세요.');
+        return;
+    }
+    // state 객체에 email과 password를 담아 다음 페이지로 전달합니다.
+    navigate('/signup/step2', { 
+        state: { 
+            email: form.email, 
+            password: form.password 
+        } 
+    });
+};
 
 
 

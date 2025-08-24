@@ -36,6 +36,7 @@ import SgChoose3 from './sg-choose3.svg'
 import SgChoose4 from './sg-choose4.svg'
 import MgMainMove from './mainmove.svg'
 import SignUpCom from './signupcomplete.svg'
+import Boosterlogo from './booster-logo.svg'
 
 export {
     Board_red, Board, Boon_red, Boon, Boonicon, Chat_red,
@@ -45,6 +46,6 @@ export {
     ,Mypagelogo, Mypagepwedit, Profileback, Profileremove,
     BoonBoonlogo, BoonlocationLogo, Nbcategory2, Nbcategory3, Nbpicture
     ,Nbanonymous, Nbstate, SgChoose, SgChoose2, Sghr1, SgChoose3, SgChoose4
-    ,MgMainMove, SignUpCom
+    ,MgMainMove, SignUpCom, Boosterlogo
 
 }
