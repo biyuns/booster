@@ -89,6 +89,7 @@ function Nbboard() {
                     <p className="bd-title-sub">{post.content}</p>
                 </div>
 
+
                 {/* 첨부된 이미지가 있을 때만 이미지 섹션을 표시 */}
                 {post.img_url && post.img_url.length > 0 && (
                     <div className="bd-img-total-ct">

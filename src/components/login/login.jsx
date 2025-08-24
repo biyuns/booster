@@ -35,7 +35,6 @@ function LoginPg() {
     // 로그인 버튼 클릭 시 실행될 함수
     const handleLogin = async () => {
         if (!isButtonActive) return; // 버튼이 비활성화 상태면 아무것도 하지 않음
-
         setLoginError(false); // 이전 에러 상태 초기화
     
         try {
@@ -46,7 +45,7 @@ function LoginPg() {
             });
 
             // 응답 데이터에서 accessToken을 추출
-const accessToken = response.headers.access;
+            const accessToken = response.headers.access;
             if (accessToken) {
                 // accessToken을 localStorage에 저장
                 localStorage.setItem('accessToken', accessToken);
