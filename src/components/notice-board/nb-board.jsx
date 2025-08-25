@@ -36,17 +36,19 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
-    // ✨ 1. 현재 로그인한 사용자의 ID를 가져오는 함수
-    // 실제 프로젝트의 로그인 로직에 맞춰 localStorage.getItem('KEY_NAME')의 'KEY_NAME'을 수정해야 합니다.
+    // ✨ 1. 로컬 스토리지에서 현재 사용자 ID를 가져오는 함수
     const getCurrentUserId = () => {
-        const userIdFromStorage = localStorage.getItem('userId');
+        // --- !!! 중요 !!! ---
+        // F12 > Application > Local Storage 에서 실제 사용하는 '키 이름'으로 수정해주세요.
+        const userIdFromStorage = localStorage.getItem('user_id'); // 'user_id' 또는 실제 사용하는 키
+        
         if (!userIdFromStorage) {
-            console.error("[디버깅] 로컬 스토리지에 'userId'가 없습니다. 로그인 상태를 확인하세요.");
+            console.error("[디버깅] 로컬 스토리지에 'user_id' 키가 없습니다. 로그인 상태와 키 이름을 확인하세요.");
             return null;
         }
         const userId = parseInt(userIdFromStorage, 10);
         if (isNaN(userId)) {
-            console.error(`[디버깅] 로컬 스토리지의 'userId' 값('${userIdFromStorage}')이 숫자가 아닙니다.`);
+            console.error(`[디버깅] 로컬 스토리지의 값('${userIdFromStorage}')이 올바른 숫자가 아닙니다.`);
             return null;
         }
         return userId;
@@ -112,51 +114,22 @@ function Nbboard() {
         fetchPostAndComments();
     }, [postId]);
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false);
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const handleEdit = () => {
-        setIsMenuOpen(false);
-        navigate(`/board/edit/${postId}`, { state: { post } });
-    };
-
-    const openDeleteModal = (type, id) => {
-        setItemToDelete({ type, id });
-        setIsMenuOpen(false);
-        setIsDeleteModalOpen(true);
-    };
-    
-    const closeDeleteModal = () => {
-        setIsDeleteModalOpen(false);
-        setItemToDelete({ type: null, id: null });
-    };
-
+    // ... (이하 다른 함수들은 이전과 동일합니다) ...
+    // ... handleEdit, openDeleteModal, closeDeleteModal, confirmDelete, ...
+    // ... handleCommentSubmit, handleLikeToggle, useEffect(handleClickOutside) ...
+    const handleEdit = () => { setIsMenuOpen(false); navigate(`/board/edit/${postId}`, { state: { post } }); };
+    const openDeleteModal = (type, id) => { setItemToDelete({ type, id }); setIsMenuOpen(false); setIsDeleteModalOpen(true); };
+    const closeDeleteModal = () => { setIsDeleteModalOpen(false); setItemToDelete({ type: null, id: null }); };
     const confirmDelete = async () => {
         const { type, id } = itemToDelete;
         const isPostDelete = type === 'post';
         const url = isPostDelete ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
-        
         try {
             await apiClient.delete(url);
             alert('삭제되었습니다.');
-            if (isPostDelete) {
-                navigate('/board');
-            } else {
-                fetchComments();
-            }
-        } catch (err) {
-            console.error("삭제 실패:", err);
-            alert('삭제에 실패했습니다.');
-        } finally {
-            closeDeleteModal();
-        }
+            if (isPostDelete) { navigate('/board'); } else { fetchComments(); }
+        } catch (err) { console.error("삭제 실패:", err); alert('삭제에 실패했습니다.'); } finally { closeDeleteModal(); }
     };
-
     const handleCommentSubmit = async () => {
         if (!newComment.trim()) return alert("댓글 내용을 입력해주세요.");
         try {
@@ -165,23 +138,21 @@ function Nbboard() {
             setNewComment("");
             setIsAnonymousComment(false);
             fetchComments();
-        } catch (err) {
-            console.error("댓글 작성 실패:", err);
-            alert("댓글 작성에 실패했습니다.");
-        }
+        } catch (err) { console.error("댓글 작성 실패:", err); alert("댓글 작성에 실패했습니다."); }
     };
-
     const handleLikeToggle = async () => {
         if (!post) return;
         try {
             const response = await apiClient.post(`/booster/${post.post_id}/like`);
             const { like_count } = response.data;
             setPost(currentPost => ({ ...currentPost, like_count: like_count }));
-        } catch (error) {
-            console.error("좋아요 처리 실패:", error);
-            alert("좋아요 처리에 실패했습니다.");
-        }
+        } catch (error) { console.error("좋아요 처리 실패:", err); alert("좋아요 처리에 실패했습니다."); }
     };
+    useEffect(() => {
+        const handleClickOutside = (event) => { if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false); };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
     
     if (isLoading) return <div className="loading-message">로딩 중...</div>;
     if (error) return <div className="error-message">{error}</div>;
@@ -194,7 +165,6 @@ function Nbboard() {
                     <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
                     <p>{post.category}</p>
                     
-                    {/* ✨ 3. 내가 쓴 게시글일 때만 수정/삭제 메뉴 노출 */}
                     {post.is_author && (
                         <div className="nb-menu-container" ref={menuRef}>
                             <img src={Nbstate} alt="메뉴 열기" onClick={() => setIsMenuOpen(!isMenuOpen)} />
@@ -254,7 +224,6 @@ function Nbboard() {
                                     <p className="user-time3">{comment.formatted_date}</p>
                                 </div>
                                 
-                                {/* ✨ 4. 내가 쓴 댓글일 때만 삭제 버튼 노출 */}
                                 {comment.is_author && (
                                     <div className="comment-delete-button-container">
                                         <button onClick={() => openDeleteModal('comment', comment.comment_id)}>삭제</button>
