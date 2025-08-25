@@ -36,7 +36,7 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
-    // ✨ 1. 로컬 스토리지에 저장된 사용자 ID를 가져오는 함수 (그대로 유지)
+    // ✨ 1. 로컬 스토리지에서 현재 로그인한 사용자의 ID를 가져오는 함수
     const getCurrentUserId = () => {
         const userIdFromStorage = localStorage.getItem('user_id'); 
         if (!userIdFromStorage) {
@@ -45,6 +45,7 @@ function Nbboard() {
         return parseInt(userIdFromStorage, 10);
     };
 
+    // ✨ 2. 프론트엔드에서 ID를 직접 비교하여 is_author 값을 생성하는 로직
     useEffect(() => {
         const fetchPostAndComments = async () => {
             setIsLoading(true);
@@ -62,24 +63,18 @@ function Nbboard() {
                     apiClient.get(`/booster/${postId}/comments`)
                 ]);
 
-                const postData = postResponse.data;
-
-                // --- ✨ 2. API 응답에서 author_id를 로컬 스토리지에 저장하는 로직 추가 ---
-                if (postData && postData.author_id) {
-                    localStorage.setItem('author_id', postData.author_id);
-                    console.log(`[저장 완료] 로컬 스토리지에 author_id (${postData.author_id}) 를 저장했습니다.`);
-                } else {
-                    console.warn("[저장 실패] API 응답에 author_id가 없거나 유효하지 않습니다.");
-                }
-
-                // --- 3. 내가 쓴 글인지 판단하는 로직 (기존 로직 유지) ---
                 const currentUserId = getCurrentUserId();
+
+                // --- 게시글 작성자 판단 ---
+                const postData = postResponse.data;
                 const isPostAuthor = currentUserId === postData.author_id;
                 setPost({ ...postData, is_author: isPostAuthor });
 
+                // --- 댓글 작성자 판단 ---
                 const commentsData = commentsResponse.data || [];
                 const processedComments = commentsData.map(comment => {
-                    const isCommentAuthor = currentUserId === comment.author_id;
+                    // ✨ 3. API 응답의 'comment_user_id'와 로컬 스토리지의 'user_id'를 비교
+                    const isCommentAuthor = currentUserId === comment.comment_user_id;
                     return { ...comment, is_author: isCommentAuthor };
                 });
                 setComments(processedComments);
@@ -94,13 +89,14 @@ function Nbboard() {
         fetchPostAndComments();
     }, [postId]);
 
+    // 댓글 목록 새로고침 함수
     const fetchComments = async () => {
         try {
             const response = await apiClient.get(`/booster/${postId}/comments`);
             const currentUserId = getCurrentUserId();
             const processedComments = (response.data || []).map(comment => ({
                 ...comment,
-                is_author: currentUserId === comment.author_id
+                is_author: currentUserId === comment.comment_user_id
             }));
             setComments(processedComments);
         } catch (err) {
@@ -108,34 +104,57 @@ function Nbboard() {
         }
     };
     
-    // ... (이하 다른 함수들은 이전과 동일)
-// src/pages/notice-board/Nbboard.jsx 파일의 handleEdit 함수를 이 코드로 교체하세요.
+    const handleEdit = () => {
+        setIsMenuOpen(false);
+        navigate(`/board/edit/${postId}`, { state: { post } });
+    };
 
-const handleEdit = () => {
-    setIsMenuOpen(false);
-    // ✨ "수정" 버튼 클릭 시, /board/edit/{postId} 경로로 post 데이터를 state에 담아 전달합니다.
-    navigate(`/board/edit/${postId}`, { state: { post } });
-};
+    const openDeleteModal = (type, id) => {
+        setItemToDelete({ type, id });
+        setIsMenuOpen(false);
+        setIsDeleteModalOpen(true);
+    };
 
-    const openDeleteModal = (type, id) => { setItemToDelete({ type, id }); setIsMenuOpen(false); setIsDeleteModalOpen(true); };
-    const closeDeleteModal = () => { setIsDeleteModalOpen(false); setItemToDelete({ type: null, id: null }); };
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+        setItemToDelete({ type: null, id: null });
+    };
+
     const confirmDelete = async () => {
         const { type, id } = itemToDelete;
-        const url = type === 'post' ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
+        const url = type === 'post' 
+            ? `/booster/delete/${id}` 
+            : `/booster/${postId}/comments/${id}`;
         try {
             await apiClient.delete(url);
             alert('삭제되었습니다.');
-            if (type === 'post') { navigate('/board'); } else { fetchComments(); }
-        } catch (err) { alert('삭제에 실패했습니다.'); } finally { closeDeleteModal(); }
+            if (type === 'post') {
+                navigate('/board');
+            } else {
+                fetchComments();
+            }
+        } catch (err) {
+            console.error("삭제 실패:", err);
+            alert('삭제에 실패했습니다.');
+        } finally {
+            closeDeleteModal();
+        }
     };
+
     const handleCommentSubmit = async () => {
         if (!newComment.trim()) return alert("댓글 내용을 입력해주세요.");
         try {
             const payload = { content: newComment, isAnonymous: isAnonymousComment };
             await apiClient.post(`/booster/${postId}/comments`, payload);
-            setNewComment(""); setIsAnonymousComment(false); fetchComments();
-        } catch (err) { alert("댓글 작성에 실패했습니다."); }
+            setNewComment("");
+            setIsAnonymousComment(false);
+            fetchComments();
+        } catch (err) {
+            console.error("댓글 작성 실패:", err);
+            alert("댓글 작성에 실패했습니다.");
+        }
     };
+
     const handleLikeToggle = async () => {
         if (!post) return;
         try {
@@ -146,11 +165,18 @@ const handleEdit = () => {
                 like_count: like_count,
                 liked_by_current_user: liked_by_current_user 
             }));
-        } catch (error) { alert("좋아요 처리에 실패했습니다."); }
+        } catch (error) {
+            console.error("좋아요 처리 실패:", error);
+            alert("좋아요 처리에 실패했습니다.");
+        }
     };
 
     useEffect(() => {
-        const handleClickOutside = (event) => { if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false); };
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false);
+            }
+        };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
@@ -158,7 +184,6 @@ const handleEdit = () => {
     if (isLoading) return <div className="loading-message">로딩 중...</div>;
     if (error) return <div className="error-message">{error}</div>;
     if (!post) return <div className="info-message">게시글을 찾을 수 없습니다.</div>;
-    
 
     return (
         <>
@@ -187,7 +212,6 @@ const handleEdit = () => {
                         <p className="nb2-time">{formatPostTime(post.create_post_time)}</p>
                     </div>
                 </div>
-
                 <p className="nb2-title">{post.title}</p>
                 <p className="nb2-contant">{post.content}</p>
                 
@@ -196,7 +220,6 @@ const handleEdit = () => {
                         {post.img_url.map((url, index) => <div className="nb2-user-img" key={index}><img src={url} alt={`첨부 이미지 ${index + 1}`} /></div>)}
                     </div>
                 )}
-
                 <section className="nb2-dat-heart">
                     <div className="nb2-comment-total-ct">
                         <div className="nb2-coment-ct">
@@ -219,8 +242,9 @@ const handleEdit = () => {
                                 </div>
                                 <div className="user-name-time-ct">
                                     <p className="user-name3">{comment.is_anonymous ? '익명' : comment.author_nickname}</p>
-                                    <p className="user-time3">{formatPostTime(comment.create_post_time)}</p>
+                                    <p className="user-time3">{formatPostTime(comment.create_comment_time)}</p>
                                 </div>
+                                {/* ✨ 4. 직접 계산한 comment.is_author 값으로 삭제 버튼 노출 */}
                                 {comment.is_author && (
                                     <div className="comment-delete-button-container">
                                         <button onClick={() => openDeleteModal('comment', comment.comment_id)}>삭제</button>
