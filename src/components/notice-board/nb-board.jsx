@@ -36,6 +36,14 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
+    // ✨ 1. 현재 로그인한 사용자의 ID를 가져오는 로직 (예시)
+    // 실제 프로젝트에서는 로그인 시점에 저장한 값을 가져와야 합니다.
+    const getCurrentUserId = () => {
+        // 예를 들어, 로컬 스토리지에 'userId'로 저장했다고 가정
+        const userId = localStorage.getItem('userId');
+        return userId ? parseInt(userId, 10) : null;
+    };
+
     const fetchComments = async () => {
         try {
             const response = await apiClient.get(`/booster/${postId}/comments`);
@@ -59,7 +67,16 @@ function Nbboard() {
                     apiClient.get(`/booster/${postId}`),
                     apiClient.get(`/booster/${postId}/comments`)
                 ]);
-                setPost(postResponse.data);
+                
+                // ✨ 2. is_author 값 설정
+                const currentUserId = getCurrentUserId();
+                const fetchedPost = {
+                    ...postResponse.data,
+                    // API 응답에 is_author가 없다면 직접 비교하여 생성
+                    is_author: currentUserId === postResponse.data.author_id 
+                };
+
+                setPost(fetchedPost);
                 setComments(commentsResponse.data || []);
             } catch (err) {
                 console.error("데이터 로딩 실패:", err);
@@ -97,13 +114,12 @@ function Nbboard() {
 
     const confirmDelete = async () => {
         const { type, id } = itemToDelete;
-        const isPostDelete = type === 'post';
-        const url = isPostDelete ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
+        const url = type === 'post' ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
         
         try {
             await apiClient.delete(url);
             alert('삭제되었습니다.');
-            if (isPostDelete) {
+            if (type === 'post') {
                 navigate('/board');
             } else {
                 fetchComments();
@@ -129,6 +145,22 @@ function Nbboard() {
             alert("댓글 작성에 실패했습니다.");
         }
     };
+
+    const handleLikeToggle = async () => {
+        if (!post) return;
+        try {
+            const response = await apiClient.post(`/booster/${post.post_id}/like`);
+            const { like_count } = response.data;
+            
+            setPost(currentPost => ({
+                ...currentPost,
+                like_count: like_count
+            }));
+        } catch (error) {
+            console.error("좋아요 처리 실패:", error);
+            alert("좋아요 처리에 실패했습니다.");
+        }
+    };
     
     if (isLoading) return <div className="loading-message">로딩 중...</div>;
     if (error) return <div className="error-message">{error}</div>;
@@ -140,6 +172,8 @@ function Nbboard() {
                 <section className="nb-top-ct">
                     <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
                     <p>{post.category}</p>
+                    
+                    {/* ✨ 3. 조건부 렌더링: post.is_author가 true일 때만 메뉴 버튼을 보여줍니다. */}
                     {post.is_author && (
                         <div className="nb-menu-container" ref={menuRef}>
                             <img src={Nbstate} alt="메뉴 열기" onClick={() => setIsMenuOpen(!isMenuOpen)} />
@@ -174,10 +208,13 @@ function Nbboard() {
 
                 <section className="nb2-dat-heart">
                     <div className="nb2-comment-total-ct">
-                        <div className="nb2-coment-ct"><img src={Nbgeul1} alt="댓글 아이콘"/><img src={Nbgeul2} alt=""/><img src={Nbgeul3} alt=""/></div>
+                        <div className="nb2-coment-ct"><img src={Geul1} alt="댓글 아이콘"/><img src={Geul2} alt=""/><img src={Geul3} alt=""/></div>
                         <p>{post.comment_count || comments.length || 0}</p>
                     </div>
-                    <div className="nb2-heart-ct"><img src={Nbheart} alt="하트"/><p>{post.like_count || 0}</p></div>
+                    <div className="nb2-heart-ct" onClick={handleLikeToggle} style={{cursor: 'pointer'}}>
+                        <img src={Nbheart} alt="하트"/>
+                        <p>{post.like_count || 0}</p>
+                    </div>
                 </section>
 
                 <div className="nb2-line"></div>
