@@ -18,31 +18,32 @@ function Nb1() {
     const { postId } = useParams();
     const location = useLocation();
 
-    // Nbboard에서 전달받은 post 데이터로 초기 상태 설정
+    // 1. Nbboard에서 전달받은 post 데이터를 가져옵니다.
     const initialData = location.state?.post;
 
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [category, setCategory] = useState("");
-    const [isAnonymous, setIsAnonymous] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // 컴포넌트 마운트 시, 전달받은 데이터로 상태 초기화
+    // ✨ 2. 데이터가 없으면 렌더링을 시도하기 전에 즉시 리디렉션 로직을 실행합니다.
     useEffect(() => {
-        if (initialData) {
-            setTitle(initialData.title || "");
-            setContent(initialData.content || "");
-            setCategory(initialData.category || "");
-            setIsAnonymous(initialData.is_anonymous || false);
-        } else {
-            // 데이터 없이 페이지에 직접 접근한 경우, 상세 페이지로 리디렉션
-            console.error("수정할 게시글 정보가 없습니다.");
-            alert("잘못된 접근입니다.");
-            navigate(`/board/${postId}`);
+        if (!initialData) {
+            console.error("수정할 게시글 정보가 없습니다. 게시글 상세 페이지로 돌아갑니다.");
+            alert("잘못된 접근입니다. 게시글 정보가 없습니다.");
+            navigate(`/board/${postId}`, { replace: true });
         }
     }, [initialData, postId, navigate]);
 
-    // 수정 시에는 제목과 익명 여부만 활성화
+    // ✨ 3. 데이터가 도착하기 전까지는 아무것도 렌더링하지 않습니다(빈 화면 방지).
+    if (!initialData) {
+        return null; 
+    }
+
+    // --- 여기부터는 initialData가 반드시 존재함이 보장됩니다. ---
+
+    // 4. 전달받은 데이터로 상태를 안전하게 초기화합니다.
+    const [title, setTitle] = useState(initialData.title || "");
+    const [content] = useState(initialData.content || ""); // 수정 불가
+    const [category] = useState(initialData.category || ""); // 수정 불가
+    const [isAnonymous, setIsAnonymous] = useState(initialData.is_anonymous || false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const canSubmit = useMemo(() => title.trim() && !isSubmitting, [title, isSubmitting]);
 
     const handleSubmit = async () => {
@@ -74,10 +75,10 @@ function Nb1() {
             </section>
             <hr className="profile-hr" />
 
-            {/* 수정 모드에서는 카테고리, 본문, 이미지 변경 불가 (API 명세에 따름) */}
             <section className="nb-category-choose-ct">
                 <label>카테고리</label>
                 <select className="nb-write-select" value={category} disabled>
+                    <option value="" disabled>카테고리를 선택하세요</option>
                     {CATEGORY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                 </select>
             </section>
