@@ -122,7 +122,7 @@ function MyPgUser() {
             </div>
             
             <div className="ps-edit-button-ct">
-                <button className="ps-edit-complete"> 수정 완료 </button>
+                <button className="ps-edit-complete" onClick={handleSubmit}> 수정 완료 </button>
             </div>
         </div>
     );
