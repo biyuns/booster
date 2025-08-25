@@ -68,7 +68,7 @@ function Nball() {
                         </div>
                         <div className="nb-right-all-ct">
                             <div className="nb-img-ct">
-                                <img src={post.intro_img_url || '/images/img-boon/galbe.svg'} alt={`${post.title} 썸네일`} />
+                                {post.intro_img_url && <img src={post.intro_img_url} alt={`${post.title} 썸네일`} />}
                             </div>
                             <div className="nb-right-ct"> 
                                 <div className="nb-comment-ct">
