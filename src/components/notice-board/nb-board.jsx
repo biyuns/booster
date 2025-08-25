@@ -151,26 +151,7 @@ function Nbboard() {
     if (isLoading) return <div className="loading-message">로딩 중...</div>;
     if (error) return <div className="error-message">{error}</div>;
     if (!post) return <div className="info-message">게시글을 찾을 수 없습니다.</div>;
-
-                if (response.data.accessToken) {
-                // 로컬 스토리지에 사용자 정보 저장
-                localStorage.setItem('token', response.data.accessToken);
-                localStorage.setItem('userId', response.data.userId.toString()); // 🔥 userId 저장
-                localStorage.setItem('nickname', response.data.nickname);
-
-                console.log('로그인 성공! 저장된 정보:');
-                console.log('Token:', response.data.accessToken);
-                console.log('User ID:', response.data.userId);
-                console.log('Nickname:', response.data.nickname);
-
-                alert('로그인 성공!');
-                navigate('/home');
-            }
-        } catch (error) {
-            console.error('로그인 실패:', error);
-            alert('로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
-        }
-    };
+    
 
     return (
         <>
