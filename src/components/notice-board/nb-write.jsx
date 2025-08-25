@@ -21,7 +21,7 @@ function Nbwrite() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [category, setCategory] = useState("");
-    const [isAnonymous, setIsAnonymous] = useState(false);
+    const [isAnonymous, setIsAnonymous] = useState(false); // 익명 상태
     const [imageFiles, setImageFiles] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -86,6 +86,9 @@ function Nbwrite() {
         }
     };
 
+    // ✨ 1. 익명 상태에 따라 색상을 결정하는 변수
+    const anonymousColor = isAnonymous ? '#FF4500' : '#000000'; // 활성화 색상 : 기본 색상
+
     return (
         <div className="total_ct">
             <section className="pf-edit-ct">
@@ -127,10 +130,21 @@ function Nbwrite() {
                 <label>본문</label>
                 <textarea id="nb-write-textarea" placeholder="Booster에서 자유롭게 얘기해보세요." value={content} onChange={(e) => setContent(e.target.value)} />
             </section>
+            
+            {/* ✨ 2. onClick 핸들러와 style 속성 적용 */}
             <div className="nb-write-anonymous" onClick={() => setIsAnonymous(prev => !prev)}>
-                <button type="button"><img src={Nbanonymous} alt="익명 아이콘" /></button>
-                <p>익명</p>
+                <button type="button">
+                    {/* 아이콘 색상은 CSS filter를 사용하거나, 별도의 활성화된 아이콘 이미지를 준비하여 조건부로 src를 바꾸는 방식이 좋습니다. 
+                        간단한 색상 변경을 위해 여기서는 filter를 예시로 사용합니다. */}
+                    <img 
+                        src={Nbanonymous} 
+                        alt="익명 아이콘" 
+                        style={{ filter: isAnonymous ? 'invert(35%) sepia(99%) saturate(3443%) hue-rotate(0deg) brightness(102%) contrast(104%)' : 'none' }}
+                    />
+                </button>
+                <p style={{ color: anonymousColor }}>익명</p>
             </div>
+
             <div className="nb-btn-ct">
                 <button className="nb-write-complete-btn" onClick={handleSubmit} disabled={!canSubmit}>
                     {isSubmitting ? '처리 중...' : '작성완료'}

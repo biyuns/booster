@@ -162,6 +162,16 @@
     border-radius: 5px 5px 0px 0px;
     filter : brightness(60%)
 }
+.food2-img-ct {
+    width : 122px;
+    height : 112px;
+    background-image: url('../../../public/images/img-boon/B491.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 5px 5px 0px 0px;
+    filter : brightness(60%)
+}
 
 
 .food-list-text {

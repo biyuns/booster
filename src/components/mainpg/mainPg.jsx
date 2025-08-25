@@ -203,19 +203,19 @@ function MainPg() {
                     </div>
                     
                     <div className="food-ct">
-                        <div className="food-img-ct">
+                        <div className="food2-img-ct">
                         </div>
                         <div className="food-list-text">
-                            <p> 김치찜의 정석</p>
+                            <p> B491</p>
                             <div className="food-total-ct">
                             <section className="food-location-ct">
                                 <img src={location} alt="위치"></img>
-                                <p> 경기 성남시 중원구 산성대로 566 </p>
+                                <p> 경기 성남시 수정구 산성대로 491 2층, </p>
                             </section>
 
                             <section className="food-boon-ct">
                                 <img src={boonicon} alt="혜택"></img>
-                                <p> 전 메뉴 1인당 10% 할인dpdpddpdpdpdpdpdpdpdpdpdpdpdp</p>
+                                <p> 포장 주문 시 10개당 동일 음료 1잔 무료 제공, 매장 방문 시 사이즈업 or 샷추가 무료</p>
                             </section>
                             </div>
                         </div>
