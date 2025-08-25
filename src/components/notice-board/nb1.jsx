@@ -14,37 +14,34 @@ const CATEGORY_OPTIONS = [
 ];
 
 function Nb1() {
+    // ✨ 1. 모든 훅(Hook)을 컴포넌트 최상단에 조건 없이 호출합니다.
     const navigate = useNavigate();
     const { postId } = useParams();
     const location = useLocation();
 
-    // 1. Nbboard에서 전달받은 post 데이터를 가져옵니다.
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [category, setCategory] = useState("");
+    const [isAnonymous, setIsAnonymous] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
     const initialData = location.state?.post;
+    const canSubmit = useMemo(() => title.trim() && !isSubmitting, [title, isSubmitting]);
 
-    // ✨ 2. 데이터가 없으면 렌더링을 시도하기 전에 즉시 리디렉션 로직을 실행합니다.
+    // ✨ 2. 데이터 유무 확인 및 상태 초기화는 useEffect 안에서 처리합니다.
     useEffect(() => {
-        if (!initialData) {
-            console.error("수정할 게시글 정보가 없습니다. 게시글 상세 페이지로 돌아갑니다.");
-            alert("잘못된 접근입니다. 게시글 정보가 없습니다.");
+        if (initialData) {
+            // 데이터가 있으면 상태를 업데이트합니다.
+            setTitle(initialData.title || "");
+            setContent(initialData.content || "");
+            setCategory(initialData.category || "");
+            setIsAnonymous(initialData.is_anonymous || false);
+        } else {
+            // 데이터가 없으면 경고 후 이전 페이지로 돌려보냅니다.
+            alert("수정할 게시글 정보가 없습니다. 잘못된 접근입니다.");
             navigate(`/board/${postId}`, { replace: true });
         }
     }, [initialData, postId, navigate]);
-
-    // ✨ 3. 데이터가 도착하기 전까지는 아무것도 렌더링하지 않습니다(빈 화면 방지).
-    if (!initialData) {
-        return null; 
-    }
-
-    // --- 여기부터는 initialData가 반드시 존재함이 보장됩니다. ---
-
-    // 4. 전달받은 데이터로 상태를 안전하게 초기화합니다.
-    const [title, setTitle] = useState(initialData.title || "");
-    const [content] = useState(initialData.content || ""); // 수정 불가
-    const [category] = useState(initialData.category || ""); // 수정 불가
-    const [isAnonymous, setIsAnonymous] = useState(initialData.is_anonymous || false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const canSubmit = useMemo(() => title.trim() && !isSubmitting, [title, isSubmitting]);
 
     const handleSubmit = async () => {
         if (!canSubmit) return;
@@ -66,6 +63,12 @@ function Nb1() {
         }
     };
 
+    // ✨ 3. 데이터가 아직 없는 초기 렌더링 시에는 아무것도 보여주지 않아 오류를 방지합니다.
+    if (!initialData) {
+        return null;
+    }
+
+    // --- 여기부터는 initialData가 존재함이 보장됩니다. ---
     return (
         <div className="total_ct">
             <section className="pf-edit-ct">
@@ -78,7 +81,7 @@ function Nb1() {
             <section className="nb-category-choose-ct">
                 <label>카테고리</label>
                 <select className="nb-write-select" value={category} disabled>
-                    <option value="" disabled>카테고리를 선택하세요</option>
+                    <option value="" disabled>카테고리</option>
                     {CATEGORY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                 </select>
             </section>
