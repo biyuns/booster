@@ -63,7 +63,8 @@ function App() {
       <Route path="/boon/molan" element={<Boonmolan />} />
       <Route path="/boon/etc" element={<Boonetc />} />
       <Route path="/chat" element={<ChatBot />} />
-      <Route path="/board/update" element={<Nb1 />} />
+<Route path="/board/edit/:postId" element={<Nb1 />} />
+
 
 
 
