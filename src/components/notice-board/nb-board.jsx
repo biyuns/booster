@@ -1,5 +1,3 @@
-// src/pages/notice-board/Nbboard.jsx
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
@@ -11,7 +9,6 @@ import {
 import '../../components/notice-board/nb-board.css';
 import MypgRemoveModal from '../../components/modal/MypgRemoveModal';
 
-// 1. 요청하신 시간 형식(MM/DD HH:MM)으로 변경하는 함수
 const formatPostTime = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -37,41 +34,11 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
-    // 2. 로컬 스토리지에서 현재 사용자 ID를 가져오는 함수
-    const getCurrentUserId = () => {
-        // --- !!! 중요 !!! ---
-        // 로그인 시 localStorage에 저장한 실제 '키 이름'으로 'user_id'를 수정해야 합니다.
-        // F12 > Application > Local Storage 에서 실제 키 이름을 꼭 확인해주세요.
-        const userIdFromStorage = localStorage.getItem('user_id'); 
-        
-        if (!userIdFromStorage) {
-            console.error("[디버깅] 로컬 스토리지에 'user_id' 키가 없습니다. 로그인 상태와 키 이름을 확인하세요.");
-            return null;
-        }
-        return parseInt(userIdFromStorage, 10);
-    };
-
-    const fetchComments = async () => {
-        try {
-            const response = await apiClient.get(`/booster/${postId}/comments`);
-            const currentUserId = getCurrentUserId();
-            const processedComments = (response.data || []).map(comment => ({
-                ...comment,
-                is_author: currentUserId === comment.author_id // API 명세에 맞춰 author_id로 비교
-            }));
-            setComments(processedComments);
-        } catch (err) {
-            console.error("댓글 로딩 실패:", err);
-        }
-    };
-
-    // 3. 게시글과 댓글의 작성자 여부를 'author_id'로 확인하는 최종 로직
+    // ✨ 1. ID를 직접 비교하는 로직을 모두 제거하고, API 응답에만 의존합니다.
     useEffect(() => {
         const fetchPostAndComments = async () => {
             setIsLoading(true);
             setError(null);
-            
-            const currentUserId = getCurrentUserId();
             
             if (!postId) {
                 setError('잘못된 접근입니다.');
@@ -80,23 +47,18 @@ function Nbboard() {
             }
 
             try {
+                // API를 호출할 때 헤더에 토큰이 포함되어 서버가 사용자를 인식합니다.
                 const [postResponse, commentsResponse] = await Promise.all([
                     apiClient.get(`/booster/${postId}`),
                     apiClient.get(`/booster/${postId}/comments`)
                 ]);
 
-                // --- 게시글 작성자 확인 ---
-                const postData = postResponse.data;
-                const isPostAuthor = currentUserId === postData.author_id;
-                setPost({ ...postData, is_author: isPostAuthor });
+                // ✨ 2. 서버가 보내준 is_author 값을 그대로 사용합니다.
+                console.log("[데이터 확인] 서버에서 받은 게시글 정보:", postResponse.data);
+                setPost(postResponse.data);
 
-                // --- 댓글 작성자 확인 ---
-                const commentsData = commentsResponse.data || [];
-                const processedComments = commentsData.map(comment => {
-                    const isCommentAuthor = currentUserId === comment.author_id;
-                    return { ...comment, is_author: isCommentAuthor };
-                });
-                setComments(processedComments);
+                console.log("[데이터 확인] 서버에서 받은 댓글 정보:", commentsResponse.data);
+                setComments(commentsResponse.data || []);
 
             } catch (err) {
                 console.error("데이터 로딩 실패:", err);
@@ -108,9 +70,20 @@ function Nbboard() {
         fetchPostAndComments();
     }, [postId]);
 
+
+    const fetchComments = async () => {
+        try {
+            const response = await apiClient.get(`/booster/${postId}/comments`);
+            setComments(response.data || []);
+        } catch (err) {
+            console.error("댓글 로딩 실패:", err);
+        }
+    };
+
     const handleEdit = () => { setIsMenuOpen(false); navigate(`/board/edit/${postId}`, { state: { post } }); };
     const openDeleteModal = (type, id) => { setItemToDelete({ type, id }); setIsMenuOpen(false); setIsDeleteModalOpen(true); };
     const closeDeleteModal = () => { setIsDeleteModalOpen(false); setItemToDelete({ type: null, id: null }); };
+    
     const confirmDelete = async () => {
         const { type, id } = itemToDelete;
         const url = type === 'post' ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
@@ -120,6 +93,7 @@ function Nbboard() {
             if (type === 'post') { navigate('/board'); } else { fetchComments(); }
         } catch (err) { console.error("삭제 실패:", err); alert('삭제에 실패했습니다.'); } finally { closeDeleteModal(); }
     };
+
     const handleCommentSubmit = async () => {
         if (!newComment.trim()) return alert("댓글 내용을 입력해주세요.");
         try {
@@ -128,6 +102,7 @@ function Nbboard() {
             setNewComment(""); setIsAnonymousComment(false); fetchComments();
         } catch (err) { console.error("댓글 작성 실패:", err); alert("댓글 작성에 실패했습니다."); }
     };
+    
     const handleLikeToggle = async () => {
         if (!post) return;
         try {
@@ -140,6 +115,7 @@ function Nbboard() {
             }));
         } catch (error) { console.error("좋아요 처리 실패:", error); alert("좋아요 처리에 실패했습니다."); }
     };
+
     useEffect(() => {
         const handleClickOutside = (event) => { if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false); };
         document.addEventListener('mousedown', handleClickOutside);
@@ -149,6 +125,7 @@ function Nbboard() {
     if (isLoading) return <div className="loading-message">로딩 중...</div>;
     if (error) return <div className="error-message">{error}</div>;
     if (!post) return <div className="info-message">게시글을 찾을 수 없습니다.</div>;
+
 
     return (
         <>
