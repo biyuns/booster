@@ -33,51 +33,59 @@ function LoginPg() {
     }, [form]);
 
     // 로그인 버튼 클릭 시 실행될 함수
+// src/pages/login/LoginPg.js 파일의 handleLogin 함수 부분을 교체하세요.
+
     const handleLogin = async () => {
-        if (!isButtonActive) return; // 버튼이 비활성화 상태면 아무것도 하지 않음
-        setLoginError(false); // 이전 에러 상태 초기화
+        if (!isButtonActive) return;
+        setLoginError(false);
     
         try {
-            // apiClient를 사용하여 백엔드에 로그인 요청
             const response = await apiClient.post('/booster/login', {
                 email: form.email,
                 password: form.password,
             });
 
-            // 응답 데이터에서 accessToken을 추출
+            // ✨ 1. 서버 응답에서 accessToken, userId, nickname 추출
             const accessToken = response.headers.access;
-            if (accessToken) {
-                // accessToken을 localStorage에 저장
+            const { userId, nickname } = response.data; // 서버 응답 본문에서 데이터 추출
+
+            if (accessToken && userId) {
+                // ✨ 2. 로컬 스토리지에 모든 사용자 정보 저장
                 localStorage.setItem('accessToken', accessToken);
-                console.log('로그인에 성공했습니다.');
-                navigate('/main'); // 메인 페이지로 이동
+                localStorage.setItem('user_id', userId.toString()); // 키 이름을 'user_id'로 통일, 문자열로 저장
+                localStorage.setItem('nickname', nickname);
+
+                console.log('로그인 성공! 저장된 정보:');
+                console.log('AccessToken:', accessToken);
+                console.log('User ID:', userId);
+                console.log('Nickname:', nickname);
+                
+                alert('로그인에 성공했습니다.');
+                navigate('/main');
             } else {
-                // accessToken이 응답에 없는 비정상적인 경우
                 setLoginError(true);
-                alert('로그인에 실패했습니다: 서버로부터 토큰을 받지 못했습니다.');
+                alert('로그인에 실패했습니다: 서버로부터 필수 정보를 받지 못했습니다.');
             }
         } catch (error) {
             console.error('로그인 API 요청 오류:', error);
             setLoginError(true);
             
-            // 더 구체적인 에러 메시지 제공
             if (error.response) {
-                // 서버가 4xx, 5xx 에러로 응답한 경우 (예: 아이디 또는 비밀번호 불일치)
                 alert('이메일 또는 비밀번호가 올바르지 않습니다.');
             } else if (error.request) {
-                // 서버로부터 응답을 받지 못한 경우 (네트워크, CORS, SSL 문제 등)
                 alert('서버에 연결할 수 없습니다. 네트워크 상태를 확인해주세요.');
             } else {
-                // 요청을 설정하는 중에 발생한 오류
                 alert('로그인 중 알 수 없는 오류가 발생했습니다.');
             }
         }
     };
 
+
     const handleGoToSignUp = () => {
         navigate('/signup');
     };
 
+    
     return (
         <div className="total_ct">
             <p className="login_text"> 안녕하세요 :) <br /> 부스터 입니다. </p>
