@@ -51,7 +51,7 @@ const storeData = [
     {
         id : 7,
         name : '철뚝집',
-        image : "/images/img-boon/chaldduck.svg",
+        image : "/images/img-boon/cheul.svg",
         location : '경기 성남시 중원구 광명로 95 1층 철뚝집',
         benefit : '모든 메뉴 10% 할인, 음료수 서비스'
     },

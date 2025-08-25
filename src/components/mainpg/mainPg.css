@@ -248,7 +248,11 @@
     align-items: center;
     padding-right: 1px;
 }
-
+.list-img-ct > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .list-top-text-ct {
     display : flex;
     flex-direction: column;
