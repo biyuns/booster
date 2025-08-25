@@ -45,6 +45,12 @@ letter-spacing: -0.32px;
     padding-left : 4px;
 }
 
+.pf-img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .pf-remove-bt {
     width : 13px;
     height: 13px;

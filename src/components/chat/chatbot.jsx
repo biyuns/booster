@@ -75,19 +75,17 @@ function ChatBot() {
             <p className="main-title"> Booster </p>
             
             <section className='chat-ct' ref={chatContainerRef}>
-                {/* 초기 안내 메시지 */}
                 {chat.length === 0 && (
                      <BotMsg key="init" a="안녕하세요! 부스터 챗봇입니다. 무엇을 도와드릴까요?" />
                 )}
                 
-                {/* 대화 내역 렌더링 */}
                 {chat.map((msg) => (
                     msg.send === "user" 
                         ? <UserMsg key={msg.id} q={msg.text} /> 
                         : <BotMsg key={msg.id} a={msg.text} />
                 ))}
 
-                {/* 로딩 중일 때 "입력 중..." 메시지 표시 */}
+                
                 {isLoading && <BotMsg key="loading" a="..." />}
             </section>
 
@@ -101,7 +99,6 @@ function ChatBot() {
                         disabled={isLoading} // 로딩 중에는 입력 비활성화
                     />
                     <button onClick={handleSendMessage} disabled={isLoading}>
-                        {/* <img src={send_icon} alt="전송" /> */}
                         전송
                     </button>
                 </div>
