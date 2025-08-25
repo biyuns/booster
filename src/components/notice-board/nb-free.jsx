@@ -28,22 +28,6 @@ function Nfree() {
         fetchPosts();
     }, []);
 
-    const handleLikeToggle = async (postId, e) => {
-        e.stopPropagation();
-        try {
-            const response = await apiClient.post(`/booster/${postId}/like`);
-            const { like_count } = response.data;
-            setPosts(currentPosts =>
-                currentPosts.map(p =>
-                    p.post_id === postId ? { ...p, like_count: like_count } : p
-                )
-            );
-        } catch (error) {
-            console.error("좋아요 처리 실패:", error);
-            alert("좋아요 처리에 실패했습니다.");
-        }
-    };
-
     const handlePostClick = (postId) => {
         navigate(`/board/${postId}`);
     };
@@ -87,7 +71,7 @@ function Nfree() {
                                     <img src={Geul3} alt="댓글 아이콘" /><img src={Geul2} alt="" /><img src={Geul1} alt="" />
                                 </div>
                                 <p>{post.comment_count}</p>
-                                <div className="nb-like-ct" onClick={(e) => handleLikeToggle(post.post_id, e)}>
+                                <div className="nb-like-ct">
                                     <img src={Heart} alt="공감 아이콘" />
                                     <p>{post.like_count || 0}</p>
                                 </div>
