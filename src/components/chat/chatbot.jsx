@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import BotMsg from './bot-msg';
 import UserMsg from './user-msg';
 import apiClient from '../../api/apiClient';
+import sendBtn from '../../img/nb2input.svg';
 // import { send_icon } from '../../img/img'; // 전송 아이콘 import (예시)
 
 function ChatBot() {
@@ -99,7 +100,7 @@ function ChatBot() {
                         disabled={isLoading} // 로딩 중에는 입력 비활성화
                     />
                     <button onClick={handleSendMessage} disabled={isLoading}>
-                        전송
+                        <img src={sendBtn} alt="dkjfk" />
                     </button>
                 </div>
             </section>
