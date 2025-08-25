@@ -174,7 +174,21 @@ letter-spacing: 0.24px;
 .nb-like-ct {
     display : flex;
     flex-direction: row;
-    
+
+}
+
+.nb-like-ct > p {
+
+color: var(--Secondary-Text-2, var(--Secondary-Text2, #707070));
+font-feature-settings: 'liga' off, 'clig' off;
+
+/* body4 */
+font-family: "GmarketSans";
+font-size: 7px;
+font-style: normal;
+font-weight: 400;
+line-height: 16px; /* 228.571% */
+letter-spacing: 0.24px;
 }
 .nb-write-btn {
     color: var(--Background, var(--Background, #FFF));
