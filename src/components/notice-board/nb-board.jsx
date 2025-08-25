@@ -21,8 +21,6 @@ const formatPostTime = (dateString) => {
     return `${month}/${day} ${hours}:${minutes}`;
 };
 
-// const CURRENT_USER_ID = 1;
-
 function Nbboard() {
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -75,9 +73,7 @@ function Nbboard() {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setIsMenuOpen(false);
-            }
+            if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false);
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -123,11 +119,7 @@ function Nbboard() {
     const handleCommentSubmit = async () => {
         if (!newComment.trim()) return alert("댓글 내용을 입력해주세요.");
         try {
-            const payload = {
-                content: newComment,
-                isAnonymous: isAnonymousComment,
-            };
-            // ✨ 수정: API 명세에 맞게 '/comments' (복수형)로 최종 수정
+            const payload = { content: newComment, isAnonymous: isAnonymousComment };
             await apiClient.post(`/booster/${postId}/comments`, payload);
             setNewComment("");
             setIsAnonymousComment(false);

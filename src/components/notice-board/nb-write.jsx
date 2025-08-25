@@ -28,52 +28,37 @@ function Nbwrite() {
 
     const isEditMode = !!postId;
     const fileInputRef = useRef(null);
-    
-    // --- 상태 관리 ---
+
     const [initialData] = useState(location.state?.post || null);
     const [title, setTitle] = useState(initialData?.title || "");
     const [content, setContent] = useState(initialData?.content || "");
-    const [category, setCategory] = useState(() => (isEditMode && initialData?.category ? CATEGORY_LABEL_TO_VALUE[initialData.category] || "" : ""));
+    const [category, setCategory] = useState(() => (isEditMode ? CATEGORY_LABEL_TO_VALUE[initialData?.category] || "" : ""));
     const [isAnonymous, setIsAnonymous] = useState(initialData?.is_anonymous || false);
     
-    // 1. 이미지 상태 분리
     const [existingImageUrls, setExistingImageUrls] = useState(initialData?.img_url || []);
-    const [newImageFiles, setNewImageFiles] = useState([]); // File 객체 저장
-
-    // 2. 미리보기 URL 상태
+    const [newImageFiles, setNewImageFiles] = useState([]);
     const [previewUrls, setPreviewUrls] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const totalImageCount = existingImageUrls.length + newImageFiles.length;
-    const canSubmit = useMemo(() => category && title.trim() && content.trim(), [category, title, content]);
+    const canSubmit = useMemo(() => category && title.trim() && content.trim() && !isSubmitting, [category, title, content, isSubmitting]);
 
-    // 3. 미리보기 URL 생성 및 메모리 해제 로직
     useEffect(() => {
         const newPreviews = newImageFiles.map(file => URL.createObjectURL(file));
         setPreviewUrls([...existingImageUrls, ...newPreviews]);
-
-        return () => {
-            newPreviews.forEach(url => URL.revokeObjectURL(url));
-        };
+        return () => newPreviews.forEach(url => URL.revokeObjectURL(url));
     }, [existingImageUrls, newImageFiles]);
 
-    // --- 이벤트 핸들러 ---
     const handleClickAddImage = () => {
-        if (totalImageCount >= MAX_IMAGES) {
-            alert(`이미지는 최대 ${MAX_IMAGES}장까지만 추가할 수 있습니다.`);
-            return;
-        }
+        if (totalImageCount >= MAX_IMAGES) return alert(`이미지는 최대 ${MAX_IMAGES}장까지만 추가할 수 있습니다.`);
         fileInputRef.current?.click();
     };
 
     const handleChangeFiles = (e) => {
         const files = Array.from(e.target.files || []);
-        if (!files.length) return;
         const availableSlots = MAX_IMAGES - totalImageCount;
-        if (files.length > availableSlots) {
-            alert(`최대 ${availableSlots}장까지만 더 추가할 수 있습니다.`);
-        }
-        const filesToProcess = files.slice(0, availableSlots);
-        setNewImageFiles(prev => [...prev, ...filesToProcess]);
+        if (files.length > availableSlots) alert(`최대 ${availableSlots}장까지만 더 추가할 수 있습니다.`);
+        setNewImageFiles(prev => [...prev, ...files.slice(0, availableSlots)]);
         e.target.value = '';
     };
 
@@ -90,48 +75,50 @@ function Nbwrite() {
 
     const handleSubmit = async () => {
         if (!canSubmit) return;
-
-        // 4. 서버 전송을 위해 FormData 사용
-        const formData = new FormData();
-        
-        // requestDto를 JSON 문자열로 변환하여 추가
-        const jsonData = {
-            title: title.trim(),
-            content: content.trim(),
-            category: category,
-            isAnonymous: isAnonymous,
-            imgUrls: isEditMode ? existingImageUrls : [], // 수정 시 유지할 이미지 URL
-        };
-        formData.append('requestDto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
-        
-        // 새로 추가된 파일들을 'images' 키로 추가
-        newImageFiles.forEach(file => {
-            formData.append('images', file);
-        });
+        setIsSubmitting(true);
 
         try {
-            // FormData 전송 시 Content-Type 헤더는 axios가 자동으로 설정하도록 두는 것이 안전합니다.
+            let uploadedImageUrls = [];
+            if (newImageFiles.length > 0) {
+                const imageFormData = new FormData();
+                newImageFiles.forEach(file => {
+                    imageFormData.append('upload', file); // API 명세에 따라 key를 'upload'로 설정
+                });
+                const response = await apiClient.post('/booster/image/upload', imageFormData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                uploadedImageUrls = response.data.imgUrls; // API 응답 형식에 따라 조정 필요
+            }
+
+            const finalImageUrls = [...existingImageUrls, ...uploadedImageUrls];
+            const introImgUrl = finalImageUrls.length > 0 ? finalImageUrls[0] : null;
+
             if (isEditMode) {
-                await apiClient.put(`/booster/edit/${postId}`, formData);
+                const requestBody = { title: title.trim(), isAnonymous };
+                await apiClient.put(`/booster/edit/${postId}`, requestBody);
                 alert('게시글이 성공적으로 수정되었습니다.');
                 navigate(`/board/${postId}`);
             } else {
-                await apiClient.post('/booster/create', formData);
+                const requestBody = {
+                    title: title.trim(),
+                    content: content.trim(),
+                    category,
+                    isAnonymous,
+                    introImgUrl,
+                    imgUrls: finalImageUrls,
+                };
+                await apiClient.post('/booster/create', requestBody);
                 alert('게시글이 성공적으로 등록되었습니다.');
                 navigate('/board');
             }
         } catch (error) {
             console.error('처리 실패:', error);
-            if (error.response) {
-                console.error('서버 응답 데이터:', error.response.data);
-                alert(`오류가 발생했습니다: ${error.response.data.message || '서버 응답 오류'}`);
-            } else {
-                alert('네트워크 오류 또는 서버 응답 없음');
-            }
+            alert(error.response?.data?.message || '오류가 발생했습니다. 다시 시도해주세요.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
-    // --- JSX 렌더링 ---
     return (
         <div className="total_ct">
             <section className="pf-edit-ct">
@@ -184,8 +171,8 @@ function Nbwrite() {
             </div>
 
             <div className="nb-btn-ct">
-                <button className="nb-write-complete-btn" onClick={handleSubmit} disabled={!canSubmit} style={{ backgroundColor: canSubmit ? '#FF4500' : '' }}>
-                    {isEditMode ? '수정완료' : '작성완료'}
+                <button className="nb-write-complete-btn" onClick={handleSubmit} disabled={!canSubmit}>
+                    {isSubmitting ? '처리 중...' : (isEditMode ? '수정완료' : '작성완료')}
                 </button>
             </div>
         </div>
