@@ -21,7 +21,7 @@ const formatPostTime = (dateString) => {
     return `${month}/${day} ${hours}:${minutes}`;
 };
 
-const CURRENT_USER_ID = 1; // [가정] 실제로는 로그인 상태에서 가져와야 합니다.
+const CURRENT_USER_ID = 1;
 
 function Nbboard() {
     const { postId } = useParams();
@@ -40,7 +40,7 @@ function Nbboard() {
 
     const fetchComments = async () => {
         try {
-            const response = await apiClient.get(`/booster/${postId}/comment`);
+            const response = await apiClient.get(`/booster/${postId}/comments`);
             setComments(response.data || []);
         } catch (err) {
             console.error("댓글 로딩 실패:", err);
@@ -55,16 +55,17 @@ function Nbboard() {
         }
         const fetchPostAndComments = async () => {
             setIsLoading(true);
+            setError(null);
             try {
                 const [postResponse, commentsResponse] = await Promise.all([
                     apiClient.get(`/booster/${postId}`),
-                    apiClient.get(`/booster/${postId}/comment`)
+                    apiClient.get(`/booster/${postId}/comments`)
                 ]);
                 setPost(postResponse.data);
                 setComments(commentsResponse.data || []);
             } catch (err) {
                 console.error("데이터 로딩 실패:", err);
-                setError("데이터를 불러오는 데 실패했습니다.");
+                setError(err.response?.status === 403 ? "게시글을 볼 권한이 없습니다." : "데이터를 불러오는 데 실패했습니다.");
             } finally {
                 setIsLoading(false);
             }
@@ -126,7 +127,8 @@ function Nbboard() {
                 content: newComment,
                 isAnonymous: isAnonymousComment,
             };
-            await apiClient.post(`/booster/${postId}/comment`, payload);
+            // ✨ 수정: API 명세에 맞게 '/comments' (복수형)로 최종 수정
+            await apiClient.post(`/booster/${postId}/comments`, payload);
             setNewComment("");
             setIsAnonymousComment(false);
             fetchComments();
@@ -146,7 +148,7 @@ function Nbboard() {
                 <section className="nb-top-ct">
                     <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
                     <p>{post.category}</p>
-                    {post.author_id === CURRENT_USER_ID && (
+                    {post.is_author && (
                         <div className="nb-menu-container" ref={menuRef}>
                             <img src={Nbstate} alt="메뉴 열기" onClick={() => setIsMenuOpen(!isMenuOpen)} />
                             {isMenuOpen && (
@@ -181,7 +183,7 @@ function Nbboard() {
                 <section className="nb2-dat-heart">
                     <div className="nb2-comment-total-ct">
                         <div className="nb2-coment-ct"><img src={Nbgeul1} alt="댓글 아이콘"/><img src={Nbgeul2} alt=""/><img src={Nbgeul3} alt=""/></div>
-                        <p>{comments.length || 0}</p>
+                        <p>{post.comment_count || comments.length || 0}</p>
                     </div>
                     <div className="nb2-heart-ct"><img src={Nbheart} alt="하트"/><p>{post.like_count || 0}</p></div>
                 </section>
