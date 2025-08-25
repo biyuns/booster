@@ -21,7 +21,7 @@ const formatPostTime = (dateString) => {
     return `${month}/${day} ${hours}:${minutes}`;
 };
 
-const CURRENT_USER_ID = 1;
+// const CURRENT_USER_ID = 1;
 
 function Nbboard() {
     const { postId } = useParams();
