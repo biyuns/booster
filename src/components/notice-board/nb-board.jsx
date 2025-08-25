@@ -36,6 +36,8 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
+    // ✨ 1. 현재 로그인한 사용자의 ID를 가져오는 함수
+    // 실제 프로젝트의 로그인 로직에 맞춰 localStorage.getItem('KEY_NAME')의 'KEY_NAME'을 수정해야 합니다.
     const getCurrentUserId = () => {
         const userIdFromStorage = localStorage.getItem('userId');
         if (!userIdFromStorage) {
@@ -56,7 +58,7 @@ function Nbboard() {
             const currentUserId = getCurrentUserId();
             const processedComments = (response.data || []).map(comment => ({
                 ...comment,
-                is_author: currentUserId === comment.user_id // user_id로 수정
+                is_author: currentUserId === comment.user_id
             }));
             setComments(processedComments);
         } catch (err) {
@@ -64,14 +66,21 @@ function Nbboard() {
         }
     };
 
+    // ✨ 2. 게시글과 댓글의 작성자 여부를 확인하는 핵심 로직
     useEffect(() => {
         const fetchPostAndComments = async () => {
             setIsLoading(true);
             setError(null);
             
             const currentUserId = getCurrentUserId();
-            console.log(`[디버깅] 현재 로그인된 사용자 ID:`, currentUserId, `(타입: ${typeof currentUserId})`);
+            console.log(`[디버깅] 현재 로그인된 사용자 ID:`, currentUserId);
             
+            if (!postId) {
+                setError('잘못된 접근입니다.');
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 const [postResponse, commentsResponse] = await Promise.all([
                     apiClient.get(`/booster/${postId}`),
@@ -80,17 +89,14 @@ function Nbboard() {
 
                 // --- 게시글 작성자 확인 ---
                 const postData = postResponse.data;
-                // ✨ author_id -> user_id로 수정
-                console.log(`[디버깅] API 응답 게시글 작성자 ID:`, postData.user_id, `(타입: ${typeof postData.user_id})`);
+                console.log(`[디버깅] API 응답 게시글 작성자 ID:`, postData.user_id);
                 const isPostAuthor = currentUserId === postData.user_id;
                 console.log(`[디버깅] 이 게시글의 작성자인가?`, isPostAuthor);
-                
                 setPost({ ...postData, is_author: isPostAuthor });
 
                 // --- 댓글 작성자 확인 ---
                 const commentsData = commentsResponse.data || [];
                 const processedComments = commentsData.map(comment => {
-                    // ✨ author_id -> user_id로 수정
                     const isCommentAuthor = currentUserId === comment.user_id;
                     return { ...comment, is_author: isCommentAuthor };
                 });
@@ -188,6 +194,7 @@ function Nbboard() {
                     <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
                     <p>{post.category}</p>
                     
+                    {/* ✨ 3. 내가 쓴 게시글일 때만 수정/삭제 메뉴 노출 */}
                     {post.is_author && (
                         <div className="nb-menu-container" ref={menuRef}>
                             <img src={Nbstate} alt="메뉴 열기" onClick={() => setIsMenuOpen(!isMenuOpen)} />
@@ -246,6 +253,8 @@ function Nbboard() {
                                     <p className="user-name3">{comment.author_nickname}</p>
                                     <p className="user-time3">{comment.formatted_date}</p>
                                 </div>
+                                
+                                {/* ✨ 4. 내가 쓴 댓글일 때만 삭제 버튼 노출 */}
                                 {comment.is_author && (
                                     <div className="comment-delete-button-container">
                                         <button onClick={() => openDeleteModal('comment', comment.comment_id)}>삭제</button>
