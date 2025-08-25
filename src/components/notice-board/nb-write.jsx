@@ -15,10 +15,10 @@ const CATEGORY_OPTIONS = [
 ];
 
 const CATEGORY_LABEL_TO_VALUE = {
-    '자유': 'FREE',
-    '홍보': 'PROMO',
-    '정보': 'INFO',
-    'TMI': 'TMI',
+    '자유': '자유 게시판',
+    '홍보': '홍보 게시판',
+    '정보': '정보 게시판',
+    'TMI': 'TMI 게시판',
 };
 
 function Nbwrite() {
