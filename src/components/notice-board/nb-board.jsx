@@ -36,23 +36,31 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
-    // ✨ 1. 현재 로그인한 사용자의 ID를 가져오는 로직 (예시)
-    // 실제 프로젝트에서는 로그인 시점에 저장한 값을 가져와야 합니다.
+    // ✨ 중요: 현재 로그인한 사용자의 ID를 가져오는 함수
+    // 이 함수는 실제 프로젝트의 로그인 로직에 맞춰 구현해야 합니다.
     const getCurrentUserId = () => {
-        // 예를 들어, 로컬 스토리지에 'userId'로 저장했다고 가정
+        // 예시: localStorage에 'userId'라는 키로 저장된 값을 사용합니다.
         const userId = localStorage.getItem('userId');
+        // 값이 문자열일 수 있으므로 숫자로 변환하여 반환합니다.
         return userId ? parseInt(userId, 10) : null;
     };
 
+    // ✨ 수정: 댓글을 가져온 후, 각 댓글의 작성자를 확인하는 로직 추가
     const fetchComments = async () => {
         try {
             const response = await apiClient.get(`/booster/${postId}/comments`);
-            setComments(response.data || []);
+            const currentUserId = getCurrentUserId();
+            const processedComments = (response.data || []).map(comment => ({
+                ...comment,
+                is_author: currentUserId === comment.author_id
+            }));
+            setComments(processedComments);
         } catch (err) {
             console.error("댓글 로딩 실패:", err);
         }
     };
 
+    // ✨ 수정: 게시글과 댓글을 모두 가져온 후, 작성자 여부를 한 번에 처리
     useEffect(() => {
         if (!postId) {
             setError('잘못된 접근입니다.');
@@ -62,22 +70,28 @@ function Nbboard() {
         const fetchPostAndComments = async () => {
             setIsLoading(true);
             setError(null);
+            const currentUserId = getCurrentUserId();
+
             try {
                 const [postResponse, commentsResponse] = await Promise.all([
                     apiClient.get(`/booster/${postId}`),
                     apiClient.get(`/booster/${postId}/comments`)
                 ]);
-                
-                // ✨ 2. is_author 값 설정
-                const currentUserId = getCurrentUserId();
+
+                // 게시글 작성자 여부 확인
                 const fetchedPost = {
                     ...postResponse.data,
-                    // API 응답에 is_author가 없다면 직접 비교하여 생성
-                    is_author: currentUserId === postResponse.data.author_id 
+                    is_author: currentUserId === postResponse.data.author_id
                 };
-
                 setPost(fetchedPost);
-                setComments(commentsResponse.data || []);
+
+                // 댓글 작성자 여부 확인
+                const processedComments = (commentsResponse.data || []).map(comment => ({
+                    ...comment,
+                    is_author: currentUserId === comment.author_id
+                }));
+                setComments(processedComments);
+
             } catch (err) {
                 console.error("데이터 로딩 실패:", err);
                 setError(err.response?.status === 403 ? "게시글을 볼 권한이 없습니다." : "데이터를 불러오는 데 실패했습니다.");
@@ -114,15 +128,16 @@ function Nbboard() {
 
     const confirmDelete = async () => {
         const { type, id } = itemToDelete;
-        const url = type === 'post' ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
+        const isPostDelete = type === 'post';
+        const url = isPostDelete ? `/booster/delete/${id}` : `/booster/${postId}/comments/${id}`;
         
         try {
             await apiClient.delete(url);
             alert('삭제되었습니다.');
-            if (type === 'post') {
+            if (isPostDelete) {
                 navigate('/board');
             } else {
-                fetchComments();
+                fetchComments(); // 댓글 삭제 후 목록 새로고침
             }
         } catch (err) {
             console.error("삭제 실패:", err);
@@ -139,7 +154,7 @@ function Nbboard() {
             await apiClient.post(`/booster/${postId}/comments`, payload);
             setNewComment("");
             setIsAnonymousComment(false);
-            fetchComments();
+            fetchComments(); // 댓글 작성 후 목록 새로고침
         } catch (err) {
             console.error("댓글 작성 실패:", err);
             alert("댓글 작성에 실패했습니다.");
@@ -151,11 +166,7 @@ function Nbboard() {
         try {
             const response = await apiClient.post(`/booster/${post.post_id}/like`);
             const { like_count } = response.data;
-            
-            setPost(currentPost => ({
-                ...currentPost,
-                like_count: like_count
-            }));
+            setPost(currentPost => ({ ...currentPost, like_count: like_count }));
         } catch (error) {
             console.error("좋아요 처리 실패:", error);
             alert("좋아요 처리에 실패했습니다.");
@@ -173,7 +184,7 @@ function Nbboard() {
                     <img src={Profileback} alt="뒤로가기" onClick={() => navigate(-1)} />
                     <p>{post.category}</p>
                     
-                    {/* ✨ 3. 조건부 렌더링: post.is_author가 true일 때만 메뉴 버튼을 보여줍니다. */}
+                    {/* ✨ 조건부 렌더링: post.is_author가 true일 때만 메뉴 버튼을 보여줍니다. */}
                     {post.is_author && (
                         <div className="nb-menu-container" ref={menuRef}>
                             <img src={Nbstate} alt="메뉴 열기" onClick={() => setIsMenuOpen(!isMenuOpen)} />
@@ -230,6 +241,8 @@ function Nbboard() {
                                     <p className="user-name3">{comment.author_nickname}</p>
                                     <p className="user-time3">{comment.formatted_date}</p>
                                 </div>
+                                
+                                {/* ✨ 조건부 렌더링: comment.is_author가 true일 때만 삭제 버튼을 보여줍니다. */}
                                 {comment.is_author && (
                                     <div className="comment-delete-button-container">
                                         <button onClick={() => openDeleteModal('comment', comment.comment_id)}>삭제</button>
