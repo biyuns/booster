@@ -208,7 +208,7 @@ function Nbboard() {
 
                 <section className="nb2-dat-heart">
                     <div className="nb2-comment-total-ct">
-                        <div className="nb2-coment-ct"><img src={Geul1} alt="댓글 아이콘"/><img src={Geul2} alt=""/><img src={Geul3} alt=""/></div>
+                        <div className="nb2-coment-ct"><img src={Nbgeul3} alt="댓글 아이콘"/><img src={Nbgeul2} alt=""/><img src={Nbgeul1} alt=""/></div>
                         <p>{post.comment_count || comments.length || 0}</p>
                     </div>
                     <div className="nb2-heart-ct" onClick={handleLikeToggle} style={{cursor: 'pointer'}}>
