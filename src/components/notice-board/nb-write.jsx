@@ -8,10 +8,10 @@ import apiClient from "../../api/apiClient";
 
 const MAX_IMAGES = 5;
 const CATEGORY_OPTIONS = [
-    { value: 'FREE',  label: '자유' },
-    { value: 'PROMO', label: '홍보' },
-    { value: 'INFO',  label: '정보' },
-    { value: 'TMI',   label: 'TMI' },
+    { value: '자유 게시판',  label: '자유' },
+    { value: '홍보 게시판', label: '홍보' },
+    { value: '정보 게시판',  label: '정보' },
+    { value: 'TMI 게시판',   label: 'TMI' },
 ];
 
 const CATEGORY_LABEL_TO_VALUE = {

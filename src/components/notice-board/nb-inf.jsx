@@ -1,3 +1,5 @@
+// src/pages/notice-board/Ninf.js
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
@@ -25,6 +27,22 @@ function Ninf() {
         };
         fetchPosts();
     }, []);
+
+    const handleLikeToggle = async (postId, e) => {
+        e.stopPropagation();
+        try {
+            const response = await apiClient.post(`/booster/${postId}/like`);
+            const { like_count } = response.data;
+            setPosts(currentPosts =>
+                currentPosts.map(p =>
+                    p.post_id === postId ? { ...p, like_count: like_count } : p
+                )
+            );
+        } catch (error) {
+            console.error("좋아요 처리 실패:", error);
+            alert("좋아요 처리에 실패했습니다.");
+        }
+    };
 
     const handlePostClick = (postId) => {
         navigate(`/board/${postId}`);
@@ -64,13 +82,15 @@ function Ninf() {
                             <div className="nb-img-ct">
                                 <img src={post.intro_img_url || '/images/img-boon/galbe.svg'} alt={`${post.title} 썸네일`} />
                             </div>
-                            <div className="nb-right-ct">    
+                            <div className="nb-right-ct"> 
                                 <div className="nb-comment-ct">
                                     <img src={Geul3} alt="댓글 아이콘" /><img src={Geul2} alt="" /><img src={Geul1} alt="" />
                                 </div>
                                 <p>{post.comment_count}</p>
-                                <img src={Heart} alt="공감 아이콘" />
-                                <p>{post.like_count || 0}</p>
+                                <div className="nb-like-ct" onClick={(e) => handleLikeToggle(post.post_id, e)}>
+                                    <img src={Heart} alt="공감 아이콘" />
+                                    <p>{post.like_count || 0}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
