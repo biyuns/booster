@@ -234,6 +234,7 @@ function Nbboard() {
                 </section>
                 <div className="nb2-line"></div>
                 <section className="user-comment-total-ct">
+                    <div className='divdiv'>
                     {comments.map(comment => (
                         <div key={comment.comment_id}>
                             <div className="user-comment-ct">
@@ -247,7 +248,7 @@ function Nbboard() {
                                 {/* ✨ 4. 직접 계산한 comment.is_author 값으로 삭제 버튼 노출 */}
                                 {comment.is_author && (
                                     <div className="comment-delete-button-container">
-                                        <button onClick={() => openDeleteModal('comment', comment.comment_id)}>삭제</button>
+                                        <button onClick={() => openDeleteModal('comment', comment.comment_id)} className='aa'>삭제</button>
                                     </div>
                                 )}
                             </div>
@@ -255,6 +256,7 @@ function Nbboard() {
                             <img className="nb2-line2" src={Nbline} alt="구분선"/>
                         </div>
                     ))}
+                    </div>
                     <div className="user-input-comment-ct">
                         <div className="user-input-ct">
                             <input type="text" placeholder="댓글을 입력하세요." value={newComment} onChange={(e) => setNewComment(e.target.value)} />
