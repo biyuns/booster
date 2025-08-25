@@ -95,7 +95,7 @@ function Nbwrite() {
 
             if (isEditMode) {
                 const requestBody = { title: title.trim(), isAnonymous };
-                await apiClient.put(`/booster/edit/${postId}`, requestBody);
+                await apiClient.fetch(`/booster/edit/${postId}`, requestBody);
                 alert('게시글이 성공적으로 수정되었습니다.');
                 navigate(`/board/${postId}`);
             } else {
