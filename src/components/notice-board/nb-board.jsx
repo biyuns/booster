@@ -109,7 +109,14 @@ function Nbboard() {
     };
     
     // ... (이하 다른 함수들은 이전과 동일)
-    const handleEdit = () => { setIsMenuOpen(false); navigate(`/board/edit/${postId}`, { state: { post } }); };
+// src/pages/notice-board/Nbboard.jsx 파일의 handleEdit 함수를 이 코드로 교체하세요.
+
+const handleEdit = () => {
+    setIsMenuOpen(false);
+    // ✨ "수정" 버튼 클릭 시, /board/edit/{postId} 경로로 post 데이터를 state에 담아 전달합니다.
+    navigate(`/board/edit/${postId}`, { state: { post } });
+};
+
     const openDeleteModal = (type, id) => { setItemToDelete({ type, id }); setIsMenuOpen(false); setIsDeleteModalOpen(true); };
     const closeDeleteModal = () => { setIsDeleteModalOpen(false); setItemToDelete({ type: null, id: null }); };
     const confirmDelete = async () => {

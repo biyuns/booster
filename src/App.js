@@ -28,6 +28,7 @@ import Boonfitness from './components/boon/boon_fitness';
 import Boonmolan from './components/boon/boon_molan';
 import Boonetc from './components/boon/boon_etc';
 import ChatBot from './components/chat/chatbot';
+import Nb1 from './components/notice-board/nb1';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
       <Route path="/boon/molan" element={<Boonmolan />} />
       <Route path="/boon/etc" element={<Boonetc />} />
       <Route path="/chat" element={<ChatBot />} />
+      <Route path="/board/update" element={<Nb1 />} />
 
 
 
