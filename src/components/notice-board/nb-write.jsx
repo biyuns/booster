@@ -29,35 +29,34 @@ function Nbwrite() {
     const isEditMode = !!postId;
     const fileInputRef = useRef(null);
     
-    // --- 상태 관리 수정 ---
+    // --- 상태 관리 ---
     const [initialData] = useState(location.state?.post || null);
     const [title, setTitle] = useState(initialData?.title || "");
     const [content, setContent] = useState(initialData?.content || "");
-    const [category, setCategory] = useState(() => (isEditMode ? CATEGORY_LABEL_TO_VALUE[initialData.category] || "" : ""));
+    const [category, setCategory] = useState(() => (isEditMode && initialData?.category ? CATEGORY_LABEL_TO_VALUE[initialData.category] || "" : ""));
     const [isAnonymous, setIsAnonymous] = useState(initialData?.is_anonymous || false);
     
-    // ✨ 1. 이미지 상태 분리: 서버 URL과 새로 추가된 파일을 별도로 관리
+    // 1. 이미지 상태 분리
     const [existingImageUrls, setExistingImageUrls] = useState(initialData?.img_url || []);
-    const [newImageFiles, setNewImageFiles] = useState([]); // File 객체를 저장
+    const [newImageFiles, setNewImageFiles] = useState([]); // File 객체 저장
 
-    // ✨ 2. 미리보기 URL 상태 추가
+    // 2. 미리보기 URL 상태
     const [previewUrls, setPreviewUrls] = useState([]);
 
     const totalImageCount = existingImageUrls.length + newImageFiles.length;
     const canSubmit = useMemo(() => category && title.trim() && content.trim(), [category, title, content]);
 
-    // ✨ 3. 미리보기 URL 생성 및 메모리 해제 로직
+    // 3. 미리보기 URL 생성 및 메모리 해제 로직
     useEffect(() => {
         const newPreviews = newImageFiles.map(file => URL.createObjectURL(file));
-        // 기존 이미지 URL과 새로 생성된 미리보기 URL을 합칩니다.
         setPreviewUrls([...existingImageUrls, ...newPreviews]);
 
-        // 컴포넌트가 언마운트되거나 newImageFiles가 변경될 때 메모리 누수 방지
         return () => {
             newPreviews.forEach(url => URL.revokeObjectURL(url));
         };
     }, [existingImageUrls, newImageFiles]);
 
+    // --- 이벤트 핸들러 ---
     const handleClickAddImage = () => {
         if (totalImageCount >= MAX_IMAGES) {
             alert(`이미지는 최대 ${MAX_IMAGES}장까지만 추가할 수 있습니다.`);
@@ -74,18 +73,16 @@ function Nbwrite() {
             alert(`최대 ${availableSlots}장까지만 더 추가할 수 있습니다.`);
         }
         const filesToProcess = files.slice(0, availableSlots);
-        setNewImageFiles(prev => [...prev, ...filesToProcess]); // File 객체 저장
+        setNewImageFiles(prev => [...prev, ...filesToProcess]);
         e.target.value = '';
     };
 
-    const handleRemoveImage = (index) => {
-        if (index < existingImageUrls.length) {
-            // 기존 이미지 제거
-            setExistingImageUrls(prev => prev.filter((_, i) => i !== index));
+    const handleRemoveImage = (indexToRemove) => {
+        if (indexToRemove < existingImageUrls.length) {
+            setExistingImageUrls(prev => prev.filter((_, index) => index !== indexToRemove));
         } else {
-            // 새로 추가된 이미지 제거
-            const newFileIndex = index - existingImageUrls.length;
-            setNewImageFiles(prev => prev.filter((_, i) => i !== newFileIndex));
+            const newFileIndex = indexToRemove - existingImageUrls.length;
+            setNewImageFiles(prev => prev.filter((_, index) => index !== newFileIndex));
         }
     };
 
@@ -94,46 +91,47 @@ function Nbwrite() {
     const handleSubmit = async () => {
         if (!canSubmit) return;
 
-        // ✨ 4. 서버 전송을 위해 FormData 사용
+        // 4. 서버 전송을 위해 FormData 사용
         const formData = new FormData();
         
-        // JSON 데이터를 Blob으로 변환하여 FormData에 추가
+        // requestDto를 JSON 문자열로 변환하여 추가
         const jsonData = {
             title: title.trim(),
             content: content.trim(),
             category: category,
             isAnonymous: isAnonymous,
-            // 수정 모드일 경우, 유지할 기존 이미지 URL 목록 전송
-            imgUrls: isEditMode ? existingImageUrls : [],
+            imgUrls: isEditMode ? existingImageUrls : [], // 수정 시 유지할 이미지 URL
         };
         formData.append('requestDto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
         
-        // 새로 추가된 파일들을 FormData에 추가
+        // 새로 추가된 파일들을 'images' 키로 추가
         newImageFiles.forEach(file => {
             formData.append('images', file);
         });
 
         try {
-            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-            
+            // FormData 전송 시 Content-Type 헤더는 axios가 자동으로 설정하도록 두는 것이 안전합니다.
             if (isEditMode) {
-                // 수정 모드: PUT 요청 (API 명세에 따라 수정 필요)
-                // 현재 PUT /booster/edit/{postId} API가 FormData를 처리하는지 확인 필요
-                await apiClient.put(`/booster/edit/${postId}`, formData, config);
+                await apiClient.put(`/booster/edit/${postId}`, formData);
                 alert('게시글이 성공적으로 수정되었습니다.');
                 navigate(`/board/${postId}`);
             } else {
-                // 작성 모드: POST 요청
-                await apiClient.post('/booster/create', formData, config);
+                await apiClient.post('/booster/create', formData);
                 alert('게시글이 성공적으로 등록되었습니다.');
                 navigate('/board');
             }
         } catch (error) {
             console.error('처리 실패:', error);
-            alert('오류가 발생했습니다. 다시 시도해주세요.');
+            if (error.response) {
+                console.error('서버 응답 데이터:', error.response.data);
+                alert(`오류가 발생했습니다: ${error.response.data.message || '서버 응답 오류'}`);
+            } else {
+                alert('네트워크 오류 또는 서버 응답 없음');
+            }
         }
     };
 
+    // --- JSX 렌더링 ---
     return (
         <div className="total_ct">
             <section className="pf-edit-ct">
@@ -149,9 +147,8 @@ function Nbwrite() {
                         <button type="button"><img src={Nbpicture} alt="사진 추가 아이콘" /></button>
                         <p> 사진 추가</p>
                     </div>
-                    {/* ✨ 수정됨: 통합된 미리보기 URL 배열을 사용 */}
                     {previewUrls.map((url, index) => (
-                        <div className="nb-add-img" key={url + index}>
+                        <div className="nb-add-img" key={`${url}-${index}`}>
                             <img src={url} alt={`첨부 이미지 ${index + 1}`} />
                             <div className="nb-img-remove" onClick={() => handleRemoveImage(index)}>
                                 <img src={Nbremovebtn} alt="이미지 삭제" />
