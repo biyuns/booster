@@ -171,6 +171,11 @@ line-height: 16px; /* 228.571% */
 letter-spacing: 0.24px;
 }
 
+.nb-like-ct {
+    display : flex;
+    flex-direction: row;
+    
+}
 .nb-write-btn {
     color: var(--Background, var(--Background, #FFF));
 font-feature-settings: 'liga' off, 'clig' off;
