@@ -11,6 +11,7 @@ import {
 import '../../components/notice-board/nb-board.css';
 import MypgRemoveModal from '../../components/modal/MypgRemoveModal';
 
+// 1. 요청하신 시간 형식(MM/DD HH:MM)으로 변경하는 함수
 const formatPostTime = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -36,24 +37,18 @@ function Nbboard() {
     const [itemToDelete, setItemToDelete] = useState({ type: null, id: null });
     const menuRef = useRef(null);
 
-    // ✨ 1. 로컬 스토리지에서 현재 사용자 ID를 가져오는 함수 (수정됨)
+    // 2. 로컬 스토리지에서 현재 사용자 ID를 가져오는 함수
     const getCurrentUserId = () => {
         // --- !!! 중요 !!! ---
-        // 로그인 시 localStorage에 저장한 실제 '키 이름'을 여기에 사용해야 합니다.
-        // 예: localStorage.setItem('loginUserId', 123) 로 저장했다면,
-        // 아래 코드는 const userIdFromStorage = localStorage.getItem('loginUserId'); 가 되어야 합니다.
+        // 로그인 시 localStorage에 저장한 실제 '키 이름'으로 'user_id'를 수정해야 합니다.
+        // F12 > Application > Local Storage 에서 실제 키 이름을 꼭 확인해주세요.
         const userIdFromStorage = localStorage.getItem('user_id'); 
         
         if (!userIdFromStorage) {
-            console.error("[디버깅] 로컬 스토리지에 'user_id' 키가 없습니다. F12 > Application > Local Storage 에서 실제 키 이름을 확인하세요.");
+            console.error("[디버깅] 로컬 스토리지에 'user_id' 키가 없습니다. 로그인 상태와 키 이름을 확인하세요.");
             return null;
         }
-        const userId = parseInt(userIdFromStorage, 10);
-        if (isNaN(userId)) {
-            console.error(`[디버깅] 로컬 스토리지의 값('${userIdFromStorage}')이 올바른 숫자가 아닙니다.`);
-            return null;
-        }
-        return userId;
+        return parseInt(userIdFromStorage, 10);
     };
 
     const fetchComments = async () => {
@@ -62,7 +57,7 @@ function Nbboard() {
             const currentUserId = getCurrentUserId();
             const processedComments = (response.data || []).map(comment => ({
                 ...comment,
-                is_author: currentUserId === comment.user_id
+                is_author: currentUserId === comment.author_id // API 명세에 맞춰 author_id로 비교
             }));
             setComments(processedComments);
         } catch (err) {
@@ -70,14 +65,13 @@ function Nbboard() {
         }
     };
 
-    // ✨ 2. 게시글과 댓글의 작성자 여부를 확인하는 핵심 로직 (수정됨)
+    // 3. 게시글과 댓글의 작성자 여부를 'author_id'로 확인하는 최종 로직
     useEffect(() => {
         const fetchPostAndComments = async () => {
             setIsLoading(true);
             setError(null);
             
             const currentUserId = getCurrentUserId();
-            console.log(`[디버깅] 현재 로컬 스토리지에서 가져온 사용자 ID:`, currentUserId);
             
             if (!postId) {
                 setError('잘못된 접근입니다.');
@@ -93,17 +87,13 @@ function Nbboard() {
 
                 // --- 게시글 작성자 확인 ---
                 const postData = postResponse.data;
-                console.log(`[디버깅] API 응답 (게시글 전체):`, postData); // API 전체 응답 확인
-                console.log(`[디버깅] API 응답 게시글 작성자 ID:`, postData.user_id);
-                const isPostAuthor = currentUserId === postData.user_id;
-                console.log(`[디버깅] 이 게시글의 작성자인가?`, isPostAuthor);
+                const isPostAuthor = currentUserId === postData.author_id;
                 setPost({ ...postData, is_author: isPostAuthor });
 
                 // --- 댓글 작성자 확인 ---
                 const commentsData = commentsResponse.data || [];
-                console.log(`[디버깅] API 응답 (댓글 전체):`, commentsData); // API 전체 응답 확인
                 const processedComments = commentsData.map(comment => {
-                    const isCommentAuthor = currentUserId === comment.user_id;
+                    const isCommentAuthor = currentUserId === comment.author_id;
                     return { ...comment, is_author: isCommentAuthor };
                 });
                 setComments(processedComments);
@@ -138,20 +128,18 @@ function Nbboard() {
             setNewComment(""); setIsAnonymousComment(false); fetchComments();
         } catch (err) { console.error("댓글 작성 실패:", err); alert("댓글 작성에 실패했습니다."); }
     };
-
-    // ✨ 3. ESLint 오류 수정
     const handleLikeToggle = async () => {
         if (!post) return;
         try {
             const response = await apiClient.post(`/booster/${post.post_id}/like`);
-            const { like_count } = response.data;
-            setPost(currentPost => ({ ...currentPost, like_count: like_count }));
-        } catch (error) { // 'err' -> 'error'로 변수명 일치
-            console.error("좋아요 처리 실패:", error); 
-            alert("좋아요 처리에 실패했습니다.");
-        }
+            const { like_count, liked_by_current_user } = response.data;
+            setPost(currentPost => ({ 
+                ...currentPost, 
+                like_count: like_count,
+                liked_by_current_user: liked_by_current_user 
+            }));
+        } catch (error) { console.error("좋아요 처리 실패:", error); alert("좋아요 처리에 실패했습니다."); }
     };
-
     useEffect(() => {
         const handleClickOutside = (event) => { if (menuRef.current && !menuRef.current.contains(event.target)) setIsMenuOpen(false); };
         document.addEventListener('mousedown', handleClickOutside);
@@ -224,8 +212,8 @@ function Nbboard() {
                                     <img src={NbCommentlogo} alt="댓글 작성자 이미지"/>
                                 </div>
                                 <div className="user-name-time-ct">
-                                    <p className="user-name3">{comment.author_nickname}</p>
-                                    <p className="user-time3">{comment.formatted_date}</p>
+                                    <p className="user-name3">{comment.is_anonymous ? '익명' : comment.author_nickname}</p>
+                                    <p className="user-time3">{formatPostTime(comment.create_post_time)}</p>
                                 </div>
                                 
                                 {comment.is_author && (
